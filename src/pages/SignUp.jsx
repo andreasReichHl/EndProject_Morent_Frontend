@@ -8,6 +8,7 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (password !== confirmPassword) {
@@ -16,6 +17,31 @@ export default function SignUp() {
       setError("");
     }
   }, [password, confirmPassword]);
+
+  async function signup(event) {
+    event.preventDefault();
+    const registrationData = { email, firstName, lastName, password };
+
+    try {
+      const response = await fetch(
+        import.meta.env.VITE_BACKEND + "/api/v1/auth/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(registrationData),
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      navigate("/login");
+    } catch (error) {
+      console.error("Error:", error.message);
+      setError(error.message);
+    }
+  }
 
   return (
     <section className=" flex justify-center items-center absolute inset-0 p-6">

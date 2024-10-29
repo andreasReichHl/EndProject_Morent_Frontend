@@ -5,6 +5,45 @@ export default function LogIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  async function loginFunction(event) {
+    event.preventDefault();
+    const auth = {
+      email,
+      password,
+    };
+
+    const encoded = btoa(email + ":" + password);
+    console.log(`${import.meta.env.VITE_BACKEND}/api/v1/auth/signin`);
+    try {
+      const response = await fetch(
+        import.meta.env.VITE_BACKEND + "/api/v1/auth/signin",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic " + encoded,
+          },
+          body: JSON.stringify(auth),
+        }
+      );
+      if (!response.ok) {
+        if (response.status === 401) {
+          throw new Error("Unauthorized: Invalid email or password.");
+        } else {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+      }
+
+      const data = await response.json();
+      console.log(data);
+      sessionStorage.setItem("token", data.token);
+      navigate("/home");
+    } catch (error) {
+      console.error("Error:", error.message);
+      setError(error.message);
+    }
+  }
+
   return (
     <section className=" flex justify-center items-center absolute inset-0 p-6">
       <form

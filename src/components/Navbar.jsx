@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
+
 export default function Navbar() {
-    return (
-    
+  return (
     <div className="navbar bg-navBG bg-opacity-40">
       <div className="flex-1">
         <a className="btn btn-ghost text-3xl text-blue-700">MORENT</a>
@@ -44,6 +45,8 @@ export default function Navbar() {
             <li>
               <a>Settings</a>
             </li>
+            <li><Link to="/login">Log In</Link></li>
+            
             <li>
               <a>Logout</a>
             </li>
