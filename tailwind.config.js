@@ -1,9 +1,14 @@
 /** @type {import('tailwindcss').Config} */
+// tailwind.config.js
 module.exports = {
-  content: ["./src/**/*.{html,js,jsx}"],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primaryBG: "#F6F7F9",
+        navBG: "#C3D4E9"
+      },
+    },
   },
-  plugins: [],
-}
-
+  plugins: [require("daisyui")],
+};
