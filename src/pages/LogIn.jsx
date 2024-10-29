@@ -42,11 +42,11 @@ export default function LogIn() {
           type="submit"
           className="w-full bg-blue-700 text-white font-bold py-2 rounded mb-12"
         >
-          Login
+          Sign In
         </button>
 
         <div className="text-center mb-5">
-            <Link to="/signup">No account? Sign up here</Link>
+          <Link to="/signup">No account? Sign up here</Link>
         </div>
         <button
           type="submit"
