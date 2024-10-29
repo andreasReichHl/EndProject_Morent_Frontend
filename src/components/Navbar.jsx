@@ -3,7 +3,7 @@ export default function Navbar() {
     
     <div className="navbar bg-navBG bg-opacity-40">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl text-blue-700">MORENT</a>
+        <a className="btn btn-ghost text-3xl text-blue-700">MORENT</a>
       </div>
       <div className="flex-none">
         <img

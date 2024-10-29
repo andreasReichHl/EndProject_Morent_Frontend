@@ -3,7 +3,7 @@ export default function Footer() {
     <>
       <footer className="footer bg-navBG bg-opacity-40 text-base-content p-10 gap-8">
         <div>
-          <h2 className="text-blue-700 text-3xl font-bold">MORENT</h2>
+          <h2 className="text-blue-700 text-2xl font-bold">MORENT</h2>
           <p>
             Our vision is to provide convenience and help increase your sales
             business.

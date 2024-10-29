@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 export default function Layout() {
   return (
     <>
-      <div className="">
+      <div className=" font-custom">
         <Navbar />
         <main className="flex-grow min-h-screen bg-primaryBG" role="main">
           <Outlet />

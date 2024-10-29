@@ -8,6 +8,9 @@ module.exports = {
         primaryBG: "#F6F7F9",
         navBG: "#C3D4E9"
       },
+      fontFamily: {
+        custom: ['JakartaSans', 'sans-serif']
+      }
     },
   },
   plugins: [require("daisyui")],
