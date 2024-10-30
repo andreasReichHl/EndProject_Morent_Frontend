@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
-  const [secondName, setSecondName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -24,7 +24,7 @@ export default function SignUp() {
 
     try {
       const response = await fetch(
-        import.meta.env.VITE_BACKEND + "/api/v1/auth/signup",
+        import.meta.env.VITE_BACKEND + "/api/v1/auth/signUp",
         {
           method: "POST",
           headers: {
@@ -36,7 +36,7 @@ export default function SignUp() {
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
-      navigate("/login");
+      navigate("/confirm-code");
     } catch (error) {
       console.error("Error:", error.message);
       setError(error.message);
@@ -46,11 +46,11 @@ export default function SignUp() {
   return (
     <section className=" flex justify-center items-center absolute inset-0 p-6">
       <form
-        /* onSubmit={loginFunction} */
+        onSubmit={signup}
         className=" bg-navBG bg-opacity-40 p-6 rounded-lg shadow-lg w-96"
       >
         <h2 className="text-2xl font-semibold mb-6 text-center">
-          Register New Account
+          Neues Konto registrieren
         </h2>
         <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700">
@@ -66,7 +66,7 @@ export default function SignUp() {
         </div>
         <div className="mb-4">
           <label htmlFor="firstName" className="block text-gray-700">
-            First Name
+            Vorname
           </label>
           <input
             onChange={(e) => setFirstName(e.target.value)}
@@ -78,10 +78,10 @@ export default function SignUp() {
         </div>
         <div className="mb-4">
           <label htmlFor="secondName" className="block text-gray-700">
-            Second Name
+            Nachname
           </label>
           <input
-            onChange={(e) => setSecondName(e.target.value)}
+            onChange={(e) => setLastName(e.target.value)}
             type="text"
             id="secondName"
             className="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none"
@@ -90,7 +90,7 @@ export default function SignUp() {
         </div>
         <div className="mb-4">
           <label htmlFor="password" className="block text-gray-700">
-            Password
+            Passwort
           </label>
           <input
             onChange={(e) => setPassword(e.target.value)}
@@ -102,7 +102,7 @@ export default function SignUp() {
         </div>
         <div className="mb-4">
           <label htmlFor="confirmPassword" className="block text-gray-700">
-            Confirm Password
+            Passwort bestätigen
           </label>
           <input
             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -123,7 +123,7 @@ export default function SignUp() {
         </button>
 
         <div className="text-center mb-5">
-          <Link to="/login">Already registred? Log In here</Link>
+          <Link to="/login">Bereits registriert? Hier anmelden</Link>
         </div>
         {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
       </form>

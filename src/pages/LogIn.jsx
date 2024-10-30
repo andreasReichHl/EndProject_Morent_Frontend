@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/AuthProvider";
 
 export default function LogIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const {login} = useAuth();
+  const [error, setError] = useState("");
 
   async function loginFunction(event) {
     event.preventDefault();
+    setError("");
     const auth = {
       email,
       password,
@@ -36,7 +40,7 @@ export default function LogIn() {
 
       const data = await response.json();
       console.log(data);
-      sessionStorage.setItem("token", data.token);
+      login(data.token)
       navigate("/home");
     } catch (error) {
       console.error("Error:", error.message);
@@ -47,7 +51,7 @@ export default function LogIn() {
   return (
     <section className=" flex justify-center items-center absolute inset-0 p-6">
       <form
-        /* onSubmit={loginFunction} */
+        onSubmit={loginFunction}
         className=" bg-navBG bg-opacity-40 p-6 rounded-lg shadow-lg w-96"
       >
         <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
@@ -60,38 +64,37 @@ export default function LogIn() {
             type="email"
             id="email"
             className="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none"
-            placeholder="Email"
             required
           />
         </div>
         <div className="mb-4">
           <label htmlFor="password" className="block text-gray-700">
-            Password
+            Passwort
           </label>
           <input
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             id="password"
             className="mt-1 block w-full p-2 border border-gray-300 rounded focus:outline-none"
-            placeholder="Password"
             required
           />
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-700 text-white font-bold py-2 rounded mb-12"
+          className="w-full bg-blue-700 text-white font-bold py-2 rounded mb-2"
         >
-          Sign In
+          Anmelden
         </button>
+        <p className="text-red-600 text-sm mb-7">{error}</p>
 
         <div className="text-center mb-5">
-          <Link to="/signup">No account? Sign up here</Link>
+          <Link to="/signup">Kein Konto? Hier registrieren</Link>
         </div>
         <button
           type="submit"
           className="w-full bg-white text-black py-2 rounded mb-12 text-sm border border-black"
         >
-          Forgot Password?
+          Password vergessen?
         </button>
       </form>
     </section>
