@@ -24,7 +24,7 @@ export default function SignUp() {
 
     try {
       const response = await fetch(
-        import.meta.env.VITE_BACKEND + "/api/v1/auth/signup",
+        import.meta.env.VITE_BACKEND + "/api/v1/auth/signUp",
         {
           method: "POST",
           headers: {
@@ -36,7 +36,7 @@ export default function SignUp() {
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
-      navigate("/login");
+      navigate("/confirm-code");
     } catch (error) {
       console.error("Error:", error.message);
       setError(error.message);
@@ -46,7 +46,7 @@ export default function SignUp() {
   return (
     <section className=" flex justify-center items-center absolute inset-0 p-6">
       <form
-        /* onSubmit={loginFunction} */
+        onSubmit={signup}
         className=" bg-navBG bg-opacity-40 p-6 rounded-lg shadow-lg w-96"
       >
         <h2 className="text-2xl font-semibold mb-6 text-center">

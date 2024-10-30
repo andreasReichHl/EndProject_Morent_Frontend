@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/AuthProvider";
 
 export default function LogIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const {login} = useAuth();
   const [error, setError] = useState("");
 
   async function loginFunction(event) {
@@ -38,7 +40,7 @@ export default function LogIn() {
 
       const data = await response.json();
       console.log(data);
-      sessionStorage.setItem("token", data.token);
+      login(data.token)
       navigate("/home");
     } catch (error) {
       console.error("Error:", error.message);
@@ -79,11 +81,11 @@ export default function LogIn() {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-700 text-white font-bold py-2 rounded "
+          className="w-full bg-blue-700 text-white font-bold py-2 rounded mb-2"
         >
           Anmelden
         </button>
-        <p className="text-red-600 mb-12">{error}</p>
+        <p className="text-red-600 text-sm mb-7">{error}</p>
 
         <div className="text-center mb-5">
           <Link to="/signup">Kein Konto? Hier registrieren</Link>
