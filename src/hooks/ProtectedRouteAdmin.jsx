@@ -8,17 +8,16 @@ const ProtectedRouteAdmin = (props) => {
   const { token } = auth;
   const navigate = useNavigate();
 
-  if (!token) {
-    auth.logOut();
-    return <Navigate to="/home" />;
-  }
-
   useEffect(() => {
-    const decodedToken = jwtDecode(token);
+    if (!token) {
+      auth.logOut();
+      navigate("/home");
+    }
+   const decodedToken = jwtDecode(token);
     if (token && decodedToken.role !== "admin") {
       navigate("/home");
     }
-  }, [token && decodedToken.role !== "admin"]);
+  }, [token, auth, navigate]);
 
   return <Outlet {...props} />;
 };
