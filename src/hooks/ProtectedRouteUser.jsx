@@ -8,12 +8,12 @@ const ProtectedRouteUser = (props) => {
   const { token } = auth;
   const navigate = useNavigate();
 
-  if (!token) {
-    auth.logOut();
-    return <Navigate to="/home" />;
-  }
-
+  
   useEffect(() => {
+    if (!token) {
+      auth.logOut();
+      navigate("/home");
+    }
     const decodedToken = jwtDecode(token);
     if (
       token &&
@@ -21,7 +21,7 @@ const ProtectedRouteUser = (props) => {
     ) {
       navigate("/home");
     }
-  }, [token && decodedToken.role !== "admin" && decodedToken.role !== "user"]);
+  }, [token, auth, navigate]);
 
   return <Outlet {...props} />;
 };

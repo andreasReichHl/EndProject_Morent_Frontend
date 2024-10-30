@@ -23,8 +23,8 @@ export default function () {
       );
       if (!response.ok) {
         throw new Error(
-          `Error ${response.status}: ${response.statusText}. Details: ${errorMessage}`
-        );
+        `Falscher Code, bitte erneut versuchen`
+      );
       }
 
       const data = await response.json();
@@ -63,7 +63,7 @@ export default function () {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-700 text-white font-bold py-2 rounded mb-12"
+          className="w-full bg-blue-700 text-white font-bold py-2 rounded mb-4"
         >
           Code bestätigen
         </button>

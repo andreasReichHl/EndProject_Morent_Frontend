@@ -3,9 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/AuthProvider";
 
 export default function LogIn() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const {login} = useAuth();
+  const { login } = useAuth();
   const [error, setError] = useState("");
 
   async function loginFunction(event) {
@@ -17,10 +18,9 @@ export default function LogIn() {
     };
 
     const encoded = btoa(email + ":" + password);
-    console.log(`${import.meta.env.VITE_BACKEND}/api/v1/auth/signin`);
     try {
       const response = await fetch(
-        import.meta.env.VITE_BACKEND + "/api/v1/auth/signin",
+        import.meta.env.VITE_BACKEND + "/api/v1/auth/login",
         {
           method: "POST",
           headers: {
@@ -40,7 +40,7 @@ export default function LogIn() {
 
       const data = await response.json();
       console.log(data);
-      login(data.token)
+      login(data.token);
       navigate("/home");
     } catch (error) {
       console.error("Error:", error.message);

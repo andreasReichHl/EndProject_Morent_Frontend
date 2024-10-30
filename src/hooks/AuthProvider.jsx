@@ -8,12 +8,12 @@ const AuthProvider = ({ children }) => {
 
 
   const login = async (receivedToken) => {
-    localStorage.setItem("token", receivedToken);
+    sessionStorage.setItem("token", receivedToken);
   };
 
   const logOut = () => {
     setToken(null);
-    Storage.removeItem("site");
+    sessionStorage.removeItem("site");
   };
 
   useEffect(() => {
@@ -27,6 +27,7 @@ const AuthProvider = ({ children }) => {
       }).then((response) => {
         if (response.ok) {
           setToken(storedToken);
+          console.log("Fanculo")
         } else {
           logOut();
         }
