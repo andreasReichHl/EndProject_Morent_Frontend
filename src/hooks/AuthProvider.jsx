@@ -20,9 +20,9 @@ const AuthProvider = ({ children }) => {
     const storedToken = sessionStorage.getItem("token");
 
     if (storedToken) {
-      fetch(import.meta.env.VITE_BACKEND + "/api/v1/auth/user", {
+      fetch(import.meta.env.VITE_BACKEND + "/api/v1/protectRoute", {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: "Bearer " + token,
         },
       }).then((response) => {
         if (response.ok) {

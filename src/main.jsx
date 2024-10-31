@@ -13,6 +13,7 @@ import VehiclesPage from "./pages/adminPanel/VehiclesPage.jsx";
 import ConfirmRegistrationCode from "./pages/ConfirmRegistrationCode.jsx";
 import LogIn from "./pages/LogIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
+import ProtectedRouteAdmin from "./hooks/ProtectedRouteAdmin.jsx";
 
 const router = createBrowserRouter([
   {
@@ -38,9 +39,9 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/admin-panel",
-    element: <AdminLayout />,
-    //element: <ProtectedRouteAdmin element={<AdminPanel/>} />
+    path: "admin-panel",
+    //element: <AdminLayout />,
+    element: <ProtectedRouteAdmin element={<AdminLayout/>} />,
     children: [
       {
         path: "stores",
