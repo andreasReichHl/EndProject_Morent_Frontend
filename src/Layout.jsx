@@ -1,6 +1,6 @@
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import { Outlet } from "react-router-dom";
+import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
 
 
 export default function Layout() {
@@ -8,6 +8,7 @@ export default function Layout() {
     <>
       <div className=" font-custom">
         <Navbar />
+        
         <main className="flex-grow min-h-screen bg-primaryBG" role="main">
           <Outlet />
         </main>
