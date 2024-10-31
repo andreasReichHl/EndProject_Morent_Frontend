@@ -2,7 +2,7 @@ import locationIcon from "/Users/supercoder/Desktop/Supercode_Java_Kurs_Aufgabe/
 
 export default function LocationNav(props) {
     return (
-        <div className="bg-white rounded-lg flex flex-col p-5 w-full mx-auto">
+        <div className="bg-white rounded-lg flex flex-col p-5 w-full mx-auto shadow-lg">
             <h3 className=" text-lg mb-5">{props.headline ?? "Abholung"}</h3>
             <div className="pl-3 flex flex-col sm:flex-row ">
                 <div className="flex flex-col border-b sm:border-b-0 sm:border-r sm:w-1/2 sm:pt-4 h-20">

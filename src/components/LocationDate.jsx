@@ -17,7 +17,7 @@ export default function LocationDate(props) {
     ];
 
     return (
-        <div className="flex flex-col lg:flex-row gap-2 md:gap-10 sm:p-2 md:p-5 p-2">
+        <div className="flex flex-col lg:flex-row gap-2 lg:gap-8 sm:p-2 md:p-5 p-2">
             {location.map((location, index) => (
                 <LocationNav
                     key={index}

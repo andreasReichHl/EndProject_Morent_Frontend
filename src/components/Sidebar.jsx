@@ -1,74 +1,243 @@
 import React, { useState } from "react";
 import burgerMenu from "../assets/images/menu.svg";
+import arrow from "../assets/images/arrow.svg";
 // import { FaHome, FaUser, FaCog, FaEnvelope, FaBars } from 'react-icons/fa';
 
 export default function Sidebar() {
-    const [isCollapsed, setIsCollapsed] = useState(false);
-    const [isOpen, setIsOpen] = useState(false); // Zustand für das Burger-Menü
+    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
+    const [price, setPrice] = useState(50); // Initialwert für den Preis
 
     const toggleSidebar = () => {
         setIsCollapsed(!isCollapsed);
+        setIsOpen(false);
     };
 
     const toggleBurgerMenu = () => {
         setIsOpen(!isOpen);
+        setIsCollapsed(false);
+    };
+
+    const fuelTypes = [
+        { label: "Benzin", value: "GASOLINE" },
+        { label: "Diesel", value: "DIESEL" },
+        { label: "Elektrisch", value: "ELECTRIC" },
+        { label: "Hybrid", value: "HYBRID" },
+    ];
+
+    const vehicleTypes = [
+        { label: "Sedan", value: "SEDAN" },
+        { label: "Hatchback", value: "HATCHBACK" },
+        { label: "SUV", value: "SUV" },
+        { label: "Coupé", value: "COUPE" },
+    ];
+
+    const seatOptions = [
+        { label: "2 Sitze", value: 2 },
+        { label: "4 Sitze", value: 4 },
+        { label: "5 Sitze", value: 5 },
+        { label: "7 Sitze", value: 7 },
+    ];
+
+    const [selectedFuelTypes, setSelectedFuelTypes] = useState(
+        fuelTypes.reduce((acc, fuel) => ({ ...acc, [fuel.value]: false }), {})
+    );
+
+    const [selectedVehicleTypes, setSelectedVehicleTypes] = useState(
+        vehicleTypes.reduce(
+            (acc, type) => ({ ...acc, [type.value]: false }),
+            {}
+        )
+    );
+
+    const [selectedSeats, setSelectedSeats] = useState(
+        seatOptions.reduce((acc, seat) => ({ ...acc, [seat.value]: false }), {})
+    );
+
+    const handleCheckboxChange = async (category, value) => {
+        const updateSelected =
+            category === "fuel"
+                ? setSelectedFuelTypes
+                : category === "vehicle"
+                ? setSelectedVehicleTypes
+                : setSelectedSeats;
+
+        updateSelected((prev) => ({
+            ...prev,
+            [value]: !prev[value],
+        }));
+    };
+
+    const handlePriceChange = (event) => {
+        setPrice(event.target.value);
     };
 
     return (
-        <div className="">
-            {/* Burger-Menü, das bei kleinen Bildschirmgrößen sichtbar ist */}
+        <div>
             <button
                 onClick={toggleBurgerMenu}
-                className="lg:hidden p-4 text-white focus:outline-none"
+                className="w-16 lg:w-0 lg:hidden pl-4 pt-4 text-white focus:outline-none"
             >
                 <img src={burgerMenu} alt="Burger Menu" />
             </button>
 
-            {/* Sidebar */}
             <div
                 className={`${isOpen ? "flex" : "hidden"} lg:flex flex-col ${
                     isCollapsed ? "w-16" : "md:w-64"
-                } h-screen transition-width duration-300 bg-navBG text-white ${
-                    isOpen && "top-0 left-0 w-full sm:full"
+                } h-screen transition-width duration-300 bg-white text-black ${
+                    isOpen && "fixed top-0 left-0 w-full sm:full z-50"
                 }`}
             >
                 <button
-                    className="text-white focus:outline-none mb-4"
+                    className="text-black focus:outline-none h-20 pl-5"
                     onClick={toggleSidebar}
                 >
-                    {isCollapsed ? "→" : "←"}
+                    {isCollapsed ? (
+                        <img src={burgerMenu} alt="menu" />
+                    ) : (
+                        <img src={arrow} alt="arrow" />
+                    )}
                 </button>
 
-                {/* Sidebar-Navigation */}
                 <nav className="flex-1">
                     <ul className="space-y-4">
-                        <li className="flex flex-col ">
+                        {/* Fuel Types */}
+                        <li className="flex flex-col">
                             {!isCollapsed && (
                                 <>
-                                    <span className="ml-4 mb-4">Filter</span>
-                                    <li className="flex items-center pl-4">
-                                        <input
-                                            type="checkbox"
-                                            id="typ1"
-                                            name="typ"
-                                            className="mr-2 size-4"
-                                        />
-                                        <label htmlFor="typ1">Benzin</label>
-                                    </li>
+                                    <span className="ml-4 mb-4">
+                                        Kraftstoffart
+                                    </span>
+                                    {fuelTypes.map((fuel) => (
+                                        <div
+                                            key={fuel.value}
+                                            className="flex items-center mb-2 pl-8"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                id={fuel.value}
+                                                name="fuelType"
+                                                checked={
+                                                    selectedFuelTypes[
+                                                        fuel.value
+                                                    ]
+                                                }
+                                                onChange={() =>
+                                                    handleCheckboxChange(
+                                                        "fuel",
+                                                        fuel.value
+                                                    )
+                                                }
+                                                className="mr-2"
+                                            />
+                                            <label htmlFor={fuel.value}>
+                                                {fuel.label}
+                                            </label>
+                                        </div>
+                                    ))}
                                 </>
                             )}
                         </li>
-                        <li className="flex items-center">
-                            {!isCollapsed && <span className="ml-4">TYP</span>}
-                        </li>
-                        <li className="flex items-center">
+
+                        {/* Vehicle Types */}
+                        <li className="flex flex-col">
                             {!isCollapsed && (
-                                <span className="ml-4">Personen</span>
+                                <>
+                                    <span className="ml-4 mb-4">
+                                        Fahrzeugtyp
+                                    </span>
+                                    {vehicleTypes.map((type) => (
+                                        <div
+                                            key={type.value}
+                                            className="flex items-center mb-2 pl-8"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                id={type.value}
+                                                name="vehicleType"
+                                                checked={
+                                                    selectedVehicleTypes[
+                                                        type.value
+                                                    ]
+                                                }
+                                                onChange={() =>
+                                                    handleCheckboxChange(
+                                                        "vehicle",
+                                                        type.value
+                                                    )
+                                                }
+                                                className="mr-2"
+                                            />
+                                            <label htmlFor={type.value}>
+                                                {type.label}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </>
                             )}
                         </li>
-                        <li className="flex items-center">
+
+                        {/* Seat Options */}
+                        <li className="flex flex-col">
                             {!isCollapsed && (
-                                <span className="ml-4">Price</span>
+                                <>
+                                    <span className="ml-4 mb-4">
+                                        Sitzplätze
+                                    </span>
+                                    {seatOptions.map((seat) => (
+                                        <div
+                                            key={seat.value}
+                                            className="flex items-center mb-2 pl-8"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                id={`seat-${seat.value}`}
+                                                name="seatOptions"
+                                                checked={
+                                                    selectedSeats[seat.value]
+                                                }
+                                                onChange={() =>
+                                                    handleCheckboxChange(
+                                                        "seat",
+                                                        seat.value
+                                                    )
+                                                }
+                                                className="mr-2"
+                                            />
+                                            <label
+                                                htmlFor={`seat-${seat.value}`}
+                                            >
+                                                {seat.label}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
+                        </li>
+
+                        {/* Price Slider */}
+                        <li className="flex flex-col">
+                            {!isCollapsed && (
+                                <>
+                                    <span className="ml-4 mb-4">Preis</span>
+                                    <div className="flex flex-col pl-4 pr-4">
+                                        <div className="flex justify-between">
+                                            <span className="">0 €</span>
+                                            <span className="ml-4">
+                                                {price} €
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="150"
+                                            step="5"
+                                            value={price}
+                                            onChange={handlePriceChange}
+                                            className="w-full"
+                                        />
+                                    </div>
+                                </>
                             )}
                         </li>
                     </ul>
