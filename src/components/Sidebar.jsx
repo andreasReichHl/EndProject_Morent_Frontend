@@ -61,12 +61,37 @@ export default function Sidebar() {
                 : category === "vehicle"
                 ? setSelectedVehicleTypes
                 : setSelectedSeats;
-
+    
         updateSelected((prev) => ({
             ...prev,
             [value]: !prev[value],
         }));
+    
+        // Console-Log die aktuellen Zustände
+        console.log("Fuel types:", selectedFuelTypes);
+        console.log("Vehicle types:", selectedVehicleTypes);
+        console.log("Seats:", selectedSeats);
+    
+        // API-Aufruf mit fetch
+        try {
+            const response = await fetch("/api/update", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    fuelTypes: selectedFuelTypes,
+                    vehicleTypes: selectedVehicleTypes,
+                    seats: selectedSeats,
+                }),
+            });
+            const data = await response.json();
+            console.log("API Response:", data);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
     };
+
 
     const handlePriceChange = (event) => {
         setPrice(event.target.value);
