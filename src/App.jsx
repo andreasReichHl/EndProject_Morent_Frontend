@@ -1,23 +1,37 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import AutoCard from "./components/AutoCard";
-function App() {
-  const [count, setCount] = useState(0);
+import LocationNav from "./components/LocationNav";
+import LocationDate from "./components/LocationDate";
+import Sidebar from "./components/Sidebar";
 
-  return (
-    <>
-      <h1 className="text-8xl pb-24 mb-96">HOME</h1>
-      <div className="flex flex-wrap gap-5 p-12 mx-auto">
-        <AutoCard />
-        <AutoCard />
-        <AutoCard />
-        <AutoCard />
-        <AutoCard />
-        <AutoCard />
-      </div>
-    </>
-  );
+function App() {
+    return (
+        <>
+            {/* <h1 className="text-8xl pb-24 mb-96">HOME</h1> */}
+            <div className="flex flex-col sm:flex-row">
+                {/* Sidebar links */}
+                <Sidebar />
+
+                {/* Hauptinhalt rechts */}
+                <div className="flex flex-col flex-grow">
+                    {/* LocationDate Komponente oben */}
+                    <div>
+                        <LocationDate />
+                    </div>
+
+                    {/* AutoCard-Komponenten in flex-wrap Anordnung darunter */}
+                    <div className="flex flex-wrap gap-10 p-4">
+                        <AutoCard />
+                        <AutoCard />
+                        <AutoCard />
+                        <AutoCard />
+                        <AutoCard />
+                        <AutoCard />
+                    </div>
+                </div>
+            </div>
+        </>
+    );
 }
 
 export default App;
