@@ -1,15 +1,18 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AdminLayout from "./AdminLayout.jsx";
+import App from "./App.jsx";
+import AuthProvider from "./hooks/AuthProvider.jsx";
+import "./index.css";
 import Layout from "./Layout.jsx";
+import BookingsPage from "./pages/adminPanel/BookingsPage.jsx";
+import StoresPage from "./pages/adminPanel/StoresPage.jsx";
+import UsersPage from "./pages/adminPanel/UsersPage.jsx";
+import VehiclesPage from "./pages/adminPanel/VehiclesPage.jsx";
+import ConfirmRegistrationCode from "./pages/ConfirmRegistrationCode.jsx";
 import LogIn from "./pages/LogIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
-import ConfirmRegistrationCode from "./pages/ConfirmRegistrationCode.jsx";
-import AuthProvider from "./hooks/AuthProvider.jsx";
-import ProtectedRouteAdmin from "./hooks/ProtectedRouteAdmin.jsx";
-import AdminPageTest from "./pages/AdminPageTest.jsx";
 
 const router = createBrowserRouter([
   {
@@ -17,25 +20,44 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "/home",
+        path: "home",
         element: <App />,
       },
       {
-        path: "/login",
+        path: "login",
         element: <LogIn />,
       },
       {
-        path: "/signup",
+        path: "signup",
         element: <SignUp />,
       },
       {
-        path: "/confirm-code",
+        path: "confirm-code",
         element: <ConfirmRegistrationCode />,
       },
+    ],
+  },
+  {
+    path: "/admin-panel",
+    element: <AdminLayout />,
+    //element: <ProtectedRouteAdmin element={<AdminPanel/>} />
+    children: [
       {
-        path: "/admin-overview",
-        element: <ProtectedRouteAdmin element={<AdminPageTest/>} />
-      }
+        path: "stores",
+        element: <StoresPage />,
+      },
+      {
+        path: "vehicles",
+        element: <VehiclesPage />,
+      },
+      {
+        path: "bookings",
+        element: <BookingsPage />,
+      },
+      {
+        path: "users",
+        element: <UsersPage />,
+      },
     ],
   },
 ]);
