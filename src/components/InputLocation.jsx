@@ -2,6 +2,7 @@ import "../index.css";
 import locationIcon from "../assets/images/location.svg";
 import React, { useEffect, useState } from "react";
 import ListStoreElement from "./ListStoreElement";
+import houseSvg from "../assets/images/house.svg";
 
 export default function InputLocation({
     headline,
@@ -9,6 +10,7 @@ export default function InputLocation({
     setId,
     setVisibility,
     isVisibility,
+    setidErrorMessage,
 }) {
     const [isActive, setIsActive] = useState(false);
     const [inputValue, setInputValue] = useState("");
@@ -16,6 +18,7 @@ export default function InputLocation({
     const [dataList, setDataList] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [isSelected, setIsSelected] = useState(false);
 
     const handleFocus = () => {
         setIsActive(true);
@@ -26,6 +29,7 @@ export default function InputLocation({
     };
 
     const handleSelect = (id, city) => {
+        setIsSelected(true);
         setSelectedItem({ id, city });
         setLocation(city);
         setId(id);
@@ -39,11 +43,9 @@ export default function InputLocation({
 
     const handleInputChange = async (e) => {
         const value = e.target.value;
-        setInputValue(value); // Setze den Eingabewert
+        setInputValue(value);
         setLoading(true);
-
         try {
-            // Führe den Fetch-Aufruf aus
             const response = await fetch(
                 `http://localhost:8080/api/v1/store/geosearch?city=${encodeURIComponent(
                     value
@@ -58,11 +60,11 @@ export default function InputLocation({
             setLoading(false);
 
             if (data && data.length > 0) {
-                setDataList(data); // Setze die Daten im Zustand
-                setErrorMessage(""); // Leere die Fehlermeldung
+                setDataList(data);
+                setErrorMessage("");
             } else {
-                setDataList([]); // Setze die Daten auf ein leeres Array
-                setErrorMessage("Keine Ergebnisse gefunden."); // Setze die Fehlermeldung
+                setDataList([]);
+                setErrorMessage("Keine Ergebnisse gefunden.");
             }
         } catch (error) {
             setLoading(false);
@@ -76,7 +78,7 @@ export default function InputLocation({
                 <div className="flex flex-col sm:pt-4 h-20">
                     <div className="flex items-center border p-3 rounded-lg">
                         <img
-                            src={locationIcon}
+                            src={!isSelected ? locationIcon : houseSvg}
                             alt="house"
                             className="w-6 h-6"
                         />
@@ -104,17 +106,16 @@ export default function InputLocation({
                             className="absolute mt-16 w-1/3 bg-white border border-gray-300 rounded-lg h-96 shadow-lg"
                             onMouseDown={(e) => e.preventDefault()}
                         >
-                            {!isVisibility &&
-                                headline === "Rückgabe Station" && (
-                                    <div>
-                                        <button
-                                            className="p-5"
-                                            onClick={handleVisibility}
-                                        >
-                                            Rückgabe an Abholstation
-                                        </button>
-                                    </div>
-                                )}
+                            {!isVisibility && headline === "Rückgabe" && (
+                                <div>
+                                    <button
+                                        className="p-5"
+                                        onClick={handleVisibility}
+                                    >
+                                        Rückgabe an Abholstation
+                                    </button>
+                                </div>
+                            )}
                             {isLoading ? (
                                 <div className="flex items-center justify-center h-full">
                                     <span className="loading" />

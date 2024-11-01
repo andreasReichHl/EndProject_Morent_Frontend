@@ -3,7 +3,7 @@ import locationIcon from "../assets/images/location.svg";
 
 import React, { useEffect, useState } from "react";
 import InputLocation from "./InputLocation";
-import { json } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import plussSvg from "../assets/images/pluss.svg";
 
 export default function SearchLandingPage() {
@@ -14,6 +14,58 @@ export default function SearchLandingPage() {
     const [dropOffLocation, setdropOffLocation] = useState("");
     const [dropOffId, setDropOffId] = useState("");
     const [isDropOffInput, setDropOffInput] = useState(false);
+    const [isLoading, setLoading] = useState(false);
+    const [wrongDateMessage, setWrongDateMessage] = useState("");
+    const [isDateOk, setDateOk] = useState(false);
+    const [idErrorMessage, setidErrorMessage] = useState(false);
+    const [isLocationOk, setLocationOk] = useState(false);
+
+    const navigate = useNavigate();
+
+    function isDateInPast(pickUpDate, dropOffDate) {
+        if (!pickUpDate && !dropOffDate) {
+            setWrongDateMessage("Bitte beide Daten angeben");
+            setDateOk(false);
+            return;
+        }
+
+        const pickUp = new Date(pickUpDate);
+        const dropOff = new Date(dropOffDate);
+        const today = new Date();
+
+        today.setHours(0, 0, 0, 0);
+        pickUp.setHours(0, 0, 0, 0);
+        dropOff.setHours(0, 0, 0, 0);
+
+        if (pickUp < today) {
+            setWrongDateMessage("Abholdatum liegt in der Vergangenheit");
+            setDateOk(false);
+        } else if (dropOff < pickUp) {
+            setWrongDateMessage(
+                "Rückgabedatum darf nicht vor Abholdatum liegen"
+            );
+            setDateOk(false);
+        } else {
+            setWrongDateMessage("");
+            setDateOk(true);
+        }
+    }
+
+    function checkLocationsId() {
+        if (pickUpId && !isDropOffInput) {
+            setidErrorMessage("");
+            setLocationOk(true);
+            if (isDropOffInput == false) {
+                setDropOffId(pickUpId);
+            }
+        } else if (pickUpId && isDropOffInput) {
+            setLocationOk(false);
+            setidErrorMessage("Bitte wählen einen Rückgabeort aus");
+        } else {
+            setLocationOk(false);
+            setidErrorMessage("Bitte wählen einen Abholort");
+        }
+    }
 
     const bookingData = {
         pickUpDate: pickUpDate,
@@ -26,33 +78,42 @@ export default function SearchLandingPage() {
         setDropOffInput(true);
     };
 
-    const handleSubmit = () => {
-        if (isDropOffInput == false) {
-            setDropOffId(pickUpId);
+    const checkSubmit = () => {
+        isDateInPast(pickUpDate);
+        checkLocationsId();
+
+        if (isLocationOk && isDateOk) {
+            handleSubmit();
         }
+    };
+
+    const handleSubmit = () => {
+        setLoading(true);
 
         console.log(bookingData);
-        // fetch("https://api.example.com/bookings", {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify(bookingData), // Buchungsdaten in den Body einfügen
-        // })
-        //     .then((response) => {
-        //         if (!response.ok) {
-        //             throw new Error("Network response was not ok");
-        //         }
-        //         return response.json();
-        //     })
-        //     .then((data) => {
-        //         // Navigiere zur Home-Seite und übergebe die Buchungsdaten
-        //         navigate("/home", { state: { booking: data } });
-        //     })
-        //     .catch((error) => {
-        //         console.error("Error during submission:", error);
-        //         // Hier kannst du eine Fehlermeldung anzeigen, falls nötig
-        //     });
+        fetch("http://localhost:8080/api/v1/vehicles/count", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bookingData), // Buchungsdaten in den Body einfügen
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                setLoading(false);
+                return response.json();
+            })
+            .then((data) => {
+                // Navigiere zur Home-Seite und übergebe die Buchungsdaten
+                navigate("/home", { state: { booking: data } });
+            })
+            .catch((error) => {
+                setLoading(false);
+                console.error("Error during submission:", error);
+                // Hier kannst du eine Fehlermeldung anzeigen, falls nötig
+            });
     };
 
     return (
@@ -60,20 +121,25 @@ export default function SearchLandingPage() {
             <div className="searchBox bg-white rounded-md mx-16 p-10 grid grid-cols-9 gap-6 mt-10">
                 <div className="col-start-1 col-end-3">
                     <InputLocation
-                        headline={"Abholung Station"}
+                        headline={
+                            isDropOffInput ? "Abholung" : "Abholung & Rückgabe"
+                        }
                         setLocation={setPickUpLocation}
                         setId={setPickUpId}
                     />
+                    <p className="text-red-500 text-sm pt-2 absolute -z-9">
+                        {idErrorMessage}
+                    </p>
                 </div>
-
                 {isDropOffInput ? (
                     <div className="col-start-3 col-end-5">
                         <InputLocation
-                            headline={"Rückgabe Station"}
+                            headline={"Rückgabe"}
                             setLocation={setdropOffLocation}
                             setId={setDropOffId}
                             setVisibility={setDropOffInput}
                             isVisibilty={isDropOffInput}
+                            setidErrorMessage={setidErrorMessage}
                         />
                     </div>
                 ) : (
@@ -87,7 +153,7 @@ export default function SearchLandingPage() {
                                 alt="pluss"
                                 className="mr-4 t"
                             />
-                            Rückgabeort hinzufügen
+                            Anderer Rückgabeort
                         </button>
                     </div>
                 )}
@@ -105,6 +171,9 @@ export default function SearchLandingPage() {
                                     }
                                 />
                             </div>
+                            <p className="text-red-500 text-sm pt-2">
+                                {wrongDateMessage}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -128,8 +197,8 @@ export default function SearchLandingPage() {
                 <div className="col-start-9 col-end-10 flex items-center justify-center">
                     <button
                         className="w-full bg-costumBlue text-white rounded-lg p-4 mt-9 disabled:bg-slate-500 disabled:cursor-not-allowed"
-                        disabled={!pickUpDate || !dropOffDate || !pickUpId}
-                        onClick={handleSubmit}
+                        // disabled={!pickUpDate || !dropOffDate || !pickUpId}
+                        onClick={checkSubmit}
                     >
                         Weiter
                     </button>

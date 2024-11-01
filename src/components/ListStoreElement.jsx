@@ -11,7 +11,7 @@ export default function ListStoreElement({
     return (
         <div
             onClick={onSelect}
-            className="cursor-pointer hover:bg-gray-100 p-2 rounded flex items-start"
+            className="cursor-pointer hover:bg-gray-100 p-2 rounded flex items-start "
         >
             <img src={houseSvg} alt="house" className="pr-3 w-8 h-8" />
             <div className="flex flex-col">

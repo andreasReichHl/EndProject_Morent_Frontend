@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import burgerMenu from "../assets/images/menu.svg";
 import arrow from "../assets/images/arrow.svg";
-// import { FaHome, FaUser, FaCog, FaEnvelope, FaBars } from 'react-icons/fa';
 
 export default function Sidebar() {
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
-    const [price, setPrice] = useState(50); // Initialwert für den Preis
+    const [price, setPrice] = useState(50);
 
     const toggleSidebar = () => {
         setIsCollapsed(!isCollapsed);

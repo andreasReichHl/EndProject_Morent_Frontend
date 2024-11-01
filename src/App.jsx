@@ -2,28 +2,32 @@ import { useState } from "react";
 import AutoCard from "./components/AutoCard";
 import LocationDate from "./components/LocationDate";
 import Sidebar from "./components/Sidebar";
+import { useLocation } from "react-router-dom";
 
 function App() {
-    const [locationDateData, setLocationDateData] = useState({
-        pickupLocation: "",
-        dropOffLocation: "",
-        pickupDate: "",
-        dropOffDate: "",
-    });
+    const location = useLocation();
+    const booking = location.state?.booking;
+
+    const bookingData = {
+        pickupLocation: booking.pickupLocation,
+        dropOffLocation: booking.dropOffLocation,
+        pickupDate: booking.pickupDate,
+        dropOffDate: booking.dropOffDate,
+    };
 
     return (
         <>
             {/* <h1 className="text-8xl pb-24 mb-96">HOME</h1> */}
             <div className="flex flex-col sm:flex-row">
                 {/* Sidebar links */}
-                <Sidebar locationDateData={locationDateData} />
+                <Sidebar bookingData={booking} />
 
                 {/* Hauptinhalt rechts */}
                 <div className="flex flex-col flex-grow">
                     {/* LocationDate Komponente oben */}
                     <div>
                         <LocationDate
-                            setLocationDateData={setLocationDateData}
+                            bookingData={booking}
                         />
                     </div>
 
