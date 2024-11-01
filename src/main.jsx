@@ -14,59 +14,64 @@ import ConfirmRegistrationCode from "./pages/ConfirmRegistrationCode.jsx";
 import LogIn from "./pages/LogIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import ProtectedRouteAdmin from "./hooks/ProtectedRouteAdmin.jsx";
+import LandingPage from "./pages/LandingPage.jsx";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      {
-        path: "home",
-        element: <App />,
-      },
-      {
-        path: "login",
-        element: <LogIn />,
-      },
-      {
-        path: "signup",
-        element: <SignUp />,
-      },
-      {
-        path: "confirm-code",
-        element: <ConfirmRegistrationCode />,
-      },
-    ],
-  },
-  {
-    path: "admin-panel",
-    element: <AdminLayout />,
-    // element: <ProtectedRouteAdmin element={<AdminLayout/>} />,
-    children: [
-      {
-        path: "stores",
-        element: <StoresPage />,
-      },
-      {
-        path: "vehicles",
-        element: <VehiclesPage />,
-      },
-      {
-        path: "bookings",
-        element: <BookingsPage />,
-      },
-      {
-        path: "users",
-        element: <UsersPage />,
-      },
-    ],
-  },
+    {
+        path: "",
+        element: <LandingPage />,
+    },
+    {
+        path: "/",
+        element: <Layout />,
+        children: [
+            {
+                path: "home",
+                element: <App />,
+            },
+            {
+                path: "login",
+                element: <LogIn />,
+            },
+            {
+                path: "signup",
+                element: <SignUp />,
+            },
+            {
+                path: "confirm-code",
+                element: <ConfirmRegistrationCode />,
+            },
+        ],
+    },
+    {
+        path: "admin-panel",
+        element: <AdminLayout />,
+        // element: <ProtectedRouteAdmin element={<AdminLayout/>} />,
+        children: [
+            {
+                path: "stores",
+                element: <StoresPage />,
+            },
+            {
+                path: "vehicles",
+                element: <VehiclesPage />,
+            },
+            {
+                path: "bookings",
+                element: <BookingsPage />,
+            },
+            {
+                path: "users",
+                element: <UsersPage />,
+            },
+        ],
+    },
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  </StrictMode>
+    <StrictMode>
+        <AuthProvider>
+            <RouterProvider router={router} />
+        </AuthProvider>
+    </StrictMode>
 );

@@ -1,4 +1,4 @@
-
+import locationIcon from "../assets/images/location.svg";
 
 export default function LocationNav(props) {
     return (
@@ -9,7 +9,7 @@ export default function LocationNav(props) {
                     <p className="mb-1">Standort</p>
                     <div className="flex items-center">
                         <img
-                            /* src={locationIcon} */
+                            src={locationIcon}
                             alt="house"
                             className="w-6 h-6"
                         />
