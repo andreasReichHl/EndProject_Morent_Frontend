@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import burgerMenu from "../assets/images/menu.svg";
 import arrow from "../assets/images/arrow.svg";
-// import { FaHome, FaUser, FaCog, FaEnvelope, FaBars } from 'react-icons/fa';
 
 export default function Sidebar() {
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
-    const [price, setPrice] = useState(50); // Initialwert für den Preis
+    const [price, setPrice] = useState(50);
 
     const toggleSidebar = () => {
         setIsCollapsed(!isCollapsed);
@@ -77,23 +76,26 @@ export default function Sidebar() {
         );
 
         // API-Aufruf mit fetch
-        /* try {
-      const response = await fetch("/api/v1/vehicles/store/filter", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fuelTypes: selectedFuelTypes,
-          vehicleTypes: selectedVehicleTypes,
-          seats: selectedSeats,
-        }),
-      });
-      const data = await response.json();
-      console.log("API Response:", data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } */
+    //     try {
+    //         const response = await fetch(
+    //             "http://localhost:8080/api/v1/vehicles/store/filter",
+    //             {
+    //                 method: "POST",
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                 },
+    //                 body: JSON.stringify({
+    //                     fuelTypes: selectedFuelTypes,
+    //                     vehicleTypes: selectedVehicleTypes,
+    //                     seats: selectedSeats,
+    //                 }),
+    //             }
+    //         );
+    //         const data = await response.json();
+    //         console.log("API Response:", data);
+    //     } catch (error) {
+    //         console.error("Error fetching data:", error);
+    //     }
     };
 
     return (
