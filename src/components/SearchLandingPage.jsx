@@ -95,6 +95,12 @@ export default function SearchLandingPage() {
         isDateInPast(pickUpDate);
         checkLocationsId();
 
+        if (isLocationOk && isDateOk) {
+            handleSubmit();
+        }
+    };
+
+    const handleSubmit = () => {
         const locationData = {
             startDate: pickUpDate,
             storeId: pickUpId,
@@ -102,12 +108,6 @@ export default function SearchLandingPage() {
             dropOffId: dropOffId,
         };
 
-        if (isLocationOk && isDateOk) {
-            handleSubmit();
-        }
-    };
-
-    const handleSubmit = () => {
         setLoading(true);
         fetch(
             "http://localhost:8080/api/v1/vehicles/exemplars?pageNo=0&recordCount=10",
@@ -128,8 +128,11 @@ export default function SearchLandingPage() {
             })
             .then((data) => {
                 // Navigiere zur Home-Seite und übergebe die Buchungsdaten
+                sessionStorage.setItem(
+                    "locationId",
+                    JSON.stringify(locationData)
+                );
                 navigate("/home", { state: data });
-                localStorage.setItem("locationId", JSON.stringify(locationData));
             })
             .catch((error) => {
                 setLoading(false);
