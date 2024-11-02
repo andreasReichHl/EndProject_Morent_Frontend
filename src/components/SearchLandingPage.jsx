@@ -19,6 +19,10 @@ export default function SearchLandingPage() {
     const [isDateOk, setDateOk] = useState(false);
     const [idErrorMessage, setidErrorMessage] = useState(false);
     const [isLocationOk, setLocationOk] = useState(false);
+    const [carType, setCarType] = useState([]);
+    const [fuelType, setFuelType] = useState([]);
+    const [seats, setSeats] = useState([]);
+    const [pricePerDay, setPricePerDay] = useState(1000.0);
 
     const navigate = useNavigate();
 
@@ -68,10 +72,13 @@ export default function SearchLandingPage() {
     }
 
     const bookingData = {
-        pickUpDate: pickUpDate,
-        dropOffDate: dropOffDate,
-        pickUpId: pickUpId,
-        dropOffId: dropOffId,
+        startDate: pickUpDate,
+        storeId: pickUpId,
+        endDate: dropOffId,
+        carType,
+        fuelType,
+        seats,
+        pricePerDay,
     };
 
     const handleVisibility = () => {
@@ -91,7 +98,7 @@ export default function SearchLandingPage() {
         setLoading(true);
 
         console.log(bookingData);
-        fetch("http://localhost:8080/api/v1/vehicles/exemplars", {
+        fetch("http://localhost:8080/api/v1/vehicles/exemplars?pageNo=0&recordCount=10", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -107,7 +114,7 @@ export default function SearchLandingPage() {
             })
             .then((data) => {
                 // Navigiere zur Home-Seite und übergebe die Buchungsdaten
-                navigate("/home", { state: { booking: data } });
+                navigate("/home", { state: data});
             })
             .catch((error) => {
                 setLoading(false);
