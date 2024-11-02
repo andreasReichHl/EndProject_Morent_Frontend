@@ -85,9 +85,23 @@ export default function SearchLandingPage() {
         setDropOffInput(true);
     };
 
+    useEffect(() => {
+        if (isLocationOk && isDateOk) {
+            handleSubmit();
+        }
+    }, [isLocationOk, isDateOk]);
+
     const checkSubmit = () => {
         isDateInPast(pickUpDate);
         checkLocationsId();
+
+        const locationData = {
+            startDate: pickUpDate,
+            storeId: pickUpId,
+            endDate: dropOffDate,
+        };
+
+        localStorage.setItem("locationId", JSON.stringify(locationData));
 
         if (isLocationOk && isDateOk) {
             handleSubmit();
@@ -98,13 +112,16 @@ export default function SearchLandingPage() {
         setLoading(true);
 
         console.log(bookingData);
-        fetch("http://localhost:8080/api/v1/vehicles/exemplars?pageNo=0&recordCount=10", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(bookingData), // Buchungsdaten in den Body einfügen
-        })
+        fetch(
+            "http://localhost:8080/api/v1/vehicles/exemplars?pageNo=0&recordCount=10",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(bookingData), // Buchungsdaten in den Body einfügen
+            }
+        )
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
@@ -114,7 +131,7 @@ export default function SearchLandingPage() {
             })
             .then((data) => {
                 // Navigiere zur Home-Seite und übergebe die Buchungsdaten
-                navigate("/home", { state: data});
+                navigate("/home", { state: data });
             })
             .catch((error) => {
                 setLoading(false);
@@ -204,10 +221,9 @@ export default function SearchLandingPage() {
                 <div className="col-start-9 col-end-10 flex items-center justify-center">
                     <button
                         className="w-full bg-costumBlue text-white rounded-lg p-4 mt-9 disabled:bg-slate-500 disabled:cursor-not-allowed"
-                        // disabled={!pickUpDate || !dropOffDate || !pickUpId}
                         onClick={checkSubmit}
                     >
-                        Weiter
+                        {isLoading ? <span className="loading" /> : "Weiter"}
                     </button>
                 </div>
             </div>
