@@ -24,7 +24,7 @@ function App() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: localStorage.getItem("locationId"),
+            body: sessionStorage.getItem("locationId"),
         })
             .then((response) => {
                 if (!response.ok) {

@@ -19,20 +19,6 @@ export default function Sidebar({ filter }) {
         setIsCollapsed(false);
     };
 
-    // const fuelTypes = [
-    //     { label: "Benzin", value: "GASOLINE" },
-    //     { label: "Diesel", value: "DIESEL" },
-    //     { label: "Elektrisch", value: "ELECTRIC" },
-    //     { label: "Hybrid", value: "HYBRID" },
-    // ];
-
-    // const vehicleTypes = [
-    //     { label: "Sedan", value: "SEDAN" },
-    //     { label: "Hatchback", value: "HATCHBACK" },
-    //     { label: "SUV", value: "SUV" },
-    //     { label: "Coupé", value: "COUPE" },
-    // ];
-
     const seatOptions = [
         { label: "2 Sitze", value: 2 },
         { label: "4 Sitze", value: 4 },
@@ -62,42 +48,52 @@ export default function Sidebar({ filter }) {
             setSelected = setSelectedSeats;
         }
 
-        if (selected.includes(value)) {
-            setSelected(selected.filter((item) => item !== value));
-        } else {
-            setSelected([...selected, value]);
-        }
+        const updatedSelection = selected.includes(value)
+            ? selected.filter((item) => item !== value)
+            : [...selected, value];
 
-        const locationData = JSON.parse(localStorage.getItem("locationId"));
+        setSelected(updatedSelection);
 
-        const newFilterData = {
-            startDate: locationData.startDate,
-            storeId: locationData.storeId,
-            endDate: locationData.endDate,
-            fuelTypes: selectedFuelTypes,
-            vehicleTypes: selectedVehicleTypes,
-            seats: selectedSeats,
-            price,
-        };
-        // API-Aufruf mit fetch
-        try {
-            const response = await fetch(
-                "http://localhost:8080/api/v1/vehicles/exemplars?pageNo=0&recordCount=10",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(newFilterData),
-                }
+        const locationData = JSON.parse(sessionStorage.getItem("locationId"));
+
+        setTimeout(async () => {
+            const locationData = JSON.parse(
+                sessionStorage.getItem("locationId")
             );
-            const data = await response.json();
-            navigate("/home", { state: data });
-            console.log("API Response:", data);
-            console.log(newFilterData);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
+
+            const newFilterData = {
+                startDate: locationData.startDate,
+                storeId: locationData.storeId,
+                endDate: locationData.endDate,
+                fuelType:
+                    category === "fuel" ? updatedSelection : selectedFuelTypes,
+                carType:
+                    category === "vehicle"
+                        ? updatedSelection
+                        : selectedVehicleTypes,
+                seats: category === "seat" ? updatedSelection : selectedSeats,
+                pricePerDay: price,
+            };
+
+            try {
+                const response = await fetch(
+                    "http://localhost:8080/api/v1/vehicles/exemplars?pageNo=0&recordCount=10",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(newFilterData),
+                    }
+                );
+                const data = await response.json();
+                navigate("/home", { state: data });
+                console.log("API Response:", data);
+                console.log(newFilterData);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }, 0); // Kleines Timeout, um sicherzustellen, dass Zustand aktualisiert wird
     };
 
     return (
