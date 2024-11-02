@@ -26,5 +26,6 @@ export default function LocationDate(props) {
                 />
             ))}
         </div>
+        
     );
 }

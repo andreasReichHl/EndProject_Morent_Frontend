@@ -13,6 +13,25 @@
     }
 }
 
-.test {
-    height: 800px;
+.background {
+    /* background: url("./assets/images/tom-arrowsmith-7HNftpNvqho-unsplash.jpg") no-repeat center center; */
+    background: url("./assets/images/chris-barbalis-9qlSGW_LgKs-unsplash.jpg")
+        no-repeat center center;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; /* Hält das Hintergrundbild hinter den anderen Inhalten */
+}
+
+/* Optional: Stil für den Inhalt */
+.content {
+    position: relative;
+    z-index: 1; /* Navbar und Footer über dem Hintergrundbild anzeigen */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between; /* Navbar oben, Footer unten */
 }
