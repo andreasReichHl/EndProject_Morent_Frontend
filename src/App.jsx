@@ -56,7 +56,7 @@ function App() {
         <>
             <div className="flex flex-col sm:flex-row">
           <Sidebar bookingData={autos} filter={ responseData} />
-
+            
                 <div className="flex flex-col flex-grow">
                     <div>
                         <LocationDate bookingData={autos} />

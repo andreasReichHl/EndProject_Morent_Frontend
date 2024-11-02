@@ -15,11 +15,16 @@ import LogIn from "./pages/LogIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import ProtectedRouteAdmin from "./hooks/ProtectedRouteAdmin.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
+import BookingPage from "./pages/BookingPage.jsx";
 
 const router = createBrowserRouter([
     {
         path: "",
         element: <LandingPage />,
+    },
+    {
+        path: "/booking",
+        element: <BookingPage />,
     },
     {
         path: "/",
@@ -40,6 +45,10 @@ const router = createBrowserRouter([
             {
                 path: "confirm-code",
                 element: <ConfirmRegistrationCode />,
+            },
+            {
+                path: "/booking",
+                element: <BookingPage />,
             },
         ],
     },
