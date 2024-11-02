@@ -76,23 +76,26 @@ export default function Sidebar() {
         );
 
         // API-Aufruf mit fetch
-        /* try {
-      const response = await fetch("/api/v1/vehicles/store/filter", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fuelTypes: selectedFuelTypes,
-          vehicleTypes: selectedVehicleTypes,
-          seats: selectedSeats,
-        }),
-      });
-      const data = await response.json();
-      console.log("API Response:", data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } */
+    //     try {
+    //         const response = await fetch(
+    //             "http://localhost:8080/api/v1/vehicles/store/filter",
+    //             {
+    //                 method: "POST",
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                 },
+    //                 body: JSON.stringify({
+    //                     fuelTypes: selectedFuelTypes,
+    //                     vehicleTypes: selectedVehicleTypes,
+    //                     seats: selectedSeats,
+    //                 }),
+    //             }
+    //         );
+    //         const data = await response.json();
+    //         console.log("API Response:", data);
+    //     } catch (error) {
+    //         console.error("Error fetching data:", error);
+    //     }
     };
 
     return (

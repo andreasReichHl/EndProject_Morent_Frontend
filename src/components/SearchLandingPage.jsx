@@ -91,7 +91,7 @@ export default function SearchLandingPage() {
         setLoading(true);
 
         console.log(bookingData);
-        fetch("http://localhost:8080/api/v1/vehicles/count", {
+        fetch("http://localhost:8080/api/v1/vehicles/exemplars", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
