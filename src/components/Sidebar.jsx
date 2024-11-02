@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import burgerMenu from "../assets/images/menu.svg";
 import arrow from "../assets/images/arrow.svg";
+import { useNavigate } from "react-router-dom";
 
-export default function Sidebar() {
+export default function Sidebar({ filter }) {
     const [isCollapsed, setIsCollapsed] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
-    const [price, setPrice] = useState(50);
+    const [price, setPrice] = useState(100);
+    const navigate = useNavigate();
 
     const toggleSidebar = () => {
         setIsCollapsed(!isCollapsed);
@@ -17,19 +19,19 @@ export default function Sidebar() {
         setIsCollapsed(false);
     };
 
-    const fuelTypes = [
-        { label: "Benzin", value: "GASOLINE" },
-        { label: "Diesel", value: "DIESEL" },
-        { label: "Elektrisch", value: "ELECTRIC" },
-        { label: "Hybrid", value: "HYBRID" },
-    ];
+    // const fuelTypes = [
+    //     { label: "Benzin", value: "GASOLINE" },
+    //     { label: "Diesel", value: "DIESEL" },
+    //     { label: "Elektrisch", value: "ELECTRIC" },
+    //     { label: "Hybrid", value: "HYBRID" },
+    // ];
 
-    const vehicleTypes = [
-        { label: "Sedan", value: "SEDAN" },
-        { label: "Hatchback", value: "HATCHBACK" },
-        { label: "SUV", value: "SUV" },
-        { label: "Coupé", value: "COUPE" },
-    ];
+    // const vehicleTypes = [
+    //     { label: "Sedan", value: "SEDAN" },
+    //     { label: "Hatchback", value: "HATCHBACK" },
+    //     { label: "SUV", value: "SUV" },
+    //     { label: "Coupé", value: "COUPE" },
+    // ];
 
     const seatOptions = [
         { label: "2 Sitze", value: 2 },
@@ -66,36 +68,36 @@ export default function Sidebar() {
             setSelected([...selected, value]);
         }
 
-        console.log(
-            JSON.stringify({
-                fuelTypes: selectedFuelTypes,
-                vehicleTypes: selectedVehicleTypes,
-                seats: selectedSeats,
-                price,
-            })
-        );
+        const locationData = JSON.parse(localStorage.getItem("locationId"));
 
+        const newFilterData = {
+            startDate: locationData.startDate,
+            storeId: locationData.storeId,
+            endDate: locationData.endDate,
+            fuelTypes: selectedFuelTypes,
+            vehicleTypes: selectedVehicleTypes,
+            seats: selectedSeats,
+            price,
+        };
         // API-Aufruf mit fetch
-    //     try {
-    //         const response = await fetch(
-    //             "http://localhost:8080/api/v1/vehicles/store/filter",
-    //             {
-    //                 method: "POST",
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                 },
-    //                 body: JSON.stringify({
-    //                     fuelTypes: selectedFuelTypes,
-    //                     vehicleTypes: selectedVehicleTypes,
-    //                     seats: selectedSeats,
-    //                 }),
-    //             }
-    //         );
-    //         const data = await response.json();
-    //         console.log("API Response:", data);
-    //     } catch (error) {
-    //         console.error("Error fetching data:", error);
-    //     }
+        try {
+            const response = await fetch(
+                "http://localhost:8080/api/v1/vehicles/exemplars?pageNo=0&recordCount=10",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(newFilterData),
+                }
+            );
+            const data = await response.json();
+            navigate("/home", { state: data });
+            console.log("API Response:", data);
+            console.log(newFilterData);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
     };
 
     return (
@@ -134,7 +136,7 @@ export default function Sidebar() {
                                     <span className="ml-4 mb-4">
                                         Kraftstoffart
                                     </span>
-                                    {fuelTypes.map((fuel) => (
+                                    {filter.fuelType.map((fuel) => (
                                         <div
                                             key={fuel.value}
                                             className="flex items-center mb-2 pl-8"
@@ -155,7 +157,7 @@ export default function Sidebar() {
                                                 className="mr-2"
                                             />
                                             <label htmlFor={fuel.value}>
-                                                {fuel.label}
+                                                {fuel.label} ({fuel.count})
                                             </label>
                                         </div>
                                     ))}
@@ -170,7 +172,7 @@ export default function Sidebar() {
                                     <span className="ml-4 mb-4">
                                         Fahrzeugtyp
                                     </span>
-                                    {vehicleTypes.map((type) => (
+                                    {filter.cartypes.map((type) => (
                                         <div
                                             key={type.value}
                                             className="flex items-center mb-2 pl-8"
@@ -191,7 +193,7 @@ export default function Sidebar() {
                                                 className="mr-2"
                                             />
                                             <label htmlFor={type.value}>
-                                                {type.label}
+                                                {type.label} ({type.count})
                                             </label>
                                         </div>
                                     ))}
