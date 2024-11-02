@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import houseSvg from "../assets/images/house.svg";
 import locationIcon from "../assets/images/location.svg";
 import "../index.css";
 import ListStoreElement from "./ListStoreElement";
+import deleteSvg from "../assets/images/delete.svg";
 
 export default function InputLocation({
     headline,
@@ -11,6 +12,7 @@ export default function InputLocation({
     setVisibility,
     isVisibility,
     setidErrorMessage,
+    locationName,
 }) {
     const [isActive, setIsActive] = useState(false);
     const [inputValue, setInputValue] = useState("");
@@ -20,13 +22,8 @@ export default function InputLocation({
     const [selectedItem, setSelectedItem] = useState(null);
     const [isSelected, setIsSelected] = useState(false);
 
-    const handleFocus = () => {
-        setIsActive(true);
-    };
-
-    const handleBlur = () => {
-        setIsActive(false);
-    };
+    const handleFocus = () => setIsActive(true);
+    const handleBlur = () => setIsActive(false);
 
     const handleSelect = (id, city) => {
         setIsSelected(true);
@@ -35,20 +32,19 @@ export default function InputLocation({
         setId(id);
         setInputValue(city);
         setIsActive(false);
+        // Speichern in sessionStorage
+        sessionStorage.setItem("selectedLocation", city);
+        sessionStorage.setItem("selectedId", id);
     };
 
-    const handleVisibility = () => {
-        setVisibility(false);
-    };
+    const handleVisibility = () => setVisibility(false);
 
-    const handleInputChange = async (e) => {
-        const value = e.target.value;
-        setInputValue(value);
+    const fetchData = async (searchTerm) => {
         setLoading(true);
         try {
             const response = await fetch(
                 `http://localhost:8080/api/v1/store/geosearch?city=${encodeURIComponent(
-                    value
+                    searchTerm
                 )}`
             );
 
@@ -68,7 +64,33 @@ export default function InputLocation({
             }
         } catch (error) {
             setLoading(false);
+            console.error("Fetch error:", error);
         }
+    };
+
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        setInputValue(value);
+        fetchData(value); // Fetch ausführen basierend auf der Benutzereingabe
+    };
+
+    useEffect(() => {
+        if (locationName) {
+            setInputValue(locationName); // Initialisiere inputValue mit locationName
+            fetchData(locationName);
+        }
+    }, [locationName]);
+
+    const handleClearInput = () => {
+        setInputValue("");
+        setId(null); // ID zurücksetzen
+        setLocation(""); // Standort zurücksetzen
+        setSelectedItem(null); // Ausgewähltes Element zurücksetzen
+        setIsSelected(false); // Status zurücksetzen
+        setDataList([]); // Vorherige Daten löschen
+        setErrorMessage(""); // Fehlermeldung zurücksetzen
+        sessionStorage.removeItem("selectedLocation"); // Wert aus sessionStorage entfernen
+        sessionStorage.removeItem("selectedId"); // ID aus sessionStorage entfernen
     };
 
     return (
@@ -99,6 +121,15 @@ export default function InputLocation({
                             }}
                             onChange={handleInputChange}
                         />
+                        {(inputValue || locationName) && ( // Button anzeigen, wenn inputValue oder locationName nicht leer sind
+                            <button
+                                type="button"
+                                className="ml-2 p-1 text-white rounded"
+                                onClick={handleClearInput}
+                            >
+                                <img src={deleteSvg} alt="" />
+                            </button>
+                        )}
                     </div>
 
                     {isActive && (
@@ -126,7 +157,6 @@ export default function InputLocation({
                                 </div>
                             ) : (
                                 dataList.map((item) => (
-                                    // elementList.map((item) => (
                                     <ListStoreElement
                                         key={item.storeId}
                                         name={item.name}

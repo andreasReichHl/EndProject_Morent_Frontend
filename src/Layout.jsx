@@ -8,12 +8,7 @@ export default function Layout() {
             <div className=" font-custom">
                 <Navbar />
 
-                <main
-                    className="flex-grow min-h-screen bg-primaryBG"
-                    role="main"
-                >
-                    <Outlet />
-                </main>
+                <Outlet />
 
                 <Footer />
             </div>
