@@ -59,7 +59,7 @@ export default function SearchLandingPage() {
         if (pickUpId && !isDropOffInput) {
             setidErrorMessage("");
             setLocationOk(true);
-            if (isDropOffInput == false) {
+            if (!isDropOffInput) {
                 setDropOffId(pickUpId);
             }
         } else if (pickUpId && isDropOffInput) {
@@ -99,9 +99,8 @@ export default function SearchLandingPage() {
             startDate: pickUpDate,
             storeId: pickUpId,
             endDate: dropOffDate,
+            dropOffId: dropOffId,
         };
-
-        localStorage.setItem("locationId", JSON.stringify(locationData));
 
         if (isLocationOk && isDateOk) {
             handleSubmit();
@@ -110,8 +109,6 @@ export default function SearchLandingPage() {
 
     const handleSubmit = () => {
         setLoading(true);
-
-        console.log(bookingData);
         fetch(
             "http://localhost:8080/api/v1/vehicles/exemplars?pageNo=0&recordCount=10",
             {
@@ -132,6 +129,7 @@ export default function SearchLandingPage() {
             .then((data) => {
                 // Navigiere zur Home-Seite und übergebe die Buchungsdaten
                 navigate("/home", { state: data });
+                localStorage.setItem("locationId", JSON.stringify(locationData));
             })
             .catch((error) => {
                 setLoading(false);

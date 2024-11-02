@@ -70,29 +70,31 @@ export default function Sidebar({ filter }) {
 
         const locationData = JSON.parse(localStorage.getItem("locationId"));
 
+        const newFilterData = {
+            startDate: locationData.startDate,
+            storeId: locationData.storeId,
+            endDate: locationData.endDate,
+            fuelTypes: selectedFuelTypes,
+            vehicleTypes: selectedVehicleTypes,
+            seats: selectedSeats,
+            price,
+        };
         // API-Aufruf mit fetch
         try {
             const response = await fetch(
-                "http://localhost:8080/api/v1/vehicles/exemplars",
+                "http://localhost:8080/api/v1/vehicles/exemplars?pageNo=0&recordCount=10",
                 {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({
-                        startDate: locationData.startDate,
-                        storeId: locationData.storeId,
-                        endDate: locationData.endDate,
-                        fuelTypes: selectedFuelTypes,
-                        vehicleTypes: selectedVehicleTypes,
-                        seats: selectedSeats,
-                        price,
-                    }),
+                    body: JSON.stringify(newFilterData),
                 }
             );
             const data = await response.json();
             navigate("/home", { state: data });
             console.log("API Response:", data);
+            console.log(newFilterData);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
