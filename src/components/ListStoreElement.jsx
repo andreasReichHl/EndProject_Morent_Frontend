@@ -6,6 +6,7 @@ export default function ListStoreElement({
     zipcode,
     houseNumber,
     country,
+    distance,
     onSelect,
 }) {
     return (
@@ -18,6 +19,7 @@ export default function ListStoreElement({
                 <p className="font-semibold">{name}</p>
                 <p>{`${address} ${houseNumber}, ${zipcode} ${city}`}</p>
                 <p>{country}</p>
+                <p className="font-bold">Entfernung: {distance} Km</p>
             </div>
         </div>
     );

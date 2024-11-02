@@ -1,8 +1,8 @@
-import "../index.css";
-import locationIcon from "../assets/images/location.svg";
-import React, { useEffect, useState } from "react";
-import ListStoreElement from "./ListStoreElement";
+import React, { useState } from "react";
 import houseSvg from "../assets/images/house.svg";
+import locationIcon from "../assets/images/location.svg";
+import "../index.css";
+import ListStoreElement from "./ListStoreElement";
 
 export default function InputLocation({
     headline,
@@ -131,10 +131,11 @@ export default function InputLocation({
                                         key={item.storeId}
                                         name={item.name}
                                         city={item.address.city}
-                                        address={item.address.Street}
+                                        address={item.address.street}
                                         zipcode={item.address.zipCode}
                                         houseNumber={item.address.houseNumber}
                                         country={item.address.country}
+                                        distance={item.distance}
                                         onSelect={() =>
                                             handleSelect(
                                                 item.storeId,
