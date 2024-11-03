@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AdminLayout from "./AdminLayout.jsx";
 import App from "./App.jsx";
-import { AuthProvider } from "./hooks/AuthProvider.jsx"; 
+import { AuthProvider } from "./hooks/AuthProvider.jsx";
 import "./index.css";
 import Layout from "./Layout.jsx";
 import BookingsPage from "./pages/adminPanel/BookingsPage.jsx";
@@ -15,7 +15,7 @@ import ConfirmRegistrationCode from "./pages/ConfirmRegistrationCode.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import LogIn from "./pages/LogIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
-import UserProfilPage from "./pages/UserProfilePage.jsx";
+import UserProfilePage from "./pages/UserProfilePage.jsx";
 
 // Router-Konfiguration
 const router = createBrowserRouter([
@@ -49,7 +49,7 @@ const router = createBrowserRouter([
             },
             {
               path: "profil",
-              element: <UserProfilPage />
+              element: <UserProfilePage />
             }
         ],
     },
