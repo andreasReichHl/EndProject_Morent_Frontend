@@ -11,7 +11,9 @@ export default function LandingPage() {
             <div className="content">
                 <div>
                     <Navbar />
-                    <SearchLandingPage />
+                    <div className="mx-16 mt-10">
+                        <SearchLandingPage />
+                    </div>
                 </div>
                 <FooterCopyright />
             </div>

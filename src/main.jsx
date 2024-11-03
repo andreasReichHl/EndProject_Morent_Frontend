@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AdminLayout from "./AdminLayout.jsx";
 import App from "./App.jsx";
-import AuthProvider from "./hooks/AuthProvider.jsx";
+import { AuthProvider } from "./hooks/AuthProvider.jsx"; 
 import "./index.css";
 import Layout from "./Layout.jsx";
 import BookingsPage from "./pages/adminPanel/BookingsPage.jsx";
@@ -15,7 +15,9 @@ import LogIn from "./pages/LogIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import ProtectedRouteAdmin from "./hooks/ProtectedRouteAdmin.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
+import BookingPage from "./pages/BookingPage.jsx";
 
+// Router-Konfiguration
 const router = createBrowserRouter([
     {
         path: "",
@@ -41,12 +43,15 @@ const router = createBrowserRouter([
                 path: "confirm-code",
                 element: <ConfirmRegistrationCode />,
             },
+            {
+                path: "booking",
+                element: <BookingPage />,
+            },
         ],
     },
     {
         path: "admin-panel",
         element: <AdminLayout />,
-        // element: <ProtectedRouteAdmin element={<AdminLayout/>} />,
         children: [
             {
                 path: "stores",
@@ -68,6 +73,7 @@ const router = createBrowserRouter([
     },
 ]);
 
+// Rendering des Root-Elements
 createRoot(document.getElementById("root")).render(
     <StrictMode>
         <AuthProvider>

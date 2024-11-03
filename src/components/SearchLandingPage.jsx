@@ -7,6 +7,10 @@ import { json, useNavigate } from "react-router-dom";
 import plussSvg from "../assets/images/pluss.svg";
 
 export default function SearchLandingPage() {
+    const history = sessionStorage.getItem("locationId")
+        ? JSON.parse(sessionStorage.getItem("locationId"))
+        : {};
+
     const [pickUpDate, setPickUpDate] = useState("");
     const [dropOffDate, setDropOffUpDate] = useState("");
     const [pickUpLocation, setPickUpLocation] = useState("");
@@ -23,6 +27,20 @@ export default function SearchLandingPage() {
     const [fuelType, setFuelType] = useState([]);
     const [seats, setSeats] = useState([]);
     const [pricePerDay, setPricePerDay] = useState(1000.0);
+
+    useEffect(() => {
+        const storedData = sessionStorage.getItem("locationId");
+        if (storedData) {
+            const history = JSON.parse(storedData);
+            setPickUpDate(history.startDate || "");
+            setDropOffUpDate(history.endDate || "");
+            setPickUpLocation(history.pickUpLocation || "");
+            setdropOffLocation(history.dropOffLocation || "");
+            setDropOffId(history.dropOffId || "");
+            setPickUpId(history.storeId || "");
+            setLocationOk(!!history.dropOffId);
+        }
+    }, []);
 
     const navigate = useNavigate();
 
@@ -56,18 +74,23 @@ export default function SearchLandingPage() {
     }
 
     function checkLocationsId() {
-        if (pickUpId && !isDropOffInput) {
+        if (pickUpId) {
             setidErrorMessage("");
-            setLocationOk(true);
-            if (isDropOffInput == false) {
+
+            if (isDropOffInput) {
+                if (dropOffId) {
+                    setLocationOk(true);
+                } else {
+                    setLocationOk(false);
+                    setidErrorMessage("Bitte wählen einen Rückgabeort aus");
+                }
+            } else {
                 setDropOffId(pickUpId);
+                setLocationOk(true);
             }
-        } else if (pickUpId && isDropOffInput) {
-            setLocationOk(false);
-            setidErrorMessage("Bitte wählen einen Rückgabeort aus");
         } else {
             setLocationOk(false);
-            setidErrorMessage("Bitte wählen einen Abholort");
+            setidErrorMessage("Bitte wählen Sie einen Abholort aus");
         }
     }
 
@@ -85,26 +108,42 @@ export default function SearchLandingPage() {
         setDropOffInput(true);
     };
 
+    useEffect(() => {
+        if (isLocationOk && isDateOk) {
+            handleSubmit();
+        }
+    }, [isLocationOk, isDateOk]);
+
     const checkSubmit = () => {
-        isDateInPast(pickUpDate);
+        isDateInPast(pickUpDate, dropOffDate);
         checkLocationsId();
 
-        if (isLocationOk && isDateOk) {
+        if (isLocationOk && isDateOk && pickUpId && dropOffId) {
             handleSubmit();
         }
     };
 
     const handleSubmit = () => {
-        setLoading(true);
+        const locationData = {
+            startDate: pickUpDate,
+            storeId: pickUpId,
+            endDate: dropOffDate,
+            dropOffId: dropOffId,
+            dropOffLocation: dropOffLocation,
+            pickUpLocation: pickUpLocation,
+        };
 
-        console.log(bookingData);
-        fetch("http://localhost:8080/api/v1/vehicles/exemplars?pageNo=0&recordCount=10", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(bookingData), // Buchungsdaten in den Body einfügen
-        })
+        setLoading(true);
+        fetch(
+            "http://localhost:8080/api/v1/vehicles/exemplars?pageNo=0&recordCount=10",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(bookingData),
+            }
+        )
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
@@ -113,19 +152,22 @@ export default function SearchLandingPage() {
                 return response.json();
             })
             .then((data) => {
-                // Navigiere zur Home-Seite und übergebe die Buchungsdaten
-                navigate("/home", { state: data});
+                sessionStorage.setItem(
+                    "locationId",
+                    JSON.stringify(locationData)
+                );
+                sessionStorage.setItem("autos", JSON.stringify(data));
+                navigate("/home", { state: data });
             })
             .catch((error) => {
                 setLoading(false);
                 console.error("Error during submission:", error);
-                // Hier kannst du eine Fehlermeldung anzeigen, falls nötig
             });
     };
 
     return (
         <div className="">
-            <div className="searchBox bg-white rounded-md mx-16 p-10 grid grid-cols-9 gap-6 mt-10">
+            <div className="searchBox bg-white rounded-md p-10 grid grid-cols-9 gap-6 shadow-lg">
                 <div className="col-start-1 col-end-3">
                     <InputLocation
                         headline={
@@ -133,6 +175,7 @@ export default function SearchLandingPage() {
                         }
                         setLocation={setPickUpLocation}
                         setId={setPickUpId}
+                        locationName={pickUpLocation}
                     />
                     <p className="text-red-500 text-sm pt-2 absolute -z-9">
                         {idErrorMessage}
@@ -147,7 +190,14 @@ export default function SearchLandingPage() {
                             setVisibility={setDropOffInput}
                             isVisibilty={isDropOffInput}
                             setidErrorMessage={setidErrorMessage}
+                            locationName={dropOffLocation}
                         />
+                        {/* <button
+                            className="text-red-500 underline mt-2"
+                            onClick={resetDropOffLocation}
+                        >
+                            Löschen
+                        </button> */}
                     </div>
                 ) : (
                     <div className="col-start-3 col-end-5 pt-16 pl-5 text-gray-500">
@@ -173,6 +223,7 @@ export default function SearchLandingPage() {
                                     type="date"
                                     placeholder="Bitte eingeben"
                                     className="ml-3 p-1 text-md flex-grow no-b focus:outline-none w-full"
+                                    value={pickUpDate}
                                     onChange={(e) =>
                                         setPickUpDate(e.target.value)
                                     }
@@ -193,6 +244,7 @@ export default function SearchLandingPage() {
                                     type="date"
                                     placeholder="Bitte eingeben"
                                     className="ml-3 p-1 text-md flex-grow no-b focus:outline-none w-full"
+                                    value={dropOffDate}
                                     onChange={(e) =>
                                         setDropOffUpDate(e.target.value)
                                     }
@@ -201,13 +253,17 @@ export default function SearchLandingPage() {
                         </div>
                     </div>
                 </div>
+
                 <div className="col-start-9 col-end-10 flex items-center justify-center">
                     <button
                         className="w-full bg-costumBlue text-white rounded-lg p-4 mt-9 disabled:bg-slate-500 disabled:cursor-not-allowed"
-                        // disabled={!pickUpDate || !dropOffDate || !pickUpId}
                         onClick={checkSubmit}
                     >
-                        Weiter
+                        {isLoading ? (
+                            <span className="loading" />
+                        ) : (
+                            "Autos anzeigen"
+                        )}
                     </button>
                 </div>
             </div>
