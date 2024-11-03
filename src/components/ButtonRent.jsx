@@ -1,16 +1,17 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../hooks/AuthProvider"; // Stelle sicher, dass dieser Pfad korrekt ist
+import { useNavigate } from "react-router-dom";
 
 export default function ButtonRent() {
     const { isLoggedIn } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleRent = () => {
         if (!isLoggedIn) {
-            alert("Bitte loggen Sie sich ein, um eine Buchung vorzunehmen.");
+            navigate("/login");
             return;
         }
-
-        // Logik zum Buchen
+        navigate("/booking");
         console.log("Buchung wird durchgeführt...");
     };
 

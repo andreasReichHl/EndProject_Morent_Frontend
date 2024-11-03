@@ -2,7 +2,7 @@ import ButtonRent from "./ButtonRent";
 
 export default function AutoCard({ auto }) {
     return (
-        <section className="card p-6 flex flex-col flex-grow bg-white max-w-sm md:max-w-md shadow-lg mx-auto">
+        <section className="card p-6  bg-white max-w-sm md:max-w-md shadow-lg w-full rounded-lg ">
             <div className="flex flex-row justify-between items-center mb-4">
                 <div>
                     <h2 className="font-bold text-lg mb-1">

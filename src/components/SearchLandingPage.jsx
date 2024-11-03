@@ -156,19 +156,13 @@ export default function SearchLandingPage() {
                     "locationId",
                     JSON.stringify(locationData)
                 );
+                sessionStorage.setItem("autos", JSON.stringify(data));
                 navigate("/home", { state: data });
             })
             .catch((error) => {
                 setLoading(false);
                 console.error("Error during submission:", error);
             });
-    };
-
-    // Neue Funktion zum Zurücksetzen des Rückgabeorts
-    const resetDropOffLocation = () => {
-        setdropOffLocation("");
-        setDropOffId("");
-        setDropOffInput(false);
     };
 
     return (

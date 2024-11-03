@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AdminLayout from "./AdminLayout.jsx";
 import App from "./App.jsx";
-import { AuthProvider } from "./hooks/AuthProvider.jsx"; // Benannter Import
+import { AuthProvider } from "./hooks/AuthProvider.jsx"; 
 import "./index.css";
 import Layout from "./Layout.jsx";
 import BookingsPage from "./pages/adminPanel/BookingsPage.jsx";
