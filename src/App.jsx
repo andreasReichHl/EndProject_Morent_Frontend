@@ -4,6 +4,7 @@ import LocationDate from "./components/LocationDate";
 import Sidebar from "./components/Sidebar";
 import { useLocation } from "react-router-dom";
 import { data } from "autoprefixer";
+import SearchLandingPage from "./components/SearchLandingPage";
 
 function App() {
     const location = useLocation();
@@ -15,7 +16,6 @@ function App() {
         handleSubmit();
     }, []);
 
-  
     const handleSubmit = () => {
         setLoading(true);
 
@@ -55,11 +55,12 @@ function App() {
     return (
         <>
             <div className="flex flex-col sm:flex-row">
-          <Sidebar bookingData={autos} filter={ responseData} />
-            
+                <Sidebar bookingData={autos} filter={responseData} />
+
                 <div className="flex flex-col flex-grow">
-                    <div>
-                        <LocationDate bookingData={autos} />
+                    <div className="px-5 mt-1">
+                        <SearchLandingPage />
+                        {/* <LocationDate bookingData={autos} /> */}
                     </div>
 
                     <div className="flex flex-wrap gap-10 p-4">

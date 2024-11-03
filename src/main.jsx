@@ -23,10 +23,6 @@ const router = createBrowserRouter([
         element: <LandingPage />,
     },
     {
-        path: "/booking",
-        element: <BookingPage />,
-    },
-    {
         path: "/",
         element: <Layout />,
         children: [
@@ -47,7 +43,7 @@ const router = createBrowserRouter([
                 element: <ConfirmRegistrationCode />,
             },
             {
-                path: "/booking",
+                path: "booking",
                 element: <BookingPage />,
             },
         ],

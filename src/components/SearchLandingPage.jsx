@@ -78,7 +78,7 @@ export default function SearchLandingPage() {
     function checkLocationsId() {
         if (pickUpId) {
             setidErrorMessage("");
-    
+
             if (isDropOffInput) {
                 if (dropOffId) {
                     setLocationOk(true);
@@ -119,7 +119,7 @@ export default function SearchLandingPage() {
     const checkSubmit = () => {
         isDateInPast(pickUpDate, dropOffDate);
         checkLocationsId();
-    
+
         if (isLocationOk && isDateOk && pickUpId && dropOffId) {
             handleSubmit();
         }
@@ -175,7 +175,7 @@ export default function SearchLandingPage() {
 
     return (
         <div className="">
-            <div className="searchBox bg-white rounded-md mx-16 p-10 grid grid-cols-9 gap-6 mt-10">
+            <div className="searchBox bg-white rounded-md p-10 grid grid-cols-9 gap-6 shadow-lg">
                 <div className="col-start-1 col-end-3">
                     <InputLocation
                         headline={
