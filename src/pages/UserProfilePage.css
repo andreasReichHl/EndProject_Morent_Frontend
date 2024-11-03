@@ -1,9 +1,10 @@
-#profilPage {
+#profilePage {
 
    height: 100%;
     padding: 20px;
 
    h2 {
+    margin: 5% 0;
     font-size: 2.5rem;
     text-align: center;
    }
@@ -15,14 +16,18 @@
 }
 
 .profileCard {
-    border: solid red;
-
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 5px 5px 8px rgb(223, 223, 223);
+    margin-bottom: 50px;
+    height: 40vh;
     width: 100%;
     padding: 2% 5%;
     
     h3 {
-        margin-bottom: 20px;
-        font-size: 1.25rem;
+        color: black;
+        margin-bottom: 3%;
+        font-size: 1.55rem;
     }
 
     #personalData {
@@ -35,34 +40,43 @@
         .profileTextBox {
             display: flex;
             flex-direction: row;
-            gap: 10%;
+            gap: 30%;
+
+            padding-left: 3%;
 
             
             .formBox {
                 display: flex;
                 flex-direction: column;
-                gap: 2%;
+                gap: 5px;
+
+                height: 100%;
+
+                label {
+                    font-size: 1.30rem;
+                }
+
+                .formInput {
+                    border: 1px solid rgb(186, 183, 183);
+                    margin-bottom: 4%;
+                    padding-left: 10px;
+                }
             }
         }
 
 
-        .profilImagesBox {
+        .profileImagesBox {
             display: flex;
             flex-direction: column;
             align-items: center;
 
-            width: 300px;
-            padding: 10px;
-
-            
-
-           
+            width: 350px;
+            padding: 10px;           
         }
     }
 
 
     .imgBox {
-    
         margin-bottom: 10px;
         height: 200px;
         width: 200px;
@@ -87,9 +101,11 @@
         }
     }
 
-    .flexRow{
+    .btnBox{
+        width: 80%;
         display: flex;
         flex-direction: row;
+        justify-content: space-around;
     }
 
 }
