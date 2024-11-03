@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import "./UserProfilePage.css";
 
 export default function UserProfilePage() {
-    const[userData, setUserData] = useState({})
-    const[imgUpdate, setImgUpdate] = useState(false)
+    const[userData, setUserData] = useState({});
+    const[imgUpdate, setImgUpdate] = useState(false);
     const [token, setToken] = useState(sessionStorage.getItem("token") || "");
-    const [profileUpdate, setProfileUpdate] = useState(false)
+    const [profileUpdate, setProfileUpdate] = useState(false);
+    const [imageFile, setImageFile] = useState("");
+    const [toggle, setToggle] = useState(false);
+    const [newsToggle, setNewsToggle] = useState(false);
 
     useEffect(() => {
         fetch(import.meta.env.VITE_BACKEND + "/api/v1/user",
@@ -19,7 +22,8 @@ export default function UserProfilePage() {
         )
         .then(response => response.json())
         .then(data => setUserData(data))
-    }, [])
+    }, [toggle])
+
 
     function ImgUploadToggle() {
         setImgUpdate(!imgUpdate);
@@ -29,11 +33,117 @@ export default function UserProfilePage() {
         setProfileUpdate(!profileUpdate);
     }
 
-    const handleFileChange = (event) => {}
+    const handleFileChange = (event) => {
+        setImageFile(event.target.files[0]);
+    }
 
-    const handleUpload = async () => {}
+    const handleUpload = async () => {
+        const imgData = new FormData();
+        imgData.append("file", imageFile)
+        fetch(import.meta.env.VITE_BACKEND + "/api/v1/images/user",
+            {
+                method: "POST",
+                headers: {
+                    Authorization: "Bearer " + token,
+                },
+                body: imgData,
+            }
+        )
+        .then(setImgUpdate(!imgUpdate))
+        .then(setTimeout(() => {setToggle(!toggle)}, 5000 ))
+    }
 
-    console.log(userData)
+    const handleUserSubmit = async (event) => {
+        event.preventDefault();
+    
+        const updatedUserData = {
+            firstName: event.target.firstName.value,
+            lastName: event.target.lastName.value,
+            birthDate: event.target.birthDate.value,
+            phoneNumber: event.target.phoneNumber.value,
+            street: event.target.street.value,
+            houseNumber: event.target.houseNumber.value,
+            zipCode: event.target.zipCode.value,
+            city: event.target.city.value,
+            country: event.target.country.value,
+            
+        };
+    
+        fetch(import.meta.env.VITE_BACKEND + "/api/v1/user/update", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            },
+            body: JSON.stringify(updatedUserData),
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log("Profile updated successfully");
+                // Optional: Aktualisieren Sie den Benutzerstatus
+            } else {
+                console.error("Failed to update profile");
+            }
+        })
+        .then(setProfileUpdate(!profileUpdate))
+        .then(setToggle(!toggle))
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    };
+
+    useEffect(() => {
+        console.log("JEEEEP!");
+        fetch(import.meta.env.VITE_BACKEND + "/api/v1/news?email=" + userData.email,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token,
+                },
+            }
+        )
+        .then(response => response.json())
+        .then(data => setNewsToggle(data))
+    },[userData])
+
+    console.log(newsToggle);
+
+    const handleNewsletter = (event) => {
+        setNewsToggle(event.target.checked)
+
+        if (event.target.checked) {
+            fetch(import.meta.env.VITE_BACKEND + "/api/v1/news?firstName=" + userData.firstName + "&lastName=" + userData.lastName + "&email=" + userData.email + "&isRegistered=" + true,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer " + token,
+                    },
+                }
+            )
+        } else {
+            fetch(import.meta.env.VITE_BACKEND + "/api/v1/news?email=" + userData.email,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer " + token,
+                    },
+                }
+            )
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     return (
         <section id="profilePage">
 
@@ -44,17 +154,17 @@ export default function UserProfilePage() {
 
                <div id="personalData">
 
-                    <form className="profileTextBox">
+                    <form onSubmit={handleUserSubmit} className="profileTextBox">
 
                         <div className="formBox">
                             <label htmlFor="profileFirstname">Vorname: </label>
                             <input 
                                 className="formInput"
-                            type="text"
-                            id="profileFirstname" 
-                            name="firstName"
-                            value={userData.firstName}
-                            disabled={!profileUpdate}>  
+                                type="text"
+                                id="profileFirstname" 
+                                name="firstName"
+                                placeholder={userData.firstName}
+                                disabled={!profileUpdate}>  
                             </input>
 
                             <label htmlFor="profileLastname">Nachname: </label>
@@ -63,7 +173,7 @@ export default function UserProfilePage() {
                                 type="text"
                                 id="profileLastname" 
                                 name="lastName"
-                                value={userData.lastName}
+                                placeholder={userData.lastName}
                                 disabled={!profileUpdate}>  
                             </input>
 
@@ -73,7 +183,7 @@ export default function UserProfilePage() {
                                 type="date"
                                 id="profileBirthday" 
                                 name="birthDate"
-                                value={userData.birthDate}
+                                defaultValue={userData.birthDate}
                                 disabled={!profileUpdate}>  
                             </input>
 
@@ -83,7 +193,7 @@ export default function UserProfilePage() {
                                 type="number"
                                 id="profilePhoneNumber" 
                                 name="phoneNumber"
-                                value={userData.phoneNumber}
+                                placeholder={userData.phoneNumber}
                                 disabled={!profileUpdate}>  
                             </input>
 
@@ -109,7 +219,7 @@ export default function UserProfilePage() {
                                 type="text"
                                 id="profileStreet" 
                                 name="street"
-                                value={userData.address?.street}
+                                placeholder={userData.address?.street}
                                 disabled={!profileUpdate}>  
                             </input>
 
@@ -119,7 +229,7 @@ export default function UserProfilePage() {
                                 type="number"
                                 id="profileHouseNumber" 
                                 name="houseNumber"
-                                value={userData.address?.houseNumber}
+                                placeholder={userData.address?.houseNumber}
                                 disabled={!profileUpdate}>  
                             </input>
 
@@ -129,7 +239,7 @@ export default function UserProfilePage() {
                                 type="number"
                                 id="profileZipCode" 
                                 name="zipCode"
-                                value={userData.address?.zipCode}
+                                placeholder={userData.address?.zipCode}
                                 disabled={!profileUpdate}>  
                             </input>
 
@@ -139,7 +249,7 @@ export default function UserProfilePage() {
                                 type="text"
                                 id="profileCity" 
                                 name="city"
-                                value={userData.address?.city}
+                                placeholder={userData.address?.city}
                                 disabled={!profileUpdate}>  
                             </input>
 
@@ -149,7 +259,7 @@ export default function UserProfilePage() {
                                 type="text"
                                 id="profileCountry" 
                                 name="country"
-                                value={userData.address?.country}
+                                placeholder={userData.address?.country}
                                 disabled={!profileUpdate}>  
                             </input>
                         </div>
@@ -181,16 +291,19 @@ export default function UserProfilePage() {
                 </div>
             </section>
 
-            <section>
+            <section className="newsCard">
                 <h3>Newsletter</h3>
+                
+
+
+                <input
+                    type="checkbox"
+                    onChange={handleNewsletter}
+                    className="toggle border-blue-500 bg-blue-500 [--tglbg:yellow] hover:bg-blue-700"
+                    defaultChecked={newsToggle} 
+                />
+
             </section>
-           
-        
-        
-        
-        
-        
-        
         
         </section>
     )
