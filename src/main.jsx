@@ -10,12 +10,12 @@ import BookingsPage from "./pages/adminPanel/BookingsPage.jsx";
 import StoresPage from "./pages/adminPanel/StoresPage.jsx";
 import UsersPage from "./pages/adminPanel/UsersPage.jsx";
 import VehiclesPage from "./pages/adminPanel/VehiclesPage.jsx";
+import BookingPage from "./pages/BookingPage.jsx";
 import ConfirmRegistrationCode from "./pages/ConfirmRegistrationCode.jsx";
+import LandingPage from "./pages/LandingPage.jsx";
 import LogIn from "./pages/LogIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
-import ProtectedRouteAdmin from "./hooks/ProtectedRouteAdmin.jsx";
-import LandingPage from "./pages/LandingPage.jsx";
-import BookingPage from "./pages/BookingPage.jsx";
+import UserProfilPage from "./pages/UserProfilePage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -50,6 +50,10 @@ const router = createBrowserRouter([
                 path: "/booking",
                 element: <BookingPage />,
             },
+            {
+              path: "profil",
+              element: <UserProfilPage />
+            }
         ],
     },
     {
