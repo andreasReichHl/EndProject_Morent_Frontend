@@ -134,7 +134,7 @@ export default function InputLocation({
 
                     {isActive && (
                         <div
-                            className="absolute mt-16 w-1/3 bg-white border border-gray-300 rounded-lg h-96 shadow-lg"
+                            className="absolute mt-16 w-1/3 bg-white border border-gray-300 rounded-lg h-96 shadow-lg z-50"
                             onMouseDown={(e) => e.preventDefault()}
                         >
                             {!isVisibility && headline === "Rückgabe" && (

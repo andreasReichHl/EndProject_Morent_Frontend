@@ -108,7 +108,7 @@ export default function Sidebar({ filter }) {
             <div
                 className={`${isOpen ? "flex" : "hidden"} lg:flex flex-col ${
                     isCollapsed ? "w-16" : "md:w-64"
-                } h-screen transition-width duration-300 shadow-lg bg-white text-black ${
+                } h-screen transition-width duration-300  bg-white text-black ${
                     isOpen && "fixed top-0 left-0 w-full sm:full z-50"
                 }`}
             >

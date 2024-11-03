@@ -2,20 +2,29 @@ import { useEffect, useState } from "react";
 import AutoCard from "./components/AutoCard";
 import LocationDate from "./components/LocationDate";
 import Sidebar from "./components/Sidebar";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { data } from "autoprefixer";
+import SearchLandingPage from "./components/SearchLandingPage";
 
 function App() {
     const location = useLocation();
-    const autos = location.state || {};
+
     const [isLoading, setLoading] = useState(false);
     const [responseData, setResponseData] = useState(null);
+    const navigate = useNavigate();
+    const [autos, setAutos] = useState([]);
+
+    useEffect(() => {
+        const storedAutos = JSON.parse(sessionStorage.getItem("autos"));
+        setAutos(storedAutos);
+    }, []);
+
+    {!autos && navigate("/")}
 
     useEffect(() => {
         handleSubmit();
     }, []);
 
-  
     const handleSubmit = () => {
         setLoading(true);
 
@@ -55,14 +64,17 @@ function App() {
     return (
         <>
             <div className="flex flex-col sm:flex-row">
-          <Sidebar bookingData={autos} filter={ responseData} />
-            
+                <Sidebar bookingData={autos} filter={responseData} />
+
                 <div className="flex flex-col flex-grow">
-                    <div>
-                        <LocationDate bookingData={autos} />
+                    <div className="px-5 mt-1">
+                        <SearchLandingPage />
+                        {/* <LocationDate bookingData={autos} /> */}
                     </div>
 
-                    <div className="flex flex-wrap gap-10 p-4">
+                    {/* <div className="flex flex-wrap gap-10 p-4"> */}
+                    {/* changed layout from flex to grid */}
+                    <div className="grid lg:grid-cols-3 p-4 gap-4">
                         {autos.map((auto, index) => (
                             <AutoCard key={auto.id || index} auto={auto} />
                         ))}
