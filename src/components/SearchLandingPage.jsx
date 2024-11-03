@@ -73,8 +73,6 @@ export default function SearchLandingPage() {
         }
     }
 
-    console.log("pickup" + pickUpId);
-
     function checkLocationsId() {
         if (pickUpId) {
             setidErrorMessage("");

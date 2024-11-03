@@ -1,13 +1,11 @@
 import React, { useContext } from "react";
-// Angenommen, du hast einen Authentifizierungskontext
-import { AuthContext } from "../hooks/AuthProvider"; // Pfad zu deinem Auth-Kontext
+import { AuthContext } from "../hooks/AuthProvider"; // Stelle sicher, dass dieser Pfad korrekt ist
 
 export default function ButtonRent() {
-    const { isLoggedIn } = useContext(AuthContext); // Verwende den Auth-Kontext, um den Anmeldestatus zu prüfen
+    const { isLoggedIn } = useContext(AuthContext);
 
     const handleRent = () => {
         if (!isLoggedIn) {
-            // Hier kannst du den Benutzer zu einer Login-Seite umleiten oder eine Fehlermeldung anzeigen
             alert("Bitte loggen Sie sich ein, um eine Buchung vorzunehmen.");
             return;
         }
