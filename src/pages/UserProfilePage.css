@@ -18,7 +18,7 @@
     border: solid red;
 
     width: 100%;
-    padding: 10px;
+    padding: 2% 5%;
     
     h3 {
         margin-bottom: 20px;
@@ -29,9 +29,24 @@
 
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
 
-        article {
-            border: solid peru;
+
+        .profileTextBox {
+            display: flex;
+            flex-direction: row;
+            gap: 10%;
+
+            
+            .formBox {
+                display: flex;
+                flex-direction: column;
+                gap: 2%;
+            }
+        }
+
+
+        .profilImagesBox {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -39,18 +54,42 @@
             width: 300px;
             padding: 10px;
 
-            .imgBox {
-                margin-bottom: 10px;
-                height: 200px;
-                width: 200px;
+            
 
-                img {
-                    border-radius: 50%;
-                    height: 100%;
-                    width: 100%;
-                    object-fit: cover;
-                }
-            }
+           
         }
     }
+
+
+    .imgBox {
+    
+        margin-bottom: 10px;
+        height: 200px;
+        width: 200px;
+
+        img {
+            border-radius: 50%;
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .btnBoxFile {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 20px;
+
+        #fileInput {
+            font-size: 0.75rem;
+        }
+    }
+
+    .flexRow{
+        display: flex;
+        flex-direction: row;
+    }
+
 }
