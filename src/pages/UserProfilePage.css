@@ -1,0 +1,56 @@
+#profilPage {
+
+   height: 100%;
+    padding: 20px;
+
+   h2 {
+    font-size: 2.5rem;
+    text-align: center;
+   }
+
+ 
+
+
+
+}
+
+.profileCard {
+    border: solid red;
+
+    width: 100%;
+    padding: 10px;
+    
+    h3 {
+        margin-bottom: 20px;
+        font-size: 1.25rem;
+    }
+
+    #personalData {
+
+        display: flex;
+        flex-direction: row;
+
+        article {
+            border: solid peru;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            width: 300px;
+            padding: 10px;
+
+            .imgBox {
+                margin-bottom: 10px;
+                height: 200px;
+                width: 200px;
+
+                img {
+                    border-radius: 50%;
+                    height: 100%;
+                    width: 100%;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+}
