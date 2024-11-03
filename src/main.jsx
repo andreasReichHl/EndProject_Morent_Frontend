@@ -15,6 +15,10 @@ import ConfirmRegistrationCode from "./pages/ConfirmRegistrationCode.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import LogIn from "./pages/LogIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
+import ProtectedRouteAdmin from "./hooks/ProtectedRouteAdmin.jsx";
+import LandingPage from "./pages/LandingPage.jsx";
+import BookingPage from "./pages/BookingPage.jsx";
+import HandoverPage from "./pages/adminPanel/HandoverPage.jsx";
 import UserProfilePage from "./pages/UserProfilePage.jsx";
 
 // Router-Konfiguration
@@ -72,6 +76,10 @@ const router = createBrowserRouter([
             {
                 path: "users",
                 element: <UsersPage />,
+            },
+            {
+                path: "handover",
+                element: <HandoverPage />,
             },
         ],
     },
