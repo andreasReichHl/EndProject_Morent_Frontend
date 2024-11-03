@@ -161,7 +161,7 @@ export default function InputLocation({
                                         key={item.storeId}
                                         name={item.name}
                                         city={item.address.city}
-                                        address={item.address.Street}
+                                        address={item.address.street}
                                         zipcode={item.address.zipCode}
                                         houseNumber={item.address.houseNumber}
                                         country={item.address.country}

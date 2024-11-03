@@ -61,10 +61,7 @@ export default function AutoCard({ auto }) {
                     </span>{" "}
                     Tag
                 </p>
-                <ButtonRent />
-                {/* <button className="btn bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-800 transition duration-200">
-                    Buchen
-                </button> */}
+                <ButtonRent carId={auto.id} />
             </div>
         </section>
     );

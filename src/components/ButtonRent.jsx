@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { AuthContext } from "../hooks/AuthProvider"; // Stelle sicher, dass dieser Pfad korrekt ist
 import { useNavigate } from "react-router-dom";
 
-export default function ButtonRent() {
+export default function ButtonRent({ carId }) {
     const { isLoggedIn } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -11,7 +11,7 @@ export default function ButtonRent() {
             navigate("/login");
             return;
         }
-        navigate("/booking");
+        navigate("/booking", { state: carId });
         console.log("Buchung wird durchgeführt...");
     };
 
