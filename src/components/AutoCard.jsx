@@ -1,6 +1,8 @@
+import ButtonRent from "./ButtonRent";
+
 export default function AutoCard({ auto }) {
     return (
-        <section className="card p-6 flex flex-col flex-grow bg-white max-w-sm shadow-lg mx-auto">
+        <section className="card p-6 flex flex-col flex-grow bg-white max-w-sm md:max-w-md shadow-lg mx-auto">
             <div className="flex flex-row justify-between items-center mb-4">
                 <div>
                     <h2 className="font-bold text-lg mb-1">
@@ -59,9 +61,10 @@ export default function AutoCard({ auto }) {
                     </span>{" "}
                     Tag
                 </p>
-                <button className="btn bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-800 transition duration-200">
+                <ButtonRent />
+                {/* <button className="btn bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-800 transition duration-200">
                     Buchen
-                </button>
+                </button> */}
             </div>
         </section>
     );

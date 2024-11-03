@@ -63,7 +63,9 @@ function App() {
                         {/* <LocationDate bookingData={autos} /> */}
                     </div>
 
-                    <div className="flex flex-wrap gap-10 p-4">
+                    {/* <div className="flex flex-wrap gap-10 p-4"> */}
+                    {/* changed layout from flex to grid  */}
+                    <div className="grid lg:grid-cols-3 p-4 gap-4">
                         {autos.map((auto, index) => (
                             <AutoCard key={auto.id || index} auto={auto} />
                         ))}
