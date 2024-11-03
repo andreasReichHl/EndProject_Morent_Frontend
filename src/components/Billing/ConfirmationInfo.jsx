@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 
-export default function ConfirmationInfo({ title, info, step }) {
+export default function ConfirmationInfo({
+    title,
+    info,
+    step,
+    setDirective,
+    errorMessageTerm,
+    isDirective,
+}) {
     const [isInfoMailConfirmed, setIsInfoMailConfirmed] = useState(false);
     const [isTermsConfirmed, setIsTermsConfirmed] = useState(false);
 
@@ -9,7 +16,7 @@ export default function ConfirmationInfo({ title, info, step }) {
     };
 
     const handleTermsChange = (event) => {
-        setIsTermsConfirmed(event.target.checked);
+        setDirective(event.target.checked);
     };
 
     return (
@@ -30,14 +37,14 @@ export default function ConfirmationInfo({ title, info, step }) {
                             onChange={handleInfoMailChange}
                         />
                         <p className="p-2">
-                            Ich möchte eine Informationsmail und eine
-                            Rechnungsmail erhalten
+                            Ich möchte den Newsletter mit exklusiven Angeboten
+                            und Neuigkeiten erhalten
                         </p>
                     </label>
                     <label className="p-3 border bg-slate-100 rounded-md flex">
                         <input
                             type="checkbox"
-                            checked={isTermsConfirmed}
+                            checked={isDirective}
                             onChange={handleTermsChange}
                         />
                         <p className="p-2">
@@ -46,6 +53,9 @@ export default function ConfirmationInfo({ title, info, step }) {
                             und die Datenschutzrichtlinie
                         </p>
                     </label>
+                    {errorMessageTerm && (
+                        <p className="errorMessages">{errorMessageTerm}</p>
+                    )}
                 </div>
             </div>
         </section>
