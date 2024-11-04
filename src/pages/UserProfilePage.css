@@ -199,6 +199,10 @@
 
 
 @media (max-width: 1070px) {
+    #personalData {
+        flex-direction: column-reverse;
+    }
+
     #profilePage {
         h3 {
             font-size: 1.7rem;
@@ -239,6 +243,10 @@
 }
 
 @media (max-width: 768px) {
+    #profilePage{
+        min-width: 450px;
+    }
+
     .profileCard, .newsCard {
         width: 100%;
         padding: 10px;
