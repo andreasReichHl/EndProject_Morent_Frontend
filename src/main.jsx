@@ -18,8 +18,12 @@ import SignUp from "./pages/SignUp.jsx";
 import ProtectedRouteAdmin from "./hooks/ProtectedRouteAdmin.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import BookingPage from "./pages/BookingPage.jsx";
+<<<<<<< Updated upstream
 import HandoverPage from "./pages/adminPanel/HandoverPage.jsx";
 import UserProfilePage from "./pages/UserProfilePage.jsx";
+=======
+import ErrorPage from "./pages/ErrorPage.jsx";
+>>>>>>> Stashed changes
 
 // Router-Konfiguration
 const router = createBrowserRouter([
@@ -50,6 +54,7 @@ const router = createBrowserRouter([
             {
                 path: "booking",
                 element: <BookingPage />,
+                errorElement: <ErrorPage />,
             },
             {
               path: "profil",

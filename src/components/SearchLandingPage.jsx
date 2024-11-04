@@ -42,6 +42,8 @@ export default function SearchLandingPage() {
         }
     }, []);
 
+    
+
     const navigate = useNavigate();
 
     function isDateInPast(pickUpDate, dropOffDate) {

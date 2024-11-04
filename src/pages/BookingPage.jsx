@@ -54,8 +54,6 @@ export default function BookingPage() {
         }
     }, [userData]);
 
-    console.log(bookingRequest);
-
     useEffect(() => {
         const submitBookingRequest = async () => {
             if (bookingRequest) {
@@ -82,6 +80,9 @@ export default function BookingPage() {
             }
         };
         submitBookingRequest();
+        // if (error) {
+        //     return <ErrorPage />; // Fehler tritt auf, ErrorPage wird angezeigt
+        // }
     }, [bookingRequest]);
 
     // get user data
