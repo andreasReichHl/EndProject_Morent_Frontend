@@ -98,12 +98,14 @@ export default function Navbar() {
                         <li>
                             <Link to="/profil">Profil</Link>
                         </li>
-                        <li>
-                            <Link to="/signUp">Registrieren</Link>
-                        </li>
                         {!isLoggedIn && (
                             <li>
                                 <Link to="/login">Log In</Link>
+                            </li>
+                        )}
+                        {isLoggedIn && (
+                            <li>
+                                <Link to="/dashboard">Dashbord</Link>
                             </li>
                         )}
                         {isLoggedIn && (
