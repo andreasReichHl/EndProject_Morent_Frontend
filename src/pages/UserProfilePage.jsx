@@ -30,8 +30,13 @@ export default function UserProfilePage() {
     }
 
     function ProfileUploadToggle() {
+        console.log("JaWOLL")
         setProfileUpdate(!profileUpdate);
+        
     }
+
+    console.log("profilupdate" + profileUpdate);
+    
 
     const handleFileChange = (event) => {
         setImageFile(event.target.files[0]);
@@ -80,20 +85,18 @@ export default function UserProfilePage() {
         .then(response => {
             if (response.ok) {
                 console.log("Profile updated successfully");
-                // Optional: Aktualisieren Sie den Benutzerstatus
+                setProfileUpdate((prev) => !prev);
+                setToggle((prev) => !prev); 
             } else {
                 console.error("Failed to update profile");
             }
         })
-        .then(setProfileUpdate(!profileUpdate))
-        .then(setToggle(!toggle))
         .catch(error => {
             console.error("Error:", error);
         });
     };
 
     useEffect(() => {
-        console.log("JEEEEP!");
         fetch(import.meta.env.VITE_BACKEND + "/api/v1/news?email=" + userData.email,
             {
                 method: "GET",
@@ -150,11 +153,39 @@ export default function UserProfilePage() {
              <h2>Hallo {userData.firstName} {userData.lastName}!</h2>
             
             <section className="profileCard">
+                <div id="userProfileHeading">
                <h3>Persönliche Informationen</h3>
+
+               <div className="buttonContainer">
+                            {profileUpdate ? 
+                                <input 
+                                    id="profileSaveBtn"
+                                    type="submit" 
+                                    value=""
+                                    form="userProfileForm" 
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                      }}  
+                                />
+                            :
+                                <button 
+                                    id="profileEditBtn"
+                                    type="button"
+                                    onClick={(event) => {
+                                        event.stopPropagation(); // Verhindert Event-Bubbling
+                                        ProfileUploadToggle();
+                                      }}
+                                >
+                                   
+                                </button>
+                            }
+                    </div>
+                </div>
+
 
                <div id="personalData">
 
-                    <form onSubmit={handleUserSubmit} className="profileTextBox">
+                    <form id="userProfileForm" onSubmit={handleUserSubmit} className="profileTextBox">
 
                         <div className="formBox">
                             <label htmlFor="profileFirstname">Vorname: </label>
@@ -196,20 +227,6 @@ export default function UserProfilePage() {
                                 placeholder={userData.phoneNumber}
                                 disabled={!profileUpdate}>  
                             </input>
-
-                            {profileUpdate ? 
-                                <input 
-                                    type="submit" 
-                                    value="Speichern" 
-                                    className="btn mt-3 bg-white border-2 border-blue-700 text-blue-700 px-4 py-2 rounded-md hover:bg-blue-200 transition duration-200" >
-                                </input>
-                            :
-                                <button 
-                                    onClick={ProfileUploadToggle}
-                                    className="btn mt-3 bg-white border-2 border-blue-700 text-blue-700 px-4 py-2 rounded-md hover:bg-blue-200 transition duration-200" >
-                                        Profil Bearbeiten
-                                </button>
-                            }
                         </div>
 
                         <div className="formBox">
@@ -263,6 +280,7 @@ export default function UserProfilePage() {
                                 disabled={!profileUpdate}>  
                             </input>
                         </div>
+
                     </form>
 
 
@@ -278,11 +296,11 @@ export default function UserProfilePage() {
                             </div>
                         :
                             <div className="btnBox">
-                                <button onClick={ImgUploadToggle} className="btn w-32 bg-white border-2 border-blue-700 text-blue-700 px-4 py-2 rounded-md hover:bg-blue-200 transition duration-200">
+                                <button onClick={ImgUploadToggle} className="btn bg-white border-2 border-blue-700 text-blue-700 px-4 py-2 rounded-md hover:bg-blue-200 transition duration-200">
                                     Bild Ändern
                                 </button>
                                 
-                                <button className="btn w-32 bg-white border-2 border-blue-700 text-blue-700 px-4 py-2 rounded-md hover:bg-blue-200 transition duration-200">
+                                <button className="btn bg-white border-2 border-blue-700 text-blue-700 px-4 py-2 rounded-md hover:bg-blue-200 transition duration-200">
                                     Bild Löschen
                                 </button>
                             </div>
@@ -293,18 +311,30 @@ export default function UserProfilePage() {
 
             <section className="newsCard">
                 <h3>Newsletter</h3>
-                
 
+                {newsToggle ? 
+                    <>
+                        <h4>Super! Du erhältst aktuell alle Neuigkeiten von uns direkt per E-Mail.</h4>
+                        <p>Natürlich kannst du dich jederzeit vom Newsletter abmelden, wenn du möchtest.</p>
+                    </>
+                :
+                    <>
+                        <h4>Du verpasst derzeit unsere Neuigkeiten und Updates.</h4>
+                        <p>Melde dich gerne für unseren Newsletter an, um immer auf dem Laufenden zu bleiben.</p>
+                    </>
+                }
 
-                <input
-                    type="checkbox"
-                    onChange={handleNewsletter}
-                    className="toggle border-blue-500 bg-blue-500 [--tglbg:yellow] hover:bg-blue-700"
-                    defaultChecked={newsToggle} 
-                />
-
+                <div className="newsRegister">
+                    <p>Newsletter abbestellt</p>
+                    <input
+                        type="checkbox"
+                        onChange={handleNewsletter}
+                        className={newsToggle? "toggle h-10 w-16 border-blue-800 bg-blue-800 [--tglbg:#06A77D] hover:bg-blue-700" : "toggle h-10 w-16 border-blue-500 bg-blue-500 [--tglbg:#A63446] hover:bg-blue-700" }
+                        checked={newsToggle} 
+                    />
+                    <p>Newsletter abonniert</p>
+                </div>
             </section>
-        
         </section>
     )
 }
