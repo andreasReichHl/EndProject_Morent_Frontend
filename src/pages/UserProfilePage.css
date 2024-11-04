@@ -1,0 +1,270 @@
+#profilePage {
+    padding-top: 30px;
+
+    h2 {
+        margin-bottom: 30px;
+        font-size: 3rem;
+        text-align: center;
+    }
+
+    h3 {
+        font-size: 1.7rem;
+        margin: 10px 0 30px 0;
+    }
+
+    h4 {
+        font-size: 1.2rem;
+        margin-bottom: 40px;
+    }
+
+    p{
+        font-size: 0.95rem;
+        margin-bottom: 10px;
+    }
+}
+
+.profileCard, .newsCard {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 5px 5px 8px rgb(223, 223, 223);
+    margin: 0 auto 30px auto;
+    width: 100%;
+    max-width: 1200px;
+    padding: 30px 50px;
+    height: auto;
+}
+
+#userProfileHeading {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+    
+
+    .buttonContainer{
+
+        button, input {
+            height: 40px;
+            width: 40px;
+
+        }
+
+        #profileSaveBtn {
+            background: url("src/assets/images/save.svg") no-repeat center;
+            background-size: cover;
+        }
+
+        #profileEditBtn {
+            background: url("src/assets/images/userEdit.svg") no-repeat center;
+            background-size: cover;
+        }
+
+
+    }
+}
+
+
+#personalData {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap; 
+    gap: 20px; 
+}
+
+.profileTextBox {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    width: 60%;
+    gap: 100px;
+}
+
+.formBox {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%; 
+
+    input{
+        margin-bottom: 10px;
+    }
+
+    &:nth-of-type(1) {
+        padding-top: 30px;
+    }
+}
+
+
+.profileImagesBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; 
+    max-width: 350px;
+
+    .btnBoxFile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        #fileInput {
+            margin-left: 100px;
+        }
+        button {
+            width: 300px;
+        }
+
+    }
+
+    .btnBox {
+
+        button {
+            width: 150px;
+        }
+    }
+
+   
+}
+
+.imgBox {
+    margin-bottom: 10px;
+    height: 250px;
+    width: 250px;
+
+    img {
+        border-radius: 50%;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+}
+
+.newsRegister{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Media Queries */
+@media (max-width: 1200px) {
+    .profileCard, .newsCard {
+        width: 90%;
+        padding: 15px;
+        margin: 0 auto 30px auto;
+    }
+
+    .profileTextBox {   
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .formBox {
+        width: 100%;
+    }
+
+    .profileImagesBox {
+        width: 100%;
+
+        .imgBox{
+            height: 150px;
+            width: 150px;
+        }
+
+        .btnBoxFile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            #fileInput {
+                font-size: 0.75rem;
+                margin-left: 85px;
+            }
+
+            button {
+                width: 210px;
+            }
+
+            .btnBox {
+
+                button {
+                    width: 100px;
+                }
+            }
+
+        }
+    }
+}
+
+
+@media (max-width: 1070px) {
+    #personalData {
+        flex-direction: column-reverse;
+    }
+
+    #profilePage {
+        h3 {
+            font-size: 1.7rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+    
+        h4 {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+    
+        p{
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+    }
+
+    .profileTextBox {
+        flex-direction: column;
+        margin: 0 auto;
+        width: 80%;
+    }
+
+    .profileImagesBox {
+        margin: 10px auto;
+    }
+
+    .newsCard {
+
+        .newsRegister{
+            justify-content: center;
+        }
+    }
+
+}
+
+@media (max-width: 768px) {
+    #profilePage{
+        min-width: 450px;
+    }
+
+    .profileCard, .newsCard {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .profileTextBox {
+        gap: 15px;
+        flex-direction: column;
+    }
+
+    .imgBox {
+        height: 150px;
+        width: 150px;
+    }
+
+    .btnBoxFile, .btnBox {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+}
