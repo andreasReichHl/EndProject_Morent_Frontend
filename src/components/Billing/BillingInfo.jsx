@@ -92,6 +92,21 @@ export default function BillingInfo({
     const yearOptions = Array.from({ length: 100 }, (_, i) => currentYear - i);
 
     useEffect(() => {
+        if (userData.address) {
+            const updatedAddress = { ...userData.address };
+            Object.keys(updatedAddress).forEach((key) => {
+                if (updatedAddress[key] === "Unbekannt") {
+                    updatedAddress[key] = "";
+                }
+            });
+            setUserData((prevData) => ({
+                ...prevData,
+                address: updatedAddress,
+            }));
+        }
+    }, [userData.address, setUserData]);
+
+    useEffect(() => {
         const isFormComplete = [
             birthDate.day,
             birthDate.month,
@@ -108,8 +123,6 @@ export default function BillingInfo({
 
         setFormComplete(isFormComplete);
     }, [birthDate, userData]);
-
-    console.log(userData);
 
     return (
         <section className="border p-6 rounded-md shadow-md mb-4 flex flex-col">
@@ -276,7 +289,9 @@ export default function BillingInfo({
                             onChange={handleChange}
                         />
                         {!userData.address?.zipCode && (
-                            <p className="errorMessage">{errorMessage}</p>
+                            <p className="errorMessage">
+                                {errorMessages.zipCode}
+                            </p>
                         )}
                     </div>
                     <div>

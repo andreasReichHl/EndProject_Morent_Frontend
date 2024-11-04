@@ -14,9 +14,10 @@
 }
 
 .background {
-    /* background: url("./assets/images/tom-arrowsmith-7HNftpNvqho-unsplash.jpg") no-repeat center center; */
-    background: url("./assets/images/chris-barbalis-9qlSGW_LgKs-unsplash.jpg")
+    background: url("./assets/images/tom-arrowsmith-7HNftpNvqho-unsplash.jpg")
         no-repeat center center;
+    /* background: url("./assets/images/chris-barbalis-9qlSGW_LgKs-unsplash.jpg")
+        no-repeat center center; */
     background-size: cover;
     position: absolute;
     top: 0;

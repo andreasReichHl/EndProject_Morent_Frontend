@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AutoCard from "./components/AutoCard";
 import LocationDate from "./components/LocationDate";
 import Sidebar from "./components/Sidebar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { data } from "autoprefixer";
 import SearchLandingPage from "./components/SearchLandingPage";
+import { AuthContext } from "./hooks/AuthProvider";
+import PopUpPages from "./pages/PopUpPages";
 
 function App() {
     const location = useLocation();
@@ -13,13 +15,16 @@ function App() {
     const [responseData, setResponseData] = useState(null);
     const navigate = useNavigate();
     const [autos, setAutos] = useState([]);
+    const { isLoggedIn } = useContext(AuthContext);
 
     useEffect(() => {
         const storedAutos = JSON.parse(sessionStorage.getItem("autos"));
         setAutos(storedAutos);
     }, []);
 
-    {!autos && navigate("/")}
+    {
+        !autos && navigate("/");
+    }
 
     useEffect(() => {
         handleSubmit();
@@ -63,6 +68,7 @@ function App() {
 
     return (
         <>
+            {/* <PopUpPages /> */}
             <div className="flex flex-col sm:flex-row">
                 <Sidebar bookingData={autos} filter={responseData} />
 

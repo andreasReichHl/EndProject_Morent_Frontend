@@ -16,6 +16,7 @@ export default function BookingPage() {
     const [isDirective, setDirective] = useState(false);
     const carState = useLocation();
     const [errorMessageTerm, setErrorMessagesTerm] = useState("");
+    const [userProfileRequest, setUserProfileRequest] = useState(null);
     const carId = carState.state;
 
     // first fetch for bookingdata
@@ -35,6 +36,23 @@ export default function BookingPage() {
             setBookingRequest(bookingRequest);
         }
     }, [carId]);
+
+    useEffect(() => {
+        if (userData && userData.address) {
+            const userProfileRequest = {
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                birthDate: userData.birthDate,
+                phoneNumber: userData.phoneNumber,
+                street: userData.address.street,
+                houseNumber: userData.address.houseNumber,
+                zipCode: userData.address.zipCode,
+                city: userData.address.city,
+                country: userData.address.country,
+            };
+            setUserProfileRequest(userProfileRequest);
+        }
+    }, [userData]);
 
     console.log(bookingRequest);
 
@@ -59,7 +77,7 @@ export default function BookingPage() {
                     const result = await response.json();
                     setBookingData(result);
                 } catch (error) {
-                    console.error("Error during booking:", error);
+                    console.error("Error during get Bookingdata:", error);
                 }
             }
         };
@@ -99,39 +117,11 @@ export default function BookingPage() {
 
     const checkSubmit = async () => {
         if (isFormComplete && isDirective) {
-            setLoading(true); // Ladeanzeige aktivieren
-            setErrorMessagesTerm(""); // Fehlernachricht zurücksetzen
+            setLoading(true);
+            setErrorMessagesTerm("");
 
             try {
-                // 1. POST-Request für die Buchung
                 const postResponse = await fetch(
-                    "http://localhost:8080/api/v1/booking",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${sessionStorage.getItem(
-                                "token"
-                            )}`, // Token im Header senden
-                        },
-                        body: JSON.stringify(bookingRequest),
-                    }
-                );
-
-                if (!postResponse.ok) {
-                    const errorData = await postResponse.json();
-                    // Setze die Fehlernachricht, falls verfügbar
-                    setErrorMessagesTerm(
-                        errorData.message ||
-                            "Fehler bei der Buchungsbestätigung"
-                    );
-                    throw new Error("Fehler bei der Buchungsbestätigung");
-                }
-
-                const postResult = await postResponse.json();
-
-                // 2. PUT-Request für die Benutzerdaten, wenn der POST-Request erfolgreich war
-                const putResponse = await fetch(
                     "http://localhost:8080/api/v1/user/update",
                     {
                         method: "PUT",
@@ -141,7 +131,32 @@ export default function BookingPage() {
                                 "token"
                             )}`,
                         },
-                        body: JSON.stringify(userData),
+                        body: JSON.stringify(userProfileRequest),
+                    }
+                );
+
+                if (!postResponse.ok) {
+                    const errorData = await postResponse.json();
+                    setErrorMessagesTerm(
+                        errorData.message ||
+                            "Fehler bei der Buchungsbestätigung"
+                    );
+                    throw new Error("Fehler bei der Buchungsbestätigung");
+                }
+
+                const postResult = await postResponse.json();
+
+                const putResponse = await fetch(
+                    "http://localhost:8080/api/v1/booking",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${sessionStorage.getItem(
+                                "token"
+                            )}`,
+                        },
+                        body: JSON.stringify(bookingRequest),
                     }
                 );
 
@@ -157,14 +172,11 @@ export default function BookingPage() {
                     );
                 }
 
-                // Optional: Ergebnisse der Anfragen verarbeiten
                 const putResult = await putResponse.json();
                 console.log(
                     "Benutzerdaten erfolgreich aktualisiert:",
                     putResult
                 );
-
-                // Hier kannst du eine Erfolgsmeldung anzeigen oder weiterleiten
             } catch (error) {
                 console.error("Fehler während des Buchungsprozesses:", error);
             } finally {
@@ -177,8 +189,7 @@ export default function BookingPage() {
             );
         }
     };
-    console.log(userData);
-    console.log(bookingData);
+
     return (
         <div className="grid lg:grid-cols-3 gap-4 p-10">
             <div className="lg:col-span-2 space-y-4">
@@ -192,7 +203,10 @@ export default function BookingPage() {
                         setFormComplete={setFormComplete}
                     />
                 ) : (
-                    <p>Lade Benutzerdaten...</p>
+                    <p className="flex">
+                        <span className="loading mr-4" />
+                        Lade Benutzerdaten...
+                    </p>
                 )}
                 {bookingData && Object.keys(bookingData).length > 0 ? (
                     <PickupReturnCard
@@ -202,7 +216,9 @@ export default function BookingPage() {
                         bookingData={bookingData}
                     />
                 ) : (
-                    <p>Lade Benutzerdaten...</p>
+                    <p className="flex">
+                        <span className="loading mr-4" /> Lade Buchungsdaten...
+                    </p>
                 )}
                 <PaymentInfo
                     title="Zahlungsinformationen"
@@ -231,13 +247,17 @@ export default function BookingPage() {
                         carId={carId}
                     />
                 ) : (
-                    <p>Lade Benutzerdaten...</p>
+                    <p className="flex">
+                        <span className="loading mr-4" />
+                        Lade Fahrzeugdaten...
+                    </p>
                 )}
             </div>
             <div className="flex items-center justify-center lg:col-span-2">
                 <button
                     className="w-full bg-costumBlue text-white rounded-lg p-4 disabled:bg-slate-500 disabled:cursor-not-allowed"
                     onClick={checkSubmit}
+                    disabled={!isFormComplete || !isDirective}
                 >
                     {isLoading ? (
                         <span className="loading" />

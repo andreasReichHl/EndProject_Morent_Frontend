@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function RentalSummary({
     title,
@@ -9,11 +9,39 @@ export default function RentalSummary({
     totalPrice,
     totalDays,
     isFee,
+    carId,
 }) {
     const [taxRate, setTaxRate] = useState(19);
     // Berechnung des Gesamtbetrags
     const tax = (totalPrice / 100) * taxRate;
     const totalPriceOfDays = totalDays * pricePerDay;
+    const [vehicledetails, setVehicleDetails] = useState(null);
+
+    useEffect(() => {
+        const submitBookingRequest = async () => {
+            if (carId) {
+                try {
+                    const response = await fetch(
+                        "http://localhost:8080/api/v1/vehicles/exemplar/" +
+                            carId,
+                        {
+                            method: "GET",
+                        }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    const result = await response.json();
+                    setVehicleDetails(result);
+                    console.log(result);
+                } catch (error) {
+                    console.error("Error during get VehicleDetails:", error);
+                }
+            }
+        };
+        submitBookingRequest();
+    }, []);
 
     return (
         <section className="border p-6 rounded-md shadow-md mb-4">
@@ -26,44 +54,60 @@ export default function RentalSummary({
                         </div>
                         <p className="text-gray-400 text-sm">{step}</p>
                     </div>
-                    <div className="mt-4 flex items-center">
-                        <img
-                            src={"src/assets/images/Golf.png"}
-                            alt="Mietobjekt Vorschau"
-                            className="w-56 h-36 object-cover rounded-md mr-4"
-                        />
-                        <div>
-                            <div class="rating rating-xs">
-                                <input
-                                    type="radio"
-                                    name="rating-5"
-                                    class="mask mask-star-2 bg-yellow-500"
-                                />
-                                <input
-                                    type="radio"
-                                    name="rating-5"
-                                    class="mask mask-star-2 bg-yellow-500"
-                                    checked="checked"
-                                />
-                                <input
-                                    type="radio"
-                                    name="rating-5"
-                                    class="mask mask-star-2 bg-yellow-500"
-                                />
-                                <input
-                                    type="radio"
-                                    name="rating-5"
-                                    class="mask mask-star-2 bg-yellow-500"
-                                />
-                                <input
-                                    type="radio"
-                                    name="rating-5"
-                                    class="mask mask-star-2 bg-yellow-500"
-                                />
+
+                    <div className="flex flex-col">
+                        <div className="mt-4 flex items-center">
+                            <img
+                                src={
+                                    vehicledetails?.vehicle?.imageUrl ||
+                                    "src/assets/images/Golf.png"
+                                }
+                                alt="Mietobjekt Vorschau"
+                                className="w-56 h-36 object-cover rounded-md mr-4"
+                            />
+                            <div>
+                                {" "}
+                                <div>
+                                    <p className="text-2xl font-medium mb-5">
+                                        {vehicledetails?.vehicle?.brand +
+                                            " " +
+                                            vehicledetails?.vehicle?.model}
+                                    </p>
+                                </div>
+                                <div class="rating rating-xs">
+                                    <input
+                                        type="radio"
+                                        name="rating-5"
+                                        class="mask mask-star-2 bg-yellow-500"
+                                    />
+                                    <input
+                                        type="radio"
+                                        name="rating-5"
+                                        class="mask mask-star-2 bg-yellow-500"
+                                        checked="checked"
+                                    />
+                                    <input
+                                        type="radio"
+                                        name="rating-5"
+                                        class="mask mask-star-2 bg-yellow-500"
+                                    />
+                                    <input
+                                        type="radio"
+                                        name="rating-5"
+                                        class="mask mask-star-2 bg-yellow-500"
+                                    />
+                                    <input
+                                        type="radio"
+                                        name="rating-5"
+                                        class="mask mask-star-2 bg-yellow-500"
+                                    />
+                                </div>
                             </div>
                         </div>
                         <div>
-                            <p>{pricePerDay} € / Tag</p>
+                            <p className="my-5 text-right">
+                                {pricePerDay} € / Tag
+                            </p>
                         </div>
                     </div>
                     <hr className="my-2" />
