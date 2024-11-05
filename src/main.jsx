@@ -73,11 +73,11 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "",
+    path: "admin-panel",
     element: <ProtectedRouteAdmin />,
     children: [
       {
-        path: "admin-panel",
+        path: "",
         element: <AdminLayout />,
         children: [
           {
