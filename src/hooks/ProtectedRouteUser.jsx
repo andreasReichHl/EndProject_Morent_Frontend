@@ -13,21 +13,6 @@ const ProtectedRouteUser = (props) => {
       auth.logout();
       navigate("/login");
     }
-    /* try {
-      const decodedToken = jwtDecode(token);
-      if (
-        decodedToken.scope !== "Admin" &&
-        decodedToken.scope !== "Manager" &&
-        decodedToken.scope !== "Accountant" &&
-        
-      ) {
-        navigate("/");
-      }
-    } catch (error) {
-      console.error("Token decoding failed: ", error);
-      auth.logout();
-      navigate("/");
-    } */
   }, [token, auth, navigate]);
 
   return token ? (
