@@ -1,5 +1,4 @@
 import picturePlaceholder from "../assets/images/Golf.png";
-
 // bookingId,
 // bookingNumber,
 // userFirstName,
