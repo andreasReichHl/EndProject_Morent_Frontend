@@ -11,6 +11,7 @@ export default function Navbar() {
     const [userData, setUserData] = useState(null);
     const [firstLetter, setLetter] = useState("");
     const navigate = useNavigate();
+    const auth = useAuth();
 
     useEffect(() => {
         const submitUserRequest = async () => {
@@ -50,30 +51,19 @@ export default function Navbar() {
     }, [userData]);
 
     const handleLogout = () => {
-        logOut();
-        navigate("/login");
+        auth.logout();
+        navigate("/");
     };
 
     return (
         <div className="navbar bg-navBG bg-opacity-40 pr-5">
             <div className="flex-1">
-                {/* <Link to={"/home"}>
-                    <img
-                        className="ml-2 w-32"
-                        src="src/assets/images/logo.svg"
-                    />
-                </Link> */}
                 <a className="btn btn-ghost text-3xl text-blue-700">MORENT</a>
             </div>
             <div className="flex-none">
                 <div className="text-1xl underline">
                     {!isLoggedIn && <Link to="/signUp">Registrieren</Link>}
                 </div>
-
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="/src/assets/images/user.jpeg@3x.svg"
-                />
 
                 <div className="dropdown dropdown-end">
                     <div
@@ -83,13 +73,14 @@ export default function Navbar() {
                     >
                         <div className="w-10 h-10 rounded-full bg-white p-1">
                             {isLoggedIn ? (
-                                <span className="absolute text-2xl bg-slate-400 rounded-full text-white font-light w-8 h-8 flex items-center justify-center">
-                                    {firstLetter ? firstLetter : "Z"}
+                                <span className="text-2xl bg-slate-400 rounded-full text-white font-light w-8 h-8 flex items-center justify-center">
+                                    {firstLetter || "Z"}
                                 </span>
                             ) : (
                                 <img
-                                    alt="Tailwind CSS Navbar component"
+                                    alt="User avatar"
                                     src="/src/assets/images/user.jpeg@3x.svg"
+                                    className="w-full h-full rounded-full"
                                 />
                             )}
                         </div>
@@ -109,42 +100,17 @@ export default function Navbar() {
                         )}
                         {isLoggedIn && (
                             <li>
-                                <Link to="/dashboard">Dashbord</Link>
+                                <Link to="/dashboard">Dashboard</Link>
                             </li>
                         )}
                         {isLoggedIn && (
                             <li>
-                                <a onClick={handleLogout}>Logout</a>
+                                <button onClick={handleLogout}>Logout</button>
                             </li>
                         )}
                     </ul>
                 </div>
             </div>
-          </div>
-
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-          >
-            <li>
-              <Link to="/user/profil">Profil</Link>
-            </li>
-            <li>
-              <Link to="/signUp">Registrieren</Link>
-            </li>
-            {!isLoggedIn && (
-              <li>
-                <Link to="/login">Log In</Link>
-              </li>
-            )}
-            {isLoggedIn && (
-              <li>
-                <button onClick={handleLogOut}>Logout</button>
-              </li>
-            )}
-          </ul>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
