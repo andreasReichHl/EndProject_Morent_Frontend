@@ -77,7 +77,7 @@ function App() {
           <div className="px-5 mt-1">
             <SearchLandingPage setAutos={setAutos} />
           </div>
-          <div className="grid lg:grid-cols-3 p-4 gap-8 m-auto">
+          <div className="grid lg:grid-cols-3 grid-cols-1 md:grid-cols-2 p-4 gap-8 m-auto">
             {autos.map((auto, index) => (
               <AutoCard key={auto.id || index} auto={auto} />
             ))}

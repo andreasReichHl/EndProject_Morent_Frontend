@@ -6,6 +6,7 @@ import { useAuth } from "../hooks/AuthProvider";
 import { jwtDecode } from "jwt-decode";
 import logo from "/src/assets/images/logo.svg";
 import userAvatar from "/src/assets/images/user.jpeg@3x.svg";
+import AdminPanelLogo from "/src/assets/images/vuesax/bold/setting-2.svg";
 
 export default function Navbar() {
   const { isLoggedIn, logOut } = useContext(AuthContext);
@@ -14,6 +15,7 @@ export default function Navbar() {
   const [firstLetter, setLetter] = useState("");
   const navigate = useNavigate();
   const auth = useAuth();
+  const [imageProfile, setImageProfile] = useState(null);
   const token = sessionStorage.getItem("token");
 
   useEffect(() => {
@@ -48,6 +50,8 @@ export default function Navbar() {
       letter = letter.toUpperCase();
       setLetter(letter);
     }
+    if (userData && userData.profilePictureUrl)
+      setImageProfile(userData.profilePictureUrl);
   }, [userData]);
 
   const handleLogout = () => {
@@ -86,7 +90,7 @@ export default function Navbar() {
             className="btn btn-ghost mr-4 hover:bg-opacity-50"
             to="/admin-panel/bookings"
           >
-            Admin Panel
+            <img src={AdminPanelLogo} alt="settingLogo" />
           </Link>
         )}
 
@@ -96,14 +100,22 @@ export default function Navbar() {
             role="button"
             className="btn btn-ghost btn-circle avatar"
           >
-            <div className="w-10 h-10 rounded-full bg-white p-1">
+            <div className="w-12 h-12 rounded-full bg-white p-1">
               {isLoggedIn ? (
-                <span className="text-2xl bg-slate-400 rounded-full text-white font-light w-8 h-8 flex items-center justify-center">
-                  {firstLetter || "Z"}
-                </span>
+                imageProfile ? (
+                  <img
+                    alt="User Profile"
+                    src={imageProfile}
+                    className="w-full h-full rounded-full"
+                  />
+                ) : (
+                  <span className="text-2xl bg-slate-400 rounded-full text-white font-light w-8 h-8 flex items-center justify-center">
+                    {firstLetter || "Z"}
+                  </span>
+                )
               ) : (
                 <img
-                  alt="User avatar"
+                  alt="Default Avatar"
                   src={userAvatar}
                   className="w-full h-full rounded-full"
                 />
