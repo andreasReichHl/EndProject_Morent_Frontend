@@ -3,6 +3,7 @@ import { AuthContext } from "../hooks/AuthProvider";
 import heartRedSvg from "../assets/images/vuesax/linear/heartRed.svg";
 import ButtonRent from "./ButtonRent";
 
+
 export default function AutoCard({
     auto,
     favorites,
@@ -58,8 +59,15 @@ export default function AutoCard({
             setFavoriteChange(!onFavoriteChange);
         } catch (error) {
             console.error("Fehler beim Hinzufügen zu den Favoriten:", error);
+
         }
-    };
+        const result = await response.json();
+      } catch (error) {
+        console.error("Error adding to favorites:", error);
+      }
+    }
+  };
+
 
     return (
         <section className="card p-6 bg-white max-w-sm md:max-w-md shadow-lg w-full rounded-lg">
@@ -87,47 +95,43 @@ export default function AutoCard({
                 className="w-full object-cover rounded mb-5"
             />
 
-            <div className="flex justify-between items-center mb-6">
-                <div className="flex items-center gap-2">
-                    <img
-                        src="src/assets/images/fuel.svg"
-                        alt="fuel"
-                        className="w-5 h-5"
-                    />
-                    <p className="text-gray-700">
-                        {auto.vehicle.consumption} L/100km
-                    </p>
-                </div>
-                <div className="flex items-center gap-2">
-                    <img
-                        src="src/assets/images/transmission.svg"
-                        alt="steering"
-                        className="w-5 h-5"
-                    />
-                    <p className="text-gray-700">
-                        {auto.vehicle.isAutomatic ? "Automatic" : "Manual"}
-                    </p>
-                </div>
-                <div className="flex items-center gap-2">
-                    <img
-                        src="src/assets/images/sits.svg"
-                        alt="sits"
-                        className="w-5 h-5"
-                    />
-                    <p className="text-gray-700">{auto.vehicle.seats}</p>
-                </div>
-            </div>
 
-            <div className="flex justify-between items-center">
-                <p className="text-lg">
-                    <span className="font-bold text-blue-700">
-                        €{auto.pricePerDay} /
-                    </span>{" "}
-                    Tag
-                </p>
-                <ButtonRent carId={auto.id} />
-            </div>
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center gap-2">
+          <img
+            src="src/assets/images/fuel.svg"
+            alt="fuel"
+            className="w-5 h-5"
+          />
+          <p className="text-gray-700">{auto.vehicle.fuelType}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <img
+            src="src/assets/images/transmission.svg"
+            alt="steering"
+            className="w-5 h-5"
+          />
+          <p className="text-gray-700">
+            {auto.vehicle.isAutomatic ? "Automatic" : "Manual"}
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <img
+            src="src/assets/images/sits.svg"
+            alt="sits"
+            className="w-5 h-5"
+          />
+          <p className="text-gray-700">{auto.vehicle.seats}</p>
+        </div>
+      </div>
 
+      <div className="flex justify-between items-center">
+        <p className="text-lg">
+          <span className="font-bold text-blue-700">€{auto.pricePerDay} /</span>{" "}
+          Tag
+        </p>
+        <ButtonRent carId={auto.id} />
+      </div>
             {message && ( // Hinweis wird nur angezeigt, wenn die Nachricht nicht leer ist
                 <div className="absolute mt-20 text-red-500 text-sm">
                     {message}
@@ -135,4 +139,5 @@ export default function AutoCard({
             )}
         </section>
     );
+
 }
