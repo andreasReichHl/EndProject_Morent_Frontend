@@ -18,6 +18,7 @@ import ProtectedRouteAdmin from "./hooks/ProtectedRouteAdmin.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import HandoverPage from "./pages/adminPanel/HandoverPage.jsx";
 import UserProfilePage from "./pages/UserProfilePage.jsx";
+import DashBoardUser from "./pages/DashBoardUser.jsx";
 
 // Router-Konfiguration
 const router = createBrowserRouter([
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
             {
                 path: "profil",
                 element: <UserProfilePage />,
+            },
+            {
+                path: "dashboard",
+                element: <DashBoardUser />,
             },
         ],
     },
