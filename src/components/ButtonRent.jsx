@@ -11,7 +11,7 @@ export default function ButtonRent({ carId }) {
             navigate("/login");
             return;
         }
-        navigate("/booking", { state: carId });
+        navigate("/user/booking", { state: carId });
         console.log("Buchung wird durchgeführt...");
     };
 
