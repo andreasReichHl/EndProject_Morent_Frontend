@@ -1,37 +1,63 @@
-import { useContext, useState } from "react";
-import ButtonRent from "./ButtonRent";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../hooks/AuthProvider";
+import heartRedSvg from "../assets/images/vuesax/linear/heartRed.svg";
+import ButtonRent from "./ButtonRent";
 
-export default function AutoCard({ auto }) {
+export default function AutoCard({
+    auto,
+    favorites,
+    setFavoriteChange,
+    onFavoriteChange,
+}) {
     const { isLoggedIn } = useContext(AuthContext);
     const [message, setMessage] = useState("");
+    const [isFavorite, setFavorite] = useState(false);
+
+    useEffect(() => {
+        if (favorites && favorites.vehicleList) {
+            let foundFavorite = false;
+
+            favorites.vehicleList.forEach((vehicle) => {
+                if (vehicle.vehicleId === auto.vehicle.id) {
+                    foundFavorite = true;
+                }
+            });
+            console.log(foundFavorite);
+            setFavorite(foundFavorite);
+        }
+    }, [favorites, auto]);
 
     const handleHeartClick = async () => {
         if (!isLoggedIn) {
             setMessage(
                 "Bitte loggen Sie sich ein, um dieses Auto zu Ihrer Favoritenliste hinzuzufügen."
             );
-            setTimeout(() => setMessage(""), 3000); // Hinweis nach 3 Sekunden ausblenden
-        } else {
-            try {
-                const response = await fetch(
-                    `http://localhost:8080/api/v1/cars/favorite/${auto.id}`,
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ carId: auto.id }), // Beispiel für das POST-Body
-                    }
-                );
-                if (!response.ok) {
-                    throw new Error("Fehler beim Hinzufügen zu den Favoriten.");
+            setTimeout(() => setMessage(""), 3000);
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `http://localhost:8080/api/v1/favorite?vehicleId=${auto.vehicle.id}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${sessionStorage.getItem(
+                            "token"
+                        )}`,
+                    },
                 }
-                const result = await response.json();
-                console.log(result); // Hier kannst du weitere Aktionen durchführen
-            } catch (error) {
-                console.error("Error adding to favorites:", error);
+            );
+
+            if (!response.ok) {
+                throw new Error("Fehler beim Hinzufügen zu den Favoriten.");
             }
+
+            // setFavorite(true);
+            setFavoriteChange(!onFavoriteChange);
+        } catch (error) {
+            console.error("Fehler beim Hinzufügen zu den Favoriten:", error);
         }
     };
 
@@ -45,13 +71,16 @@ export default function AutoCard({ auto }) {
                     <p className="text-gray-600">{auto.vehicle.carType}</p>
                 </div>
                 <img
-                    src="src/assets/images/vuesax/linear/heart.svg"
+                    src={
+                        isFavorite
+                            ? heartRedSvg
+                            : "src/assets/images/vuesax/linear/heart.svg"
+                    }
                     alt="heart"
-                    className="w-6 h-6 cursor-pointer"
+                    className="w-8 h-8 cursor-pointer"
                     onClick={handleHeartClick}
                 />
             </div>
-
             <img
                 src={auto.vehicle.thumbnailUrl || "src/assets/images/Golf.png"}
                 alt="auto"
@@ -100,7 +129,7 @@ export default function AutoCard({ auto }) {
             </div>
 
             {message && ( // Hinweis wird nur angezeigt, wenn die Nachricht nicht leer ist
-                <div className="mt-4 p-2 bg-yellow-100 text-yellow-800 border border-yellow-300 rounded">
+                <div className="absolute mt-20 text-red-500 text-sm">
                     {message}
                 </div>
             )}

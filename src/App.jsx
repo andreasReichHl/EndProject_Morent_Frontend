@@ -1,21 +1,19 @@
 import { useContext, useEffect, useState } from "react";
 import AutoCard from "./components/AutoCard";
-import LocationDate from "./components/LocationDate";
 import Sidebar from "./components/Sidebar";
 import { useLocation, useNavigate } from "react-router-dom";
-import { data } from "autoprefixer";
 import SearchLandingPage from "./components/SearchLandingPage";
 import { AuthContext } from "./hooks/AuthProvider";
-import PopUpPages from "./pages/PopUpPages";
 
 function App() {
     const location = useLocation();
-
     const [isLoading, setLoading] = useState(false);
     const [responseData, setResponseData] = useState(null);
     const navigate = useNavigate();
     const [autos, setAutos] = useState([]);
     const { isLoggedIn } = useContext(AuthContext);
+    const [favorites, setFavorites] = useState(null);
+    const [onFavoriteChange, setFavoriteChange] = useState(false);
 
     useEffect(() => {
         const storedAutos = JSON.parse(sessionStorage.getItem("autos"));
@@ -28,7 +26,6 @@ function App() {
 
     useEffect(() => {
         handleSubmit();
-
     }, []);
 
     const handleSubmit = () => {
@@ -67,6 +64,48 @@ function App() {
         );
     }
 
+    useEffect(() => {
+        handleHeartClick();
+    }, [autos]);
+
+    useEffect(() => {
+        handleHeartClick();
+    }, [autos, onFavoriteChange]);
+
+    const handleHeartClick = async () => {
+        if (!isLoggedIn) {
+            // Optional: Aktion durchführen, wenn der Nutzer nicht eingeloggt ist
+            console.log(
+                "Bitte loggen Sie sich ein, um Favoriten hinzuzufügen."
+            );
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                "http://localhost:8080/api/v1/favorite",
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${sessionStorage.getItem(
+                            "token"
+                        )}`,
+                    },
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Fehler beim Laden der Favoriten.");
+            }
+
+            const result = await response.json();
+            setFavorites(result);
+        } catch (error) {
+            console.error("Fehler beim Laden der Favoriten:", error);
+        }
+    };
+
     return (
         <>
             {/* <PopUpPages /> */}
@@ -75,8 +114,7 @@ function App() {
 
                 <div className="flex flex-col flex-grow">
                     <div className="px-5 mt-1">
-
-                        <SearchLandingPage setAutos={setAutos}/>
+                        <SearchLandingPage setAutos={setAutos} />
 
                         {/* <LocationDate bookingData={autos} /> */}
                     </div>
@@ -85,7 +123,13 @@ function App() {
                     {/* changed layout from flex to grid */}
                     <div className="grid lg:grid-cols-3 p-4 gap-4">
                         {autos.map((auto, index) => (
-                            <AutoCard key={auto.id || index} auto={auto} />
+                            <AutoCard
+                                key={auto.id || index}
+                                auto={auto}
+                                favorites={favorites}
+                                setFavoriteChange={setFavoriteChange}
+                                onFavoriteChange={onFavoriteChange}
+                            />
                         ))}
                     </div>
                 </div>
@@ -93,5 +137,4 @@ function App() {
         </>
     );
 }
-
 export default App;
