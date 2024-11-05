@@ -8,7 +8,6 @@ const ProtectedRouteUser = (props) => {
   const { token } = auth;
   const navigate = useNavigate();
 
-  
   useEffect(() => {
     if (!token) {
       auth.logout();

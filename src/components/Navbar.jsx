@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../hooks/AuthProvider";
 import { useAuth } from "../hooks/AuthProvider";
 import { jwtDecode } from "jwt-decode";
+import logo from "/src/assets/images/logo.svg";
+import userAvatar from "/src/assets/images/user.jpeg@3x.svg";
 
 export default function Navbar() {
   const { isLoggedIn, logOut } = useContext(AuthContext);
@@ -69,8 +71,8 @@ export default function Navbar() {
   return (
     <div className="navbar bg-navBG bg-opacity-40 pr-5">
       <div className="flex-1">
-        <Link to={"/home"}>
-          <img className="ml-2 w-32" src="src/assets/images/logo.svg" />
+        <Link to={"/"}>
+          <img className="ml-2 w-24" src={logo} alt="logo" />
         </Link>
       </div>
       <div className="flex-none">
@@ -102,7 +104,7 @@ export default function Navbar() {
               ) : (
                 <img
                   alt="User avatar"
-                  src="/src/assets/images/user.jpeg@3x.svg"
+                  src={userAvatar}
                   className="w-full h-full rounded-full"
                 />
               )}
