@@ -39,7 +39,6 @@ export default function LogIn() {
             }
 
             const data = await response.json();
-            console.log(data);
             login(data.token);
             navigate("/home");
         } catch (error) {
@@ -49,7 +48,7 @@ export default function LogIn() {
     }
 
     return (
-        <section className=" flex justify-center items-center absolute inset-0 p-6">
+        <section className=" flex justify-center p-6">
             <form
                 onSubmit={loginFunction}
                 className=" bg-navBG bg-opacity-40 p-6 rounded-lg shadow-lg w-96"

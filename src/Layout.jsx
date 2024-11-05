@@ -7,10 +7,7 @@ export default function Layout() {
         <>
             <div className=" font-custom">
                 <Navbar />
-                <main
-                    className="flex-grow min-h-screen bg-primaryBG"
-                    role="main"
-                >
+                <main className="flex-grow h-full bg-primaryBG " role="main">
                     <Outlet />
                 </main>
                 <Footer />

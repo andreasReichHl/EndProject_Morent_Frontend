@@ -1,5 +1,5 @@
 // PickupReturnCard.js
-export default function PickupReturnCard({ title, info, step }) {
+export default function PickupReturnCard({ title, info, step, bookingData }) {
     return (
         <section className="border rounded-md p-6 shadow-md my-4">
             <div className="flex justify-between mb-4">
@@ -14,6 +14,10 @@ export default function PickupReturnCard({ title, info, step }) {
                     Abholort
                 </label>
                 <input
+                    value={
+                        bookingData.storeName + " - " + bookingData.storeCity
+                    }
+                    disabled={true}
                     type="text"
                     name="pickupLocation"
                     id="pickupLocation"
@@ -27,6 +31,8 @@ export default function PickupReturnCard({ title, info, step }) {
                     Abholdatum
                 </label>
                 <input
+                    value={bookingData.pickUpDate}
+                    disabled={true}
                     type="date"
                     name="pickupDate"
                     id="pickupDate"
@@ -34,7 +40,7 @@ export default function PickupReturnCard({ title, info, step }) {
                 />
             </div>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
                 <label htmlFor="pickupTime" className="block font-medium">
                     Abholzeit
                 </label>
@@ -44,6 +50,24 @@ export default function PickupReturnCard({ title, info, step }) {
                     id="pickupTime"
                     className="border rounded-md p-2 text-md w-full mt-1"
                 />
+            </div> */}
+            <div className="mb-4">
+                <label htmlFor="pickupLocation" className="block font-medium">
+                    Rückgabeort
+                </label>
+                <input
+                    value={
+                        bookingData.dropOffStoreName +
+                        " - " +
+                        bookingData.dropOffStoreCity
+                    }
+                    disabled={true}
+                    type="text"
+                    name="pickupLocation"
+                    id="pickupLocation"
+                    placeholder="Rückgabeort eingeben"
+                    className="border rounded-md p-2 text-md w-full mt-1"
+                />
             </div>
 
             <div className="mb-4">
@@ -51,13 +75,15 @@ export default function PickupReturnCard({ title, info, step }) {
                     Rückgabedatum
                 </label>
                 <input
+                    value={bookingData.dropOffDate}
+                    disabled={true}
                     type="date"
                     name="returnDate"
                     id="returnDate"
                     className="border rounded-md p-2 text-md w-full mt-1"
                 />
             </div>
-
+            {/* 
             <div className="mb-4">
                 <label htmlFor="returnTime" className="block font-medium">
                     Rückgabezeit
@@ -68,7 +94,7 @@ export default function PickupReturnCard({ title, info, step }) {
                     id="returnTime"
                     className="border rounded-md p-2 text-md w-full mt-1"
                 />
-            </div>
+            </div> */}
         </section>
     );
 }
