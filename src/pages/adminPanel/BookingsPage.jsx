@@ -29,10 +29,10 @@ export default function BookingsPage() {
           },
         }
       );
-      if (!response.ok) throw new Error("Something went wrong fetching data");
+      if (!response.ok) throw new Error("Something went wrong fetching data: error:", error);
       const data = await response.json();
       if (data) setBookingsList(data);
-      console.log(data);
+  
     } catch (error) {
       console.log(error);
       setError(error);
@@ -100,7 +100,7 @@ export default function BookingsPage() {
         {isLoading && <p>....fetching data</p>}
         {bookingsList &&
           bookingsList.map((b) => (
-            <AdminBookingElement key={b.id} booking={b} />
+            <AdminBookingElement key={b.bookingId} booking={b} />
           ))}
       </div>
     </>

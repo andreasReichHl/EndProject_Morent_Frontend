@@ -79,7 +79,7 @@ export default function SignUp() {
     }
 
     return (
-        <section className=" flex justify-center items-center absolute inset-0 p-6">
+        <section className=" flex justify-center items-center p-6">
             <form
                 onSubmit={signup}
                 className=" bg-navBG bg-opacity-40 p-6 rounded-lg shadow-lg w-96"

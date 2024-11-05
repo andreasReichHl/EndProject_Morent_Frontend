@@ -38,7 +38,7 @@ export default function () {
   }
 
   return (
-    <section className="flex justify-center items-center absolute inset-0 p-6">
+    <section className="flex justify-center items-center p-6">
       <form
         onSubmit={confirmCodeFunction}
         className="bg-navBG bg-opacity-40 p-6 rounded-lg shadow-lg w-96"

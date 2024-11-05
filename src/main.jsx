@@ -10,9 +10,7 @@ import BookingsPage from "./pages/adminPanel/BookingsPage.jsx";
 import StoresPage from "./pages/adminPanel/StoresPage.jsx";
 import UsersPage from "./pages/adminPanel/UsersPage.jsx";
 import VehiclesPage from "./pages/adminPanel/VehiclesPage.jsx";
-import BookingPage from "./pages/BookingPage.jsx";
 import ConfirmRegistrationCode from "./pages/ConfirmRegistrationCode.jsx";
-import LandingPage from "./pages/LandingPage.jsx";
 import LogIn from "./pages/LogIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import ProtectedRouteAdmin from "./hooks/ProtectedRouteAdmin.jsx";
@@ -20,76 +18,89 @@ import LandingPage from "./pages/LandingPage.jsx";
 import BookingPage from "./pages/BookingPage.jsx";
 import HandoverPage from "./pages/adminPanel/HandoverPage.jsx";
 import UserProfilePage from "./pages/UserProfilePage.jsx";
+import ProtectedRouteUser from "./hooks/ProtectedRouteUser.jsx";
 
 // Router-Konfiguration
 const router = createBrowserRouter([
-    {
-        path: "",
-        element: <LandingPage />,
-    },
-    {
-        path: "/",
-        element: <Layout />,
+  {
+    path: "",
+    element: <LandingPage />,
+  },
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: "home",
+        element: <App />,
+      },
+      {
+        path: "login",
+        element: <LogIn />,
+      },
+      {
+        path: "signup",
+        element: <SignUp />,
+      },
+      {
+        path: "confirm-code",
+        element: <ConfirmRegistrationCode />,
+      },
+      {
+        path: "booking",
+        element: <BookingPage />,
+      },
+      {
+        path: "user",
+        element: <ProtectedRouteUser />,
         children: [
-            {
-                path: "home",
-                element: <App />,
-            },
-            {
-                path: "login",
-                element: <LogIn />,
-            },
-            {
-                path: "signup",
-                element: <SignUp />,
-            },
-            {
-                path: "confirm-code",
-                element: <ConfirmRegistrationCode />,
-            },
-            {
-                path: "booking",
-                element: <BookingPage />,
-            },
-            {
-              path: "profil",
-              element: <UserProfilePage />
-            }
+          {
+            path: "profil",
+            element: <UserProfilePage />,
+          },
         ],
-    },
-    {
-        path: "admin-panel",
+      },
+    ],
+  },
+  {
+    path: "admin-panel",
+    element: <ProtectedRouteAdmin />,
+    children: [
+      {
+        path: "",
         element: <AdminLayout />,
         children: [
-            {
-                path: "stores",
-                element: <StoresPage />,
-            },
-            {
-                path: "vehicles",
-                element: <VehiclesPage />,
-            },
-            {
-                path: "bookings",
-                element: <BookingsPage />,
-            },
-            {
-                path: "users",
-                element: <UsersPage />,
-            },
-            {
-                path: "handover",
-                element: <HandoverPage />,
-            },
+          {
+            path: "stores",
+            element: <StoresPage />,
+          },
+          {
+            path: "vehicles",
+            element: <VehiclesPage />,
+          },
+          {
+            path: "bookings",
+            element: <BookingsPage />,
+          },
+          {
+            path: "users",
+            element: <UsersPage />,
+          },
+          {
+            path: "handover",
+            element: <HandoverPage />,
+          },
         ],
-    },
+      },
+    ],
+  },
 ]);
 
 // Rendering des Root-Elements
 createRoot(document.getElementById("root")).render(
-    <StrictMode>
-        <AuthProvider>
-            <RouterProvider router={router} />
-        </AuthProvider>
-    </StrictMode>
+  <StrictMode>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  </StrictMode>
 );
