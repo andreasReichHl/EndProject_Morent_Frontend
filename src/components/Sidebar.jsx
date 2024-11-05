@@ -103,7 +103,7 @@ export default function Sidebar({ filter }) {
       <div
         className={`${isOpen ? "flex" : "hidden"} lg:flex flex-col ${
           isCollapsed ? "w-16" : "md:w-64"
-        } h-screen transition-width duration-300  bg-white text-black ${
+        } min-h-screen transition-width duration-300  bg-white text-black ${
           isOpen && "fixed top-0 left-0 w-full sm:full z-50"
         }`}
       >
@@ -118,7 +118,7 @@ export default function Sidebar({ filter }) {
           )}
         </button>
 
-        <nav className="flex-1">
+        <nav className="">
           <ul className="space-y-4">
             {/* Fuel Types */}
             <li className="flex flex-col">
