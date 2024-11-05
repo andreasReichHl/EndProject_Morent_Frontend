@@ -100,9 +100,13 @@ export default function InputLocation({
                 <div className="flex flex-col sm:pt-4 h-20">
                     <div className="flex items-center border p-3 rounded-lg">
                         <img
-                            src={!isSelected ? locationIcon : houseSvg}
-                            alt="house"
-                            className="w-6 h-6"
+                            src={
+                                inputValue || locationName
+                                    ? houseSvg
+                                    : locationIcon
+                            }
+                            alt="icon"
+                            className="w-5 h-5"
                         />
                         <input
                             type="text"
@@ -127,7 +131,7 @@ export default function InputLocation({
                                 className="ml-2 p-1 text-white rounded"
                                 onClick={handleClearInput}
                             >
-                                <img src={deleteSvg} alt="" />
+                                <img src={deleteSvg} alt="Clear input" />
                             </button>
                         )}
                     </div>

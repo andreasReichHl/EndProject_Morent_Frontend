@@ -104,7 +104,7 @@ export default function BillingInfo({
                 address: updatedAddress,
             }));
         }
-    }, [userData.address, setUserData]);
+    }, []);
 
     useEffect(() => {
         const isFormComplete = [

@@ -15,10 +15,11 @@ import LogIn from "./pages/LogIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import ProtectedRouteAdmin from "./hooks/ProtectedRouteAdmin.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
-import BookingPage from "./pages/BookingPage.jsx";
 import HandoverPage from "./pages/adminPanel/HandoverPage.jsx";
 import UserProfilePage from "./pages/UserProfilePage.jsx";
 import ProtectedRouteUser from "./hooks/ProtectedRouteUser.jsx";
+import DashBoardUser from "./pages/DashBoardUser.jsx";
+
 
 // Router-Konfiguration
 const router = createBrowserRouter([
@@ -54,10 +55,20 @@ const router = createBrowserRouter([
         path: "user",
         element: <ProtectedRouteUser />,
         children: [
+
           {
             path: "profil",
             element: <UserProfilePage />,
           },
+  {
+                path: "booking",
+                element: <BookingPage />,
+            },
+  {
+                path: "dashboard",
+                element: <DashBoardUser />,
+            },
+
         ],
       },
     ],
@@ -98,9 +109,11 @@ const router = createBrowserRouter([
 
 // Rendering des Root-Elements
 createRoot(document.getElementById("root")).render(
+
   <StrictMode>
     <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
   </StrictMode>
+
 );

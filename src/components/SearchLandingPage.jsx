@@ -123,7 +123,6 @@ export default function SearchLandingPage({setAutos}) {
         }
     };
 
-
     const handleSubmit = () => {
         const locationData = {
             startDate: pickUpDate,
@@ -135,16 +134,14 @@ export default function SearchLandingPage({setAutos}) {
         };
 
         setLoading(true);
-        fetch(
-            "http://localhost:8080/api/v1/vehicles/exemplars",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(bookingData),
-            }
-        )
+
+        fetch("http://localhost:8080/api/v1/vehicles/exemplars", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bookingData),
+        })
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Network response was not ok");

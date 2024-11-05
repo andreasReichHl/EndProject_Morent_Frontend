@@ -4,7 +4,7 @@ import ConfirmationInfo from "../components/Billing/ConfirmationInfo";
 import PaymentInfo from "../components/Billing/PaymentInfo";
 import PickupReturnCard from "../components/Billing/PickupReturnCard";
 import RentalSummary from "../components/Billing/RentalSummary";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function BookingPage() {
     const [isLoading, setLoading] = useState(false);
@@ -18,6 +18,7 @@ export default function BookingPage() {
     const [errorMessageTerm, setErrorMessagesTerm] = useState("");
     const [userProfileRequest, setUserProfileRequest] = useState(null);
     const carId = carState.state;
+    const navigate = useNavigate();
 
     // first fetch for bookingdata
 
@@ -54,8 +55,6 @@ export default function BookingPage() {
         }
     }, [userData]);
 
-    console.log(bookingRequest);
-
     useEffect(() => {
         const submitBookingRequest = async () => {
             if (bookingRequest) {
@@ -82,6 +81,9 @@ export default function BookingPage() {
             }
         };
         submitBookingRequest();
+        // if (error) {
+        //     return <ErrorPage />; // Fehler tritt auf, ErrorPage wird angezeigt
+        // }
     }, [bookingRequest]);
 
     // get user data
@@ -139,9 +141,11 @@ export default function BookingPage() {
                     const errorData = await postResponse.json();
                     setErrorMessagesTerm(
                         errorData.message ||
-                            "Fehler bei der Buchungsbestätigung"
+                            "Fehler beim Aktualisieren der Benutzerdaten"
                     );
-                    throw new Error("Fehler bei der Buchungsbestätigung");
+                    throw new Error(
+                        "Fehler beim Aktualisieren der Benutzerdaten"
+                    );
                 }
 
                 const postResult = await postResponse.json();
@@ -165,11 +169,9 @@ export default function BookingPage() {
 
                     setErrorMessagesTerm(
                         errorData.message ||
-                            "Fehler beim Aktualisieren der Benutzerdaten"
+                            "Fehler bei der Buchungsbestätigung"
                     );
-                    throw new Error(
-                        "Fehler beim Aktualisieren der Benutzerdaten"
-                    );
+                    throw new Error();
                 }
 
                 const putResult = await putResponse.json();
@@ -177,6 +179,7 @@ export default function BookingPage() {
                     "Benutzerdaten erfolgreich aktualisiert:",
                     putResult
                 );
+                navigate("/dashboard");
             } catch (error) {
                 console.error("Fehler während des Buchungsprozesses:", error);
             } finally {
