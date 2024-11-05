@@ -11,19 +11,31 @@ const ProtectedRouteUser = (props) => {
   
   useEffect(() => {
     if (!token) {
-      auth.logOut();
-      navigate("/home");
+      auth.logout();
+      navigate("/login");
     }
-    const decodedToken = jwtDecode(token);
-    if (
-      token &&
-      (decodedToken.role !== "admin" && decodedToken.role !== "user")
-    ) {
-      navigate("/home");
-    }
+    /* try {
+      const decodedToken = jwtDecode(token);
+      if (
+        decodedToken.scope !== "Admin" &&
+        decodedToken.scope !== "Manager" &&
+        decodedToken.scope !== "Accountant" &&
+        
+      ) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Token decoding failed: ", error);
+      auth.logout();
+      navigate("/");
+    } */
   }, [token, auth, navigate]);
 
-  return <Outlet {...props} />;
+  return token ? (
+    <Outlet {...props} />
+  ) : (
+    <span className="loading loading-spinner loading-lg"></span>
+  );
 };
 
 export default ProtectedRouteUser;

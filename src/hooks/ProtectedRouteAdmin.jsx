@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "./AuthProvider";
 
@@ -9,20 +9,31 @@ const ProtectedRouteAdmin = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(token)
     if (!token) {
-      auth.logOut();
-      navigate("/home");
+      auth.logout();
+      navigate("/");
     }
-    console.log("222: " + token)
-    const decodedToken = jwtDecode(token);
-    console.log(decodedToken.scope)
-    if (token && decodedToken.scope !== "Admin") {
-      navigate("/home");
+    try {
+      const decodedToken = jwtDecode(token);
+      if (
+        decodedToken.scope !== "Admin" &&
+        decodedToken.scope !== "Manager" &&
+        decodedToken.scope !== "Accountant"
+      ) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Token decoding failed: ", error);
+      auth.logout();
+      navigate("/");
     }
   }, [token, auth, navigate]);
 
-  return <Outlet {...props} />;
+  return token ? (
+    <Outlet {...props} />
+  ) : (
+    <span className="loading loading-spinner loading-lg"></span>
+  );
 };
 
 export default ProtectedRouteAdmin;

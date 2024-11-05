@@ -1,8 +1,12 @@
+
 import { useContext, useEffect, useState } from "react";
+
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../hooks/AuthProvider";
+import { useAuth } from "../hooks/AuthProvider";
 
 export default function Navbar() {
+
     const { isLoggedIn, logOut } = useContext(AuthContext);
     const [userData, setUserData] = useState(null);
     const [firstLetter, setLetter] = useState("");
@@ -65,10 +69,10 @@ export default function Navbar() {
                 <div className="text-1xl underline">
                     {!isLoggedIn && <Link to="/signUp">Registrieren</Link>}
                 </div>
+
                 <img
-                    src="src/assets/images/vuesax/bold/vuesax/bold/notification.svg"
-                    alt="notification"
-                    className=" mx-4"
+                  alt="Tailwind CSS Navbar component"
+                  src="/src/assets/images/user.jpeg@3x.svg"
                 />
 
                 <div className="dropdown dropdown-end">
@@ -116,6 +120,31 @@ export default function Navbar() {
                     </ul>
                 </div>
             </div>
+          </div>
+
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+          >
+            <li>
+              <Link to="/user/profil">Profil</Link>
+            </li>
+            <li>
+              <Link to="/signUp">Registrieren</Link>
+            </li>
+            {!isLoggedIn && (
+              <li>
+                <Link to="/login">Log In</Link>
+              </li>
+            )}
+            {isLoggedIn && (
+              <li>
+                <button onClick={handleLogOut}>Logout</button>
+              </li>
+            )}
+          </ul>
         </div>
-    );
+      </div>
+    </div>
+  );
 }

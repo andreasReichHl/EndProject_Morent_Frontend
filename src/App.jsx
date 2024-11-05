@@ -28,6 +28,7 @@ function App() {
 
     useEffect(() => {
         handleSubmit();
+
     }, []);
 
     const handleSubmit = () => {
@@ -74,7 +75,9 @@ function App() {
 
                 <div className="flex flex-col flex-grow">
                     <div className="px-5 mt-1">
-                        <SearchLandingPage setAutos={setAutos} />
+
+                        <SearchLandingPage setAutos={setAutos}/>
+
                         {/* <LocationDate bookingData={autos} /> */}
                     </div>
 

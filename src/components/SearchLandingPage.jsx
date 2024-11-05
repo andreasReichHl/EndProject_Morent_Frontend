@@ -6,7 +6,7 @@ import InputLocation from "./InputLocation";
 import { json, useNavigate } from "react-router-dom";
 import plussSvg from "../assets/images/pluss.svg";
 
-export default function SearchLandingPage() {
+export default function SearchLandingPage({setAutos}) {
     const history = sessionStorage.getItem("locationId")
         ? JSON.parse(sessionStorage.getItem("locationId"))
         : {};
@@ -123,10 +123,6 @@ export default function SearchLandingPage() {
         }
     };
 
-    // useEffect(() => {
-    //     handleSubmit();
-    // }, []);
-
     const handleSubmit = () => {
         const locationData = {
             startDate: pickUpDate,
@@ -138,6 +134,7 @@ export default function SearchLandingPage() {
         };
 
         setLoading(true);
+
         fetch("http://localhost:8080/api/v1/vehicles/exemplars", {
             method: "POST",
             headers: {
@@ -158,6 +155,7 @@ export default function SearchLandingPage() {
                     JSON.stringify(locationData)
                 );
                 sessionStorage.setItem("autos", JSON.stringify(data));
+                setAutos(data);
                 navigate("/home", { state: data });
             })
             .catch((error) => {
