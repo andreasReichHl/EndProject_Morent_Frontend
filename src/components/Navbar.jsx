@@ -3,13 +3,16 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../hooks/AuthProvider";
 import { useAuth } from "../hooks/AuthProvider";
+import { jwtDecode } from "jwt-decode";
 
 export default function Navbar() {
   const { isLoggedIn, logOut } = useContext(AuthContext);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [userData, setUserData] = useState(null);
   const [firstLetter, setLetter] = useState("");
   const navigate = useNavigate();
   const auth = useAuth();
+  const token = sessionStorage.getItem("token");
 
   useEffect(() => {
     const submitUserRequest = async () => {
@@ -49,7 +52,20 @@ export default function Navbar() {
     auth.logout();
     navigate("/");
   };
-    
+
+  useEffect(() => {
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      if (
+        decodedToken.scope !== "Admin" ||
+        decodedToken.scope !== "Manager" ||
+        decodedToken.scope !== "Accountant"
+      )
+        setIsAdmin(true);
+      else setIsAdmin(false);
+    }
+  }, [token]);
+
   return (
     <div className="navbar bg-navBG bg-opacity-40 pr-5">
       <div className="flex-1">
@@ -58,10 +74,19 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="flex-none">
-        <div className="text-1xl underline">
-                  {!isLoggedIn && <Link to="/signUp">Registrieren</Link>}
-                
-        </div>
+        {!isLoggedIn && (
+          <Link className="btn btn-ghost mr-4 hover:bg-opacity-50" to="/signUp">
+            Registrieren
+          </Link>
+        )}
+        {isAdmin && (
+          <Link
+            className="btn btn-ghost mr-4 hover:bg-opacity-50"
+            to="/admin-panel/bookings"
+          >
+            Admin Panel
+          </Link>
+        )}
 
         <div className="dropdown dropdown-end">
           <div

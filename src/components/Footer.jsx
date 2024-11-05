@@ -3,7 +3,7 @@ import FooterCopyright from "./FooterCopyright";
 export default function Footer() {
     return (
         <>
-            <footer className="footer bg-navBG bg-opacity-40 text-base-content p-10 gap-8">
+            <footer className="footer bg-navBG bg-opacity-40 text-base-content p-10 gap-8 z-10">
                 <div>
                     <h2 className="text-blue-700 text-2xl font-bold">MORENT</h2>
                     <p>
