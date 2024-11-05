@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import burgerMenu from "../assets/images/menu.svg";
 import arrow from "../assets/images/arrow.svg";
-import { useNavigate } from "react-router-dom";
 
-export default function Sidebar({ filter }) {
+export default function Sidebar({ filter, setAutos }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [price, setPrice] = useState(100);
-  const navigate = useNavigate();
-
+  const [filterData, setFilterData] = useState({});
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
     setIsOpen(false);
@@ -53,43 +51,54 @@ export default function Sidebar({ filter }) {
       : [...selected, value];
 
     setSelected(updatedSelection);
-
     const locationData = JSON.parse(sessionStorage.getItem("locationId"));
 
-    setTimeout(async () => {
-      const locationData = JSON.parse(sessionStorage.getItem("locationId"));
+    setFilterData({
+      startDate: locationData.startDate,
+      storeId: locationData.storeId,
+      endDate: locationData.endDate,
+      fuelType: category === "fuel" ? updatedSelection : selectedFuelTypes,
+      carType: category === "vehicle" ? updatedSelection : selectedVehicleTypes,
+      seats: category === "seat" ? updatedSelection : selectedSeats,
+      pricePerDay: price,
+    });
+  };
 
-      const newFilterData = {
-        startDate: locationData.startDate,
-        storeId: locationData.storeId,
-        endDate: locationData.endDate,
-        fuelType: category === "fuel" ? updatedSelection : selectedFuelTypes,
-        carType:
-          category === "vehicle" ? updatedSelection : selectedVehicleTypes,
-        seats: category === "seat" ? updatedSelection : selectedSeats,
-        pricePerDay: price,
-      };
+  useEffect(() => {
+    const locationData = JSON.parse(sessionStorage.getItem("locationId"));
+    setFilterData((prevData) => ({
+      ...prevData,
+      pricePerDay: price,
+      startDate: locationData.startDate,
+      storeId: locationData.storeId,
+      endDate: locationData.endDate,
+    }));
+  }, [price]);
 
+  useEffect(() => {
+    console.log(JSON.stringify(filterData));
+    async function fetchData() {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/v1/vehicles/exemplars?pageNo=0&recordCount=10",
+          "http://localhost:8080/api/v1/vehicles/exemplars",
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(newFilterData),
+            body: JSON.stringify(filterData),
           }
         );
         const data = await response.json();
-        navigate("/home", { state: data });
+        setAutos(data);
         console.log("API Response:", data);
-        console.log(newFilterData);
+        console.log(filterData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
-    }, 0); // Kleines Timeout, um sicherzustellen, dass Zustand aktualisiert wird
-  };
+    }
+    fetchData();
+  }, [filterData, setAutos]);
 
   return (
     <div>
@@ -103,7 +112,7 @@ export default function Sidebar({ filter }) {
       <div
         className={`${isOpen ? "flex" : "hidden"} lg:flex flex-col ${
           isCollapsed ? "w-16" : "md:w-64"
-        } min-h-screen transition-width duration-300  bg-white text-black ${
+        } h-screen transition-width duration-300  bg-white text-black ${
           isOpen && "fixed top-0 left-0 w-full sm:full z-50"
         }`}
       >
@@ -118,7 +127,7 @@ export default function Sidebar({ filter }) {
           )}
         </button>
 
-        <nav className="">
+        <nav className="flex-1">
           <ul className="space-y-4">
             {/* Fuel Types */}
             <li className="flex flex-col">
