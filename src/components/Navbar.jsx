@@ -3,20 +3,13 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../hooks/AuthProvider";
 import { useAuth } from "../hooks/AuthProvider";
-import { jwtDecode } from "jwt-decode";
-import logo from "/src/assets/images/logo.svg";
-import userAvatar from "/src/assets/images/user.jpeg@3x.svg";
-import AdminPanelLogo from "/src/assets/images/vuesax/bold/setting-2.svg";
 
 export default function Navbar() {
   const { isLoggedIn, logOut } = useContext(AuthContext);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [userData, setUserData] = useState(null);
   const [firstLetter, setLetter] = useState("");
   const navigate = useNavigate();
   const auth = useAuth();
-  const [imageProfile, setImageProfile] = useState(null);
-  const token = sessionStorage.getItem("token");
 
   useEffect(() => {
     const submitUserRequest = async () => {
@@ -50,49 +43,25 @@ export default function Navbar() {
       letter = letter.toUpperCase();
       setLetter(letter);
     }
-    if (userData && userData.profilePictureUrl)
-      setImageProfile(userData.profilePictureUrl);
   }, [userData]);
 
   const handleLogout = () => {
     auth.logout();
     navigate("/");
   };
-
-  useEffect(() => {
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      if (
-        decodedToken.scope !== "Admin" ||
-        decodedToken.scope !== "Manager" ||
-        decodedToken.scope !== "Accountant"
-      )
-        setIsAdmin(true);
-      else setIsAdmin(false);
-    }
-  }, [token]);
-
+    
   return (
     <div className="navbar bg-navBG bg-opacity-40 pr-5">
       <div className="flex-1">
-        <Link to={"/"}>
-          <img className="ml-2 w-24" src={logo} alt="logo" />
+        <Link to={"/home"}>
+          <img className="ml-2 w-32" src="src/assets/images/logo.svg" />
         </Link>
       </div>
       <div className="flex-none">
-        {!isLoggedIn && (
-          <Link className="btn btn-ghost mr-4 hover:bg-opacity-50" to="/signUp">
-            Registrieren
-          </Link>
-        )}
-        {isAdmin && (
-          <Link
-            className="btn btn-ghost mr-4 hover:bg-opacity-50"
-            to="/admin-panel/bookings"
-          >
-            <img src={AdminPanelLogo} alt="settingLogo" />
-          </Link>
-        )}
+        <div className="text-1xl underline">
+                  {!isLoggedIn && <Link to="/signUp">Registrieren</Link>}
+                
+        </div>
 
         <div className="dropdown dropdown-end">
           <div
@@ -100,23 +69,15 @@ export default function Navbar() {
             role="button"
             className="btn btn-ghost btn-circle avatar"
           >
-            <div className="w-12 h-12 rounded-full bg-white p-1">
+            <div className="w-10 h-10 rounded-full bg-white p-1">
               {isLoggedIn ? (
-                imageProfile ? (
-                  <img
-                    alt="User Profile"
-                    src={imageProfile}
-                    className="w-full h-full rounded-full"
-                  />
-                ) : (
-                  <span className="text-2xl bg-slate-400 rounded-full text-white font-light w-8 h-8 flex items-center justify-center">
-                    {firstLetter || "Z"}
-                  </span>
-                )
+                <span className="text-2xl bg-slate-400 rounded-full text-white font-light w-8 h-8 flex items-center justify-center">
+                  {firstLetter || "Z"}
+                </span>
               ) : (
                 <img
-                  alt="Default Avatar"
-                  src={userAvatar}
+                  alt="User avatar"
+                  src="/src/assets/images/user.jpeg@3x.svg"
                   className="w-full h-full rounded-full"
                 />
               )}

@@ -6,7 +6,6 @@ import SearchLandingPage from "./components/SearchLandingPage";
 import { AuthContext } from "./hooks/AuthProvider";
 
 function App() {
-
     const location = useLocation();
     const [isLoading, setLoading] = useState(false);
     const [responseData, setResponseData] = useState(null);
@@ -16,51 +15,54 @@ function App() {
     const [favorites, setFavorites] = useState(null);
     const [onFavoriteChange, setFavoriteChange] = useState(false);
 
+    useEffect(() => {
+        const storedAutos = JSON.parse(sessionStorage.getItem("autos"));
+        setAutos(storedAutos);
+    }, []);
 
+    {
+        !autos && navigate("/");
+    }
 
-  useEffect(() => {
-    const storedAutos = JSON.parse(sessionStorage.getItem("autos"));
-    setAutos(storedAutos);
-  }, []);
+    useEffect(() => {
+        handleSubmit();
+    }, []);
 
-  {
-    !autos && navigate("/");
-  }
+    const handleSubmit = () => {
+        setLoading(true);
 
+        fetch("http://localhost:8080/api/v1/vehicles/count", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: sessionStorage.getItem("locationId"),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                setLoading(false);
+                return response.json();
+            })
+            .then((data) => {
+                setResponseData(data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setLoading(false);
+                console.error("Error during submission:", error);
+                // Hier kannst du eine Fehlermeldung anzeigen, falls nötig
+            });
+    };
 
-  useEffect(() => {
-    handleSubmit();
-  }, []);
-
-  const handleSubmit = () => {
-    setLoading(true);
-
-
-    fetch("http://localhost:8080/api/v1/vehicles/count", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: sessionStorage.getItem("locationId"),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        setLoading(false);
-        return response.json();
-      })
-      .then((data) => {
-        setResponseData(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.error("Error during submission:", error);
-        // Hier kannst du eine Fehlermeldung anzeigen, falls nötig
-      });
-  };
-
+    if (!autos) {
+        return (
+            <h1 className="text-red-500 text-center">
+                No booking data available.
+            </h1>
+        );
+    }
 
     useEffect(() => {
         handleHeartClick();
@@ -133,12 +135,6 @@ function App() {
                 </div>
             </div>
         </>
-
-  if (!autos) {
-    return (
-      <h1 className="text-red-500 text-center">No booking data available.</h1>
-
     );
-  }
-
+}
 export default App;
