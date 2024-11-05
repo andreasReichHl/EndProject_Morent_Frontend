@@ -179,7 +179,7 @@ export default function BookingPage() {
                     "Benutzerdaten erfolgreich aktualisiert:",
                     putResult
                 );
-                navigate("/dashboard");
+                navigate("/user/dashboard");
             } catch (error) {
                 console.error("Fehler während des Buchungsprozesses:", error);
             } finally {
