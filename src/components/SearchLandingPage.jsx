@@ -7,9 +7,6 @@ import { json, useNavigate } from "react-router-dom";
 import plussSvg from "../assets/images/pluss.svg";
 
 export default function SearchLandingPage({setAutos}) {
-    const history = sessionStorage.getItem("locationId")
-        ? JSON.parse(sessionStorage.getItem("locationId"))
-        : {};
 
     const [pickUpDate, setPickUpDate] = useState("");
     const [dropOffDate, setDropOffUpDate] = useState("");
@@ -144,7 +141,7 @@ export default function SearchLandingPage({setAutos}) {
         })
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error("Network response was not ok");
+                    throw new Error("Network response was not ok -  get no exemplars");
                 }
                 setLoading(false);
                 return response.json();
