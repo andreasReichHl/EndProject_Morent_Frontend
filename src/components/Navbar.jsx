@@ -108,7 +108,7 @@ export default function Navbar() {
                     className="w-full h-full rounded-full"
                   />
                 ) : (
-                  <span className="text-2xl bg-slate-400 rounded-full text-white font-light w-8 h-8 flex items-center justify-center">
+                  <span className="text-2xl bg-slate-400 rounded-full text-white font-light w-10 h-10 flex items-center justify-center">
                     {firstLetter || "Z"}
                   </span>
                 )
