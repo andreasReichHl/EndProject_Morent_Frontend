@@ -83,7 +83,7 @@ export default function DashBoardUser() {
                         Abgelaufene Buchungen
                     </button>
                 </div>
-                <div className="flex  md:flex-wrap gap-6 justify-center">
+                <div className="flex  flex-wrap gap-6 justify-center">
                     {getFilteredBookings().length > 0 ? (
                         getFilteredBookings().map((booking) => (
                             <DashboardCard

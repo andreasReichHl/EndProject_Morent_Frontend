@@ -42,8 +42,6 @@ export default function SearchLandingPage() {
         }
     }, []);
 
-    
-
     const navigate = useNavigate();
 
     function isDateInPast(pickUpDate, dropOffDate) {
@@ -99,7 +97,7 @@ export default function SearchLandingPage() {
     const bookingData = {
         startDate: pickUpDate,
         storeId: pickUpId,
-        endDate: dropOffId,
+        endDate: dropOffDate,
         carType,
         fuelType,
         seats,
@@ -125,6 +123,10 @@ export default function SearchLandingPage() {
         }
     };
 
+    // useEffect(() => {
+    //     handleSubmit();
+    // }, []);
+
     const handleSubmit = () => {
         const locationData = {
             startDate: pickUpDate,
@@ -136,16 +138,13 @@ export default function SearchLandingPage() {
         };
 
         setLoading(true);
-        fetch(
-            "http://localhost:8080/api/v1/vehicles/exemplars?pageNo=0&recordCount=10",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(bookingData),
-            }
-        )
+        fetch("http://localhost:8080/api/v1/vehicles/exemplars", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bookingData),
+        })
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
