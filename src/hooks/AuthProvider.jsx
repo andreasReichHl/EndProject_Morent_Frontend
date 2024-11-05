@@ -28,7 +28,6 @@ const AuthProvider = ({ children }) => {
         if (!response.ok) {
           logout();
         }
-          console.log("accepted")
       });
     }
   }, []);

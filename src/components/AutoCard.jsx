@@ -22,7 +22,6 @@ export default function AutoCard({
                     foundFavorite = true;
                 }
             });
-            console.log(foundFavorite);
             setFavorite(foundFavorite);
         }
     }, [favorites, auto]);
@@ -95,7 +94,7 @@ export default function AutoCard({
                         className="w-5 h-5"
                     />
                     <p className="text-gray-700">
-                        {auto.vehicle.consumption} L/100km
+                        {auto.vehicle.fuelType}
                     </p>
                 </div>
                 <div className="flex items-center gap-2">
