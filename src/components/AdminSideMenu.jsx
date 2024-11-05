@@ -27,7 +27,9 @@ export default function AdminSideMenu() {
       </button>
 
       <div
+
         className={`${isOpen ? "flex" : "hidden"} lg:flex lg:flex-col ${
+
           isCollapsed ? "w-16" : "md:w-64"
         } h-full transition-width duration-300  bg-base-200 text-black ${
           isOpen && "fixed top-0 left-0 w-full sm:full z-50"

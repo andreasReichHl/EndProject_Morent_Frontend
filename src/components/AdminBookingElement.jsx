@@ -1,10 +1,10 @@
-
-
 export default function AdminBookingElement({ booking }) {
+
 
   return (
     <>
       {booking && (
+
         <div className="p-6 w-full max-w-4xl mx-auto bg-blue-50 rounded-lg shadow-lg border border-blue-200">
           <h2 className="text-2xl font-semibold text-blue-700 mb-4">
             Booking Details
@@ -50,6 +50,7 @@ export default function AdminBookingElement({ booking }) {
               </span>
             </p>
           </div>
+
         </div>
       )}
     </>

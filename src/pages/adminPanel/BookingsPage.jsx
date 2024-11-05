@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import AdminBookingElement from "../../components/AdminBookingElementCard";
 
 export default function BookingsPage() {
@@ -9,6 +10,7 @@ export default function BookingsPage() {
   const [storeId, setStoreId] = useState(0);
   const [error, setError] = useState(null);
   const [bookingsList, setBookingsList] = useState([]);
+
 
   useEffect(() => {
     fetchData();
@@ -22,6 +24,7 @@ export default function BookingsPage() {
         `${
           import.meta.env.VITE_BACKEND
         }/api/v1/booking/admin/search?bookingNumber=${bookingNumber}&firstName=${firstName}&lastName=${lastName}&storeId=${storeId}`,
+
         {
           method: "GET",
           headers: {
@@ -94,6 +97,7 @@ export default function BookingsPage() {
                 onChange={(e) => setFirstName(e.target.value)}
               />
             </div>
+
           </div>
         </section>
         {error && <p>{error.message}</p>}
@@ -101,6 +105,7 @@ export default function BookingsPage() {
         {bookingsList &&
           bookingsList.map((b) => (
             <AdminBookingElement key={b.bookingId} booking={b} />
+
           ))}
       </div>
     </>
