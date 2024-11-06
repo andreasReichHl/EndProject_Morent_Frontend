@@ -37,7 +37,7 @@ export default function AutoCard({
 
         try {
             const response = await fetch(
-                `http://localhost:8080/api/v1/favorite?vehicleId=${auto.vehicle.id}`,
+                `${import.meta.env.VITE_BACKEND}/api/v1/favorite?vehicleId=${auto.vehicle.id}`,
                 {
                     method: "POST",
                     headers: {

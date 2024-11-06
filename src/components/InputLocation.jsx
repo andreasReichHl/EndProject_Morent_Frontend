@@ -43,7 +43,7 @@ export default function InputLocation({
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/store/geosearch?city=${encodeURIComponent(
+        `${import.meta.env.VITE_BACKEND}/api/v1/store/geosearch?city=${encodeURIComponent(
           searchTerm
         )}`
       );

@@ -134,7 +134,7 @@ export default function SearchLandingPage({ setAutos, setSearchBar }) {
 
     setLoading(true);
 
-    fetch("http://localhost:8080/api/v1/vehicles/exemplars", {
+    fetch(`${import.meta.env.VITE_BACKEND}/api/v1/vehicles/exemplars`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

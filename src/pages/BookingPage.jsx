@@ -63,7 +63,7 @@ export default function BookingPage() {
             if (bookingRequest) {
                 try {
                     const response = await fetch(
-                        "http://localhost:8080/api/v1/booking/info",
+                        `${import.meta.env.VITE_BACKEND}/api/v1/booking/info`,
                         {
                             method: "POST",
                             headers: {
@@ -93,7 +93,7 @@ export default function BookingPage() {
             if (bookingData) {
                 try {
                     const response = await fetch(
-                        "http://localhost:8080/api/v1/user",
+                        `${import.meta.env.VITE_BACKEND}/api/v1/user`,
                         {
                             method: "GET",
                             headers: {
@@ -125,7 +125,7 @@ export default function BookingPage() {
                 if (isSaveAddress) {
                     try {
                         const postResponse = await fetch(
-                            "http://localhost:8080/api/v1/user/update",
+                            `${import.meta.env.VITE_BACKEND}/api/v1/user/update`,
                             {
                                 method: "PUT",
                                 headers: {
@@ -165,7 +165,7 @@ export default function BookingPage() {
                 // Zweiter Request zur Buchungsbestätigung
                 try {
                     const putResponse = await fetch(
-                        "http://localhost:8080/api/v1/booking",
+                        `${import.meta.env.VITE_BACKEND}/api/v1/booking`,
                         {
                             method: "POST",
                             headers: {

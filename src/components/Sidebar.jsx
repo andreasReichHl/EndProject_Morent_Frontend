@@ -80,7 +80,7 @@ export default function Sidebar({ filter, setAutos }) {
     async function fetchData() {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/v1/vehicles/exemplars",
+          `${import.meta.env.VITE_BACKEND}/api/v1/vehicles/exemplars`,
           {
             method: "POST",
             headers: {
