@@ -93,9 +93,7 @@ export default function AutoCard({
                         alt="fuel"
                         className="w-5 h-5"
                     />
-                    <p className="text-gray-700">
-                        {auto.vehicle.fuelType}
-                    </p>
+                    <p className="text-gray-700">{auto.vehicle.fuelType}</p>
                 </div>
                 <div className="flex items-center gap-2">
                     <img
@@ -120,7 +118,7 @@ export default function AutoCard({
             <div className="flex justify-between items-center">
                 <p className="text-lg">
                     <span className="font-bold text-blue-700">
-                        €{auto.pricePerDay} /
+                        {auto.pricePerDay} € /
                     </span>{" "}
                     Tag
                 </p>

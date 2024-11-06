@@ -18,6 +18,7 @@ export default function BookingPage() {
     const carState = useLocation();
     const [errorMessageTerm, setErrorMessagesTerm] = useState("");
     const [userProfileRequest, setUserProfileRequest] = useState(null);
+    const [isSaveAddress, setSaveAddress] = useState(false);
     const carId = carState.state;
     const navigate = useNavigate();
 
@@ -82,9 +83,6 @@ export default function BookingPage() {
             }
         };
         submitBookingRequest();
-        // if (error) {
-        //     return <ErrorPage />; // Fehler tritt auf, ErrorPage wird angezeigt
-        // }
     }, [bookingRequest]);
 
     // get user data
@@ -99,9 +97,8 @@ export default function BookingPage() {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
-                                Authorization: `Bearer ${token}`, // Token im Header senden
+                                Authorization: `Bearer ${token}`,
                             },
-                            // Body ist nicht notwendig, wenn du nur den Token senden willst
                         }
                     );
 
@@ -122,67 +119,82 @@ export default function BookingPage() {
         if (isFormComplete && isDirective) {
             setLoading(true);
             setErrorMessagesTerm("");
-
             try {
-                const postResponse = await fetch(
-                    "http://localhost:8080/api/v1/user/update",
-                    {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${sessionStorage.getItem(
-                                "token"
-                            )}`,
-                        },
-                        body: JSON.stringify(userProfileRequest),
-                    }
-                );
+                // Erster Request zum Aktualisieren der Benutzerdaten
+                if (isSaveAddress) {
+                    try {
+                        const postResponse = await fetch(
+                            "http://localhost:8080/api/v1/user/update",
+                            {
+                                method: "PUT",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    Authorization: `Bearer ${sessionStorage.getItem(
+                                        "token"
+                                    )}`,
+                                },
+                                body: JSON.stringify(userProfileRequest),
+                            }
+                        );
 
-                if (!postResponse.ok) {
-                    const errorData = await postResponse.json();
-                    setErrorMessagesTerm(
-                        errorData.message ||
-                            "Fehler beim Aktualisieren der Benutzerdaten"
-                    );
-                    throw new Error(
-                        "Fehler beim Aktualisieren der Benutzerdaten"
-                    );
+                        if (!postResponse.ok) {
+                            const errorData = await postResponse.json();
+                            setErrorMessagesTerm(
+                                errorData.message ||
+                                    "Fehler beim Aktualisieren der Benutzerdaten"
+                            );
+                            console.error(
+                                "Fehler beim Aktualisieren der Benutzerdaten"
+                            );
+                        } else {
+                            const postResult = await postResponse.json();
+                            console.log(
+                                "Benutzerdaten erfolgreich aktualisiert:",
+                                postResult
+                            );
+                        }
+                    } catch (error) {
+                        console.error(
+                            "Fehler beim Aktualisieren der Benutzerdaten:",
+                            error
+                        );
+                    }
                 }
 
-                const postResult = await postResponse.json();
-
-                const putResponse = await fetch(
-                    "http://localhost:8080/api/v1/booking",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${sessionStorage.getItem(
-                                "token"
-                            )}`,
-                        },
-                        body: JSON.stringify(bookingRequest),
-                    }
-                );
-
-                if (!putResponse.ok) {
-                    const errorData = await putResponse.json();
-
-                    setErrorMessagesTerm(
-                        errorData.message ||
-                            "Fehler bei der Buchungsbestätigung"
+                // Zweiter Request zur Buchungsbestätigung
+                try {
+                    const putResponse = await fetch(
+                        "http://localhost:8080/api/v1/booking",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${sessionStorage.getItem(
+                                    "token"
+                                )}`,
+                            },
+                            body: JSON.stringify(bookingRequest),
+                        }
                     );
-                    throw new Error();
-                }
 
-                const putResult = await putResponse.json();
-                console.log(
-                    "Benutzerdaten erfolgreich aktualisiert:",
-                    putResult
-                );
-                navigate("/user/dashboard");
-            } catch (error) {
-                console.error("Fehler während des Buchungsprozesses:", error);
+                    if (!putResponse.ok) {
+                        const errorData = await putResponse.json();
+                        setErrorMessagesTerm(
+                            errorData.message ||
+                                "Fehler bei der Buchungsbestätigung"
+                        );
+                        throw new Error("Fehler bei der Buchungsbestätigung");
+                    }
+
+                    const putResult = await putResponse.json();
+                    console.log("Buchung erfolgreich:", putResult);
+                    navigate("/user/dashboard");
+                } catch (error) {
+                    console.error(
+                        "Fehler während des Buchungsprozesses:",
+                        error
+                    );
+                }
             } finally {
                 setLoading(false);
             }
@@ -216,6 +228,7 @@ export default function BookingPage() {
                             userData={userData}
                             setUserData={setUserData}
                             setFormComplete={setFormComplete}
+                            setSaveAddress={setSaveAddress}
                         />
                     ) : (
                         <p className="flex">

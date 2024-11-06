@@ -8,6 +8,7 @@ export default function BillingInfo({
     userData,
     setUserData,
     setFormComplete,
+    setSaveAddress,
 }) {
     const [birthDate, setBirthDate] = useState({
         day: "",
@@ -26,6 +27,8 @@ export default function BillingInfo({
         city: "",
         country: "",
     });
+
+    
 
     useEffect(() => {
         if (userData.birthDate) {
@@ -123,6 +126,12 @@ export default function BillingInfo({
 
         setFormComplete(isFormComplete);
     }, [birthDate, userData]);
+
+   // const [isSaveAddress, hasSaveAddress] = useState(false)
+
+    const handleSaveAddress = (event) => {
+        setSaveAddress(event.target.checked)
+    }
 
     return (
         <section className="border p-6 rounded-md shadow-md mb-4 flex flex-col">
@@ -324,6 +333,16 @@ export default function BillingInfo({
                     {!userData.address?.country && (
                         <p className="errorMessages">{errorMessages.country}</p>
                     )}
+                    <label className="p-3 border bg-slate-100 rounded-md flex mt-3">
+                        <input
+                            type="checkbox"
+                            //checked={isSaveAddress}
+                            onChange={handleSaveAddress}
+                        />
+                        <p className="p-2">
+                            Daten für künftige Buchungen speichern
+                        </p>
+                    </label>
                 </div>
             </div>
         </section>
