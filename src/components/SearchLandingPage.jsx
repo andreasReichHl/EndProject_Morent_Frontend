@@ -115,6 +115,7 @@ export default function SearchLandingPage({ setAutos, setSearchBar }) {
   const checkSubmit = () => {
     isDateInPast(pickUpDate, dropOffDate);
     checkLocationsId();
+    setSearchBar(true);
 
     if (isLocationOk && isDateOk && pickUpId && dropOffId) {
       handleSubmit();
