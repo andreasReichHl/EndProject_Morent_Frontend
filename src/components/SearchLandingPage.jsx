@@ -161,7 +161,7 @@ export default function SearchLandingPage({ setAutos, setSearchBar }) {
   };
 
   return (
-    <div className="searchBox bg-white bg-opacity-90 rounded-md p-10 shadow-lg mb-10">
+    <div className="searchBox bg-white bg-opacity-90 rounded-md p-5 md:p-10 shadow-lg mb-10">
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-2">
         <div className="">
           <InputLocation
@@ -187,10 +187,10 @@ export default function SearchLandingPage({ setAutos, setSearchBar }) {
             />
           </div>
         ) : (
-          <div className="md:pt-14 md:p-5 p-2 text-gray-500">
-            <button className="flex items-center" onClick={handleVisibility}>
+          <div className="md:pt-14 md:p-5 p-2  text-gray-500">
+            <button className="flex items-center min-w-44" onClick={handleVisibility}>
               <img src={plussSvg} alt="pluss" className="mr-2" />
-              Anderer Rückgabeort
+              Anderer Rückgabe
             </button>
           </div>
         )}
@@ -227,9 +227,9 @@ export default function SearchLandingPage({ setAutos, setSearchBar }) {
             </div>
           </div>
         </div>
-        <div className="flex items-end justify-center pb-2 col-span-1 md:col-span-2 xl:col-span-1">
+        <div className="flex items-center justify-center xl:items-end pb-1 col-span-1 md:col-span-2 xl:col-span-1">
           <button
-          className="max-w-96 bg-costumBlue text-white  rounded-lg p-4 px-7 mt-2 disabled:bg-slate-500 disabled:cursor-not-allowed"
+          className="max-w-96 bg-costumBlue text-white  rounded-lg p-4 xl:py-5 px-7 mt-2 disabled:bg-slate-500 disabled:cursor-not-allowed"
             onClick={checkSubmit}
           >
             {isLoading ? <span className="loading" /> : "Autos anzeigen"}
