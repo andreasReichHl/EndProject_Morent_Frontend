@@ -6,6 +6,7 @@ import PickupReturnCard from "../components/Billing/PickupReturnCard";
 import RentalSummary from "../components/Billing/RentalSummary";
 import { useLocation, useNavigate } from "react-router-dom";
 import backSvg from "../assets/images/vuesax/linear/back.svg";
+import arrowSvg from "../assets/images/arrow.svg";
 
 export default function BookingPage() {
     const [isLoading, setLoading] = useState(false);
@@ -214,7 +215,7 @@ export default function BookingPage() {
                     className="flex gap-2 text-xl text-gray items-center"
                     onClick={() => navigate(-1)}
                 >
-                    <img src={backSvg} alt="return arrow" />
+                    <img src={arrowSvg} alt="return arrow" />
                     <span className="">Zurück</span>
                 </button>
             </div>
