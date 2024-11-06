@@ -5,6 +5,8 @@ import PaymentInfo from "../components/Billing/PaymentInfo";
 import PickupReturnCard from "../components/Billing/PickupReturnCard";
 import RentalSummary from "../components/Billing/RentalSummary";
 import { useLocation, useNavigate } from "react-router-dom";
+import backSvg from "../assets/images/vuesax/linear/back.svg";
+import arrowSvg from "../assets/images/arrow.svg";
 
 export default function BookingPage() {
     const [isLoading, setLoading] = useState(false);
@@ -17,6 +19,7 @@ export default function BookingPage() {
     const carState = useLocation();
     const [errorMessageTerm, setErrorMessagesTerm] = useState("");
     const [userProfileRequest, setUserProfileRequest] = useState(null);
+    const [isSaveAddress, setSaveAddress] = useState(false);
     const carId = carState.state;
     const navigate = useNavigate();
 
@@ -81,9 +84,6 @@ export default function BookingPage() {
             }
         };
         submitBookingRequest();
-        // if (error) {
-        //     return <ErrorPage />; // Fehler tritt auf, ErrorPage wird angezeigt
-        // }
     }, [bookingRequest]);
 
     // get user data
@@ -98,9 +98,8 @@ export default function BookingPage() {
                             method: "GET",
                             headers: {
                                 "Content-Type": "application/json",
-                                Authorization: `Bearer ${token}`, // Token im Header senden
+                                Authorization: `Bearer ${token}`,
                             },
-                            // Body ist nicht notwendig, wenn du nur den Token senden willst
                         }
                     );
 
@@ -121,67 +120,82 @@ export default function BookingPage() {
         if (isFormComplete && isDirective) {
             setLoading(true);
             setErrorMessagesTerm("");
-
             try {
-                const postResponse = await fetch(
-                    "http://localhost:8080/api/v1/user/update",
-                    {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${sessionStorage.getItem(
-                                "token"
-                            )}`,
-                        },
-                        body: JSON.stringify(userProfileRequest),
-                    }
-                );
+                // Erster Request zum Aktualisieren der Benutzerdaten
+                if (isSaveAddress) {
+                    try {
+                        const postResponse = await fetch(
+                            "http://localhost:8080/api/v1/user/update",
+                            {
+                                method: "PUT",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    Authorization: `Bearer ${sessionStorage.getItem(
+                                        "token"
+                                    )}`,
+                                },
+                                body: JSON.stringify(userProfileRequest),
+                            }
+                        );
 
-                if (!postResponse.ok) {
-                    const errorData = await postResponse.json();
-                    setErrorMessagesTerm(
-                        errorData.message ||
-                            "Fehler beim Aktualisieren der Benutzerdaten"
-                    );
-                    throw new Error(
-                        "Fehler beim Aktualisieren der Benutzerdaten"
-                    );
+                        if (!postResponse.ok) {
+                            const errorData = await postResponse.json();
+                            setErrorMessagesTerm(
+                                errorData.message ||
+                                    "Fehler beim Aktualisieren der Benutzerdaten"
+                            );
+                            console.error(
+                                "Fehler beim Aktualisieren der Benutzerdaten"
+                            );
+                        } else {
+                            const postResult = await postResponse.json();
+                            console.log(
+                                "Benutzerdaten erfolgreich aktualisiert:",
+                                postResult
+                            );
+                        }
+                    } catch (error) {
+                        console.error(
+                            "Fehler beim Aktualisieren der Benutzerdaten:",
+                            error
+                        );
+                    }
                 }
 
-                const postResult = await postResponse.json();
-
-                const putResponse = await fetch(
-                    "http://localhost:8080/api/v1/booking",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${sessionStorage.getItem(
-                                "token"
-                            )}`,
-                        },
-                        body: JSON.stringify(bookingRequest),
-                    }
-                );
-
-                if (!putResponse.ok) {
-                    const errorData = await putResponse.json();
-
-                    setErrorMessagesTerm(
-                        errorData.message ||
-                            "Fehler bei der Buchungsbestätigung"
+                // Zweiter Request zur Buchungsbestätigung
+                try {
+                    const putResponse = await fetch(
+                        "http://localhost:8080/api/v1/booking",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${sessionStorage.getItem(
+                                    "token"
+                                )}`,
+                            },
+                            body: JSON.stringify(bookingRequest),
+                        }
                     );
-                    throw new Error();
-                }
 
-                const putResult = await putResponse.json();
-                console.log(
-                    "Benutzerdaten erfolgreich aktualisiert:",
-                    putResult
-                );
-                navigate("/user/dashboard");
-            } catch (error) {
-                console.error("Fehler während des Buchungsprozesses:", error);
+                    if (!putResponse.ok) {
+                        const errorData = await putResponse.json();
+                        setErrorMessagesTerm(
+                            errorData.message ||
+                                "Fehler bei der Buchungsbestätigung"
+                        );
+                        throw new Error("Fehler bei der Buchungsbestätigung");
+                    }
+
+                    const putResult = await putResponse.json();
+                    console.log("Buchung erfolgreich:", putResult);
+                    navigate("/user/dashboard");
+                } catch (error) {
+                    console.error(
+                        "Fehler während des Buchungsprozesses:",
+                        error
+                    );
+                }
             } finally {
                 setLoading(false);
             }
@@ -194,80 +208,94 @@ export default function BookingPage() {
     };
 
     return (
-        <div className="grid lg:grid-cols-3 gap-4 p-10">
-            <div className="lg:col-span-2 space-y-4">
-                {userData && Object.keys(userData).length > 0 ? (
-                    <BillingInfo
-                        title="Rechnungsangaben"
-                        info="Bitte die fehlenden Angaben eintragen"
-                        step="Schritt 1-4"
-                        userData={userData}
-                        setUserData={setUserData}
-                        setFormComplete={setFormComplete}
-                    />
-                ) : (
-                    <p className="flex">
-                        <span className="loading mr-4" />
-                        Lade Benutzerdaten...
-                    </p>
-                )}
-                {bookingData && Object.keys(bookingData).length > 0 ? (
-                    <PickupReturnCard
-                        title="Mietinformationen"
-                        info="Bitte die fehlenden Angaben eintragen"
-                        step="Schritt 2-4"
-                        bookingData={bookingData}
-                    />
-                ) : (
-                    <p className="flex">
-                        <span className="loading mr-4" /> Lade Buchungsdaten...
-                    </p>
-                )}
-                <PaymentInfo
-                    title="Zahlungsinformationen"
-                    info="Bitte wählen Sie eine Zahlungsmethode aus"
-                    step="Schritt 3-4"
-                />
-                <ConfirmationInfo
-                    title="Bestätigungen"
-                    info="Bitte bestätigen Sie die folgenden Optionen"
-                    step="Schritt 4-4"
-                    setDirective={setDirective}
-                    errorMessageTerm={errorMessageTerm}
-                    isDirective={isDirective}
-                />
-            </div>
-            <div className="lg:col-span-1">
-                {bookingData && Object.keys(bookingData).length > 0 ? (
-                    <RentalSummary
-                        title="Mietzusammenfassung"
-                        info="Hier ist eine Zusammenfassung Ihrer Miete"
-                        pricePerDay={bookingData.pricePerDay}
-                        additionalFee={bookingData.pauschale}
-                        totalPrice={bookingData.totalPrice}
-                        totalDays={bookingData.totalDays}
-                        isFee={bookingData.hasExtraChargeChangingLocation}
-                        carId={carId}
-                    />
-                ) : (
-                    <p className="flex">
-                        <span className="loading mr-4" />
-                        Lade Fahrzeugdaten...
-                    </p>
-                )}
-            </div>
-            <div className="flex items-center justify-center lg:col-span-2">
+        <div>
+            <img src="" alt="" />
+            <div className="pl-10 pt-5">
                 <button
-                    className="w-full bg-costumBlue text-white rounded-lg p-4 disabled:bg-slate-500 disabled:cursor-not-allowed"
-                    onClick={checkSubmit}
-                    disabled={!isFormComplete || !isDirective}
+                    className="flex gap-2 text-xl text-gray items-center"
+                    onClick={() => navigate(-1)}
                 >
-                    {isLoading ? (
-                        <span className="loading" />
-                    ) : (
-                        "Buchung bestätigen"
-                    )}
+                    <img src={arrowSvg} alt="return arrow" />
+                    <span className="">Zurück</span>
                 </button>
+            </div>
+            <div className="grid lg:grid-cols-3 gap-4 px-10 pb-10 pt-5">
+                <div className="lg:col-span-2 space-y-4">
+                    {userData && Object.keys(userData).length > 0 ? (
+                        <BillingInfo
+                            title="Rechnungsangaben"
+                            info="Bitte die fehlenden Angaben eintragen"
+                            step="Schritt 1-4"
+                            userData={userData}
+                            setUserData={setUserData}
+                            setFormComplete={setFormComplete}
+                            setSaveAddress={setSaveAddress}
+                        />
+                    ) : (
+                        <p className="flex">
+                            <span className="loading mr-4" />
+                            Lade Benutzerdaten...
+                        </p>
+                    )}
+                    {bookingData && Object.keys(bookingData).length > 0 ? (
+                        <PickupReturnCard
+                            title="Mietinformationen"
+                            info="Bitte die fehlenden Angaben eintragen"
+                            step="Schritt 2-4"
+                            bookingData={bookingData}
+                        />
+                    ) : (
+                        <p className="flex">
+                            <span className="loading mr-4" /> Lade
+                            Buchungsdaten...
+                        </p>
+                    )}
+                    <PaymentInfo
+                        title="Zahlungsinformationen"
+                        info="Bitte wählen Sie eine Zahlungsmethode aus"
+                        step="Schritt 3-4"
+                    />
+                    <ConfirmationInfo
+                        title="Bestätigungen"
+                        info="Bitte bestätigen Sie die folgenden Optionen"
+                        step="Schritt 4-4"
+                        setDirective={setDirective}
+                        errorMessageTerm={errorMessageTerm}
+                        isDirective={isDirective}
+                    />
+                </div>
+                <div className="lg:col-span-1">
+                    {bookingData && Object.keys(bookingData).length > 0 ? (
+                        <RentalSummary
+                            title="Mietzusammenfassung"
+                            info="Hier ist eine Zusammenfassung Ihrer Miete"
+                            pricePerDay={bookingData.pricePerDay}
+                            additionalFee={bookingData.pauschale}
+                            totalPrice={bookingData.totalPrice}
+                            totalDays={bookingData.totalDays}
+                            isFee={bookingData.hasExtraChargeChangingLocation}
+                            carId={carId}
+                        />
+                    ) : (
+                        <p className="flex">
+                            <span className="loading mr-4" />
+                            Lade Fahrzeugdaten...
+                        </p>
+                    )}
+                </div>
+                <div className="flex items-center justify-center lg:col-span-2">
+                    <button
+                        className="w-full bg-costumBlue text-white rounded-lg p-4 disabled:bg-slate-500 disabled:cursor-not-allowed"
+                        onClick={checkSubmit}
+                        disabled={!isDirective}
+                    >
+                        {isLoading ? (
+                            <span className="loading" />
+                        ) : (
+                            "Buchung bestätigen"
+                        )}
+                    </button>
+                </div>
             </div>
         </div>
     );
