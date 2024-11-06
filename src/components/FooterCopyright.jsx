@@ -1,6 +1,6 @@
 export default function FooterCopyright() {
     return (
-        <footer className="footer bg-navBG bg-opacity-40 text-base-content border-base-300 px-10 py-4">
+        <footer className="footer bg-navBG bg-opacity-40 text-base-content border-base-300 px-10 py-4 flex flex-row justify-between">
             <aside className="grid-flow-col items-center">
                 <p>©2024 MORENT. All rights reserved</p>
             </aside>

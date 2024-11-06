@@ -54,6 +54,7 @@ export default function Navbar() {
   }, [userData]);
 
   const handleLogout = () => {
+    setIsAdmin(false)
     auth.logout();
     navigate("/");
   };
@@ -80,9 +81,21 @@ export default function Navbar() {
       </div>
       <div className="flex-none">
         {!isLoggedIn && (
-          <Link className="btn btn-ghost mr-4 hover:bg-opacity-50" to="/signUp">
-            Registrieren
-          </Link>
+          <>
+            <Link
+              className="pr-1 pl-3 py-2  font-medium text-base text-gray-500 hover:text-gray-700 underline"
+              to="/signUp"
+            >
+              Registrieren
+            </Link>
+            <p className="font-bold text-base text-gray-500">|</p>
+            <Link
+              className="pl-1 pr-3 py-2 mr-6  font-medium text-base text-gray-500 hover:text-gray-700 underline"
+              to="/login"
+            >
+              Anmelden
+            </Link>
+          </>
         )}
         {isAdmin && (
           <Link
@@ -92,60 +105,55 @@ export default function Navbar() {
             <img src={AdminPanelLogo} alt="settingLogo" />
           </Link>
         )}
-        
-        <div className="dropdown dropdown-end">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar"
-          >
-            <div className="w-12 h-12 rounded-full bg-white p-1">
-              {isLoggedIn ? (
-                imageProfile ? (
-                  <img
-                    alt="User Profile"
-                    src={imageProfile}
-                    className="w-full h-full rounded-full"
-                  />
-                ) : (
-                  <span className="text-2xl bg-slate-400 rounded-full text-white font-light w-10 h-10 flex items-center justify-center">
-                    {firstLetter || "Z"}
-                  </span>
-                )
-              ) : (
-                <img
-                  alt="Default Avatar"
-                  src={userAvatar}
-                  className="w-full h-full rounded-full"
-                />
-              )}
-            </div>
-          </div>
 
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-          >
-            <li>
-              <Link to="/user/profil">Profil</Link>
-            </li>
-            {!isLoggedIn && (
+        {isLoggedIn && (
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle avatar"
+            >
+              <div className="w-12 h-12 rounded-full bg-white p-1">
+                {isLoggedIn &&
+                  (imageProfile ? (
+                    <img
+                      alt="User Profile"
+                      src={imageProfile}
+                      className="w-full h-full rounded-full"
+                    />
+                  ) : (
+                    <span className="text-2xl bg-slate-400 rounded-full text-white font-light w-10 h-10 flex items-center justify-center">
+                      {firstLetter || "Z"}
+                    </span>
+                  ))}
+              </div>
+            </div>
+
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            >
               <li>
-                <Link to="/login">Log In</Link>
+                <Link to="/user/profil">Profil</Link>
               </li>
-            )}
-            {isLoggedIn && (
-              <li>
-                <Link to="/user/dashboard">Dashboard</Link>
-              </li>
-            )}
-            {isLoggedIn && (
-              <li>
-                <button onClick={handleLogout}>Logout</button>
-              </li>
-            )}
-          </ul>
-        </div>
+              {/* {!isLoggedIn && (
+                <li>
+                  <Link to="/login">Log In</Link>
+                </li>
+              )} */}
+              {isLoggedIn && (
+                <li>
+                  <Link to="/user/dashboard">Dashboard</Link>
+                </li>
+              )}
+              {isLoggedIn && (
+                <li>
+                  <button onClick={handleLogout}>Logout</button>
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

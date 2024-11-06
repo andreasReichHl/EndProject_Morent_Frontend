@@ -99,7 +99,7 @@ export default function Sidebar({ filter, setAutos }) {
   }, [filterData, setAutos]);
 
   return (
-    <div>
+    <div className="md:bg-white">
       <button
         onClick={toggleBurgerMenu}
         className="w-16 lg:w-0 lg:hidden pl-4 pt-4 text-white focus:outline-none"

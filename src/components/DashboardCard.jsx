@@ -64,7 +64,7 @@ export default function DashboardCard({
                     </div>
                     <div className="flex justify-between">
                         <p>Gesamtpreis:</p>
-                        <p>{`€${totalPrice.toFixed(2)}`}</p>
+                        <p>{`${totalPrice.toFixed(2)} €`}</p>
                     </div>
                 </div>
                 <div className="flex justify-between items-end mt-5">

@@ -11,7 +11,7 @@ export default function LandingPage() {
             <div className="content">
                 <div>
                     <Navbar />
-                    <div className="mx-16 mt-10">
+                    <div className="md:mx-16 m-5 mt-10">
                         <SearchLandingPage setAutos={setAutos}/>
                     </div>
                 </div>
