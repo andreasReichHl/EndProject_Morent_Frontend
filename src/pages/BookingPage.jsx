@@ -5,6 +5,7 @@ import PaymentInfo from "../components/Billing/PaymentInfo";
 import PickupReturnCard from "../components/Billing/PickupReturnCard";
 import RentalSummary from "../components/Billing/RentalSummary";
 import { useLocation, useNavigate } from "react-router-dom";
+import backSvg from "../assets/images/vuesax/linear/back.svg";
 
 export default function BookingPage() {
     const [isLoading, setLoading] = useState(false);
@@ -194,80 +195,93 @@ export default function BookingPage() {
     };
 
     return (
-        <div className="grid lg:grid-cols-3 gap-4 p-10">
-            <div className="lg:col-span-2 space-y-4">
-                {userData && Object.keys(userData).length > 0 ? (
-                    <BillingInfo
-                        title="Rechnungsangaben"
-                        info="Bitte die fehlenden Angaben eintragen"
-                        step="Schritt 1-4"
-                        userData={userData}
-                        setUserData={setUserData}
-                        setFormComplete={setFormComplete}
-                    />
-                ) : (
-                    <p className="flex">
-                        <span className="loading mr-4" />
-                        Lade Benutzerdaten...
-                    </p>
-                )}
-                {bookingData && Object.keys(bookingData).length > 0 ? (
-                    <PickupReturnCard
-                        title="Mietinformationen"
-                        info="Bitte die fehlenden Angaben eintragen"
-                        step="Schritt 2-4"
-                        bookingData={bookingData}
-                    />
-                ) : (
-                    <p className="flex">
-                        <span className="loading mr-4" /> Lade Buchungsdaten...
-                    </p>
-                )}
-                <PaymentInfo
-                    title="Zahlungsinformationen"
-                    info="Bitte wählen Sie eine Zahlungsmethode aus"
-                    step="Schritt 3-4"
-                />
-                <ConfirmationInfo
-                    title="Bestätigungen"
-                    info="Bitte bestätigen Sie die folgenden Optionen"
-                    step="Schritt 4-4"
-                    setDirective={setDirective}
-                    errorMessageTerm={errorMessageTerm}
-                    isDirective={isDirective}
-                />
-            </div>
-            <div className="lg:col-span-1">
-                {bookingData && Object.keys(bookingData).length > 0 ? (
-                    <RentalSummary
-                        title="Mietzusammenfassung"
-                        info="Hier ist eine Zusammenfassung Ihrer Miete"
-                        pricePerDay={bookingData.pricePerDay}
-                        additionalFee={bookingData.pauschale}
-                        totalPrice={bookingData.totalPrice}
-                        totalDays={bookingData.totalDays}
-                        isFee={bookingData.hasExtraChargeChangingLocation}
-                        carId={carId}
-                    />
-                ) : (
-                    <p className="flex">
-                        <span className="loading mr-4" />
-                        Lade Fahrzeugdaten...
-                    </p>
-                )}
-            </div>
-            <div className="flex items-center justify-center lg:col-span-2">
+        <div>
+            <img src="" alt="" />
+            <div className="pl-10 pt-5">
                 <button
-                    className="w-full bg-costumBlue text-white rounded-lg p-4 disabled:bg-slate-500 disabled:cursor-not-allowed"
-                    onClick={checkSubmit}
-                    disabled={!isFormComplete || !isDirective}
+                    className="flex gap-2 text-xl text-gray items-center"
+                    onClick={() => navigate(-1)}
                 >
-                    {isLoading ? (
-                        <span className="loading" />
-                    ) : (
-                        "Buchung bestätigen"
-                    )}
+                    <img src={backSvg} alt="return arrow" />
+                    <span className="">Zurück</span>
                 </button>
+            </div>
+            <div className="grid lg:grid-cols-3 gap-4 px-10 pb-10 pt-5">
+                <div className="lg:col-span-2 space-y-4">
+                    {userData && Object.keys(userData).length > 0 ? (
+                        <BillingInfo
+                            title="Rechnungsangaben"
+                            info="Bitte die fehlenden Angaben eintragen"
+                            step="Schritt 1-4"
+                            userData={userData}
+                            setUserData={setUserData}
+                            setFormComplete={setFormComplete}
+                        />
+                    ) : (
+                        <p className="flex">
+                            <span className="loading mr-4" />
+                            Lade Benutzerdaten...
+                        </p>
+                    )}
+                    {bookingData && Object.keys(bookingData).length > 0 ? (
+                        <PickupReturnCard
+                            title="Mietinformationen"
+                            info="Bitte die fehlenden Angaben eintragen"
+                            step="Schritt 2-4"
+                            bookingData={bookingData}
+                        />
+                    ) : (
+                        <p className="flex">
+                            <span className="loading mr-4" /> Lade
+                            Buchungsdaten...
+                        </p>
+                    )}
+                    <PaymentInfo
+                        title="Zahlungsinformationen"
+                        info="Bitte wählen Sie eine Zahlungsmethode aus"
+                        step="Schritt 3-4"
+                    />
+                    <ConfirmationInfo
+                        title="Bestätigungen"
+                        info="Bitte bestätigen Sie die folgenden Optionen"
+                        step="Schritt 4-4"
+                        setDirective={setDirective}
+                        errorMessageTerm={errorMessageTerm}
+                        isDirective={isDirective}
+                    />
+                </div>
+                <div className="lg:col-span-1">
+                    {bookingData && Object.keys(bookingData).length > 0 ? (
+                        <RentalSummary
+                            title="Mietzusammenfassung"
+                            info="Hier ist eine Zusammenfassung Ihrer Miete"
+                            pricePerDay={bookingData.pricePerDay}
+                            additionalFee={bookingData.pauschale}
+                            totalPrice={bookingData.totalPrice}
+                            totalDays={bookingData.totalDays}
+                            isFee={bookingData.hasExtraChargeChangingLocation}
+                            carId={carId}
+                        />
+                    ) : (
+                        <p className="flex">
+                            <span className="loading mr-4" />
+                            Lade Fahrzeugdaten...
+                        </p>
+                    )}
+                </div>
+                <div className="flex items-center justify-center lg:col-span-2">
+                    <button
+                        className="w-full bg-costumBlue text-white rounded-lg p-4 disabled:bg-slate-500 disabled:cursor-not-allowed"
+                        onClick={checkSubmit}
+                        disabled={!isDirective}
+                    >
+                        {isLoading ? (
+                            <span className="loading" />
+                        ) : (
+                            "Buchung bestätigen"
+                        )}
+                    </button>
+                </div>
             </div>
         </div>
     );

@@ -186,7 +186,7 @@ export default function BillingInfo({
                                         key={day}
                                         value={String(day).padStart(2, "0")}
                                     >
-                                        {day}
+                                        {String(day).padStart(2, 0)}
                                     </option>
                                 ))}
                             </select>
@@ -202,7 +202,7 @@ export default function BillingInfo({
                                         key={month}
                                         value={String(month).padStart(2, "0")}
                                     >
-                                        {month}
+                                        {String(month).padStart(2, 0)}
                                     </option>
                                 ))}
                             </select>

@@ -76,7 +76,7 @@ export default function AutoCard({
                             : "src/assets/images/vuesax/linear/heart.svg"
                     }
                     alt="heart"
-                    className="w-8 h-8 cursor-pointer"
+                    className="w-8 h-8 cursor-pointer opacity-90"
                     onClick={handleHeartClick}
                 />
             </div>
