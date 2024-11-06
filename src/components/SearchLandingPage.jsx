@@ -6,143 +6,111 @@ import InputLocation from "./InputLocation";
 import { useNavigate } from "react-router-dom";
 import plussSvg from "../assets/images/pluss.svg";
 
-export default function SearchLandingPage({ setAutos }) {
-  const history = sessionStorage.getItem("locationId")
-    ? JSON.parse(sessionStorage.getItem("locationId"))
-    : {};
+export default function SearchLandingPage({ setAutos, setSearchBar }) {
+    const history = sessionStorage.getItem("locationId")
+        ? JSON.parse(sessionStorage.getItem("locationId"))
+        : {};
 
-  const [pickUpDate, setPickUpDate] = useState("");
-  const [dropOffDate, setDropOffUpDate] = useState("");
-  const [pickUpLocation, setPickUpLocation] = useState("");
-  const [pickUpId, setPickUpId] = useState("");
-  const [dropOffLocation, setdropOffLocation] = useState("");
-  const [dropOffId, setDropOffId] = useState("");
-  const [isDropOffInput, setDropOffInput] = useState(false);
-  const [isLoading, setLoading] = useState(false);
-  const [wrongDateMessage, setWrongDateMessage] = useState("");
-  const [isDateOk, setDateOk] = useState(false);
-  const [idErrorMessage, setidErrorMessage] = useState(false);
-  const [isLocationOk, setLocationOk] = useState(false);
-  const [carType, setCarType] = useState([]);
-  const [fuelType, setFuelType] = useState([]);
-  const [seats, setSeats] = useState([]);
-  const [pricePerDay, setPricePerDay] = useState(1000.0);
+    const [pickUpDate, setPickUpDate] = useState("");
+    const [dropOffDate, setDropOffUpDate] = useState("");
+    const [pickUpLocation, setPickUpLocation] = useState("");
+    const [pickUpId, setPickUpId] = useState("");
+    const [dropOffLocation, setdropOffLocation] = useState("");
+    const [dropOffId, setDropOffId] = useState("");
+    const [isDropOffInput, setDropOffInput] = useState(false);
+    const [isLoading, setLoading] = useState(false);
+    const [wrongDateMessage, setWrongDateMessage] = useState("");
+    const [isDateOk, setDateOk] = useState(false);
+    const [idErrorMessage, setidErrorMessage] = useState(false);
+    const [isLocationOk, setLocationOk] = useState(false);
+    const [carType, setCarType] = useState([]);
+    const [fuelType, setFuelType] = useState([]);
+    const [seats, setSeats] = useState([]);
+    const [pricePerDay, setPricePerDay] = useState(1000.0);
 
-  useEffect(() => {
-    const storedData = sessionStorage.getItem("locationId");
-    if (storedData) {
-      const history = JSON.parse(storedData);
-      setPickUpDate(history.startDate || "");
-      setDropOffUpDate(history.endDate || "");
-      setPickUpLocation(history.pickUpLocation || "");
-      setdropOffLocation(history.dropOffLocation || "");
-      setDropOffId(history.dropOffId || "");
-      setPickUpId(history.storeId || "");
-      setLocationOk(!!history.dropOffId);
-    }
-  }, []);
-
-  const navigate = useNavigate();
-
-  function isDateInPast(pickUpDate, dropOffDate) {
-    if (!pickUpDate && !dropOffDate) {
-      setWrongDateMessage("Bitte beide Daten angeben");
-      setDateOk(false);
-      return;
-    }
-
-    const pickUp = new Date(pickUpDate);
-    const dropOff = new Date(dropOffDate);
-    const today = new Date();
-
-    today.setHours(0, 0, 0, 0);
-    pickUp.setHours(0, 0, 0, 0);
-    dropOff.setHours(0, 0, 0, 0);
-
-    if (pickUp < today) {
-      setWrongDateMessage("Abholdatum liegt in der Vergangenheit");
-      setDateOk(false);
-    } else if (dropOff < pickUp) {
-      setWrongDateMessage("Rückgabedatum darf nicht vor Abholdatum liegen");
-      setDateOk(false);
-    } else {
-      setWrongDateMessage("");
-      setDateOk(true);
-    }
-  }
-
-  function checkLocationsId() {
-    if (pickUpId) {
-      setidErrorMessage("");
-
-      if (isDropOffInput) {
-        if (dropOffId) {
-          setLocationOk(true);
-        } else {
-          setLocationOk(false);
-          setidErrorMessage("Bitte wählen einen Rückgabeort aus");
+    useEffect(() => {
+        const storedData = sessionStorage.getItem("locationId");
+        if (storedData) {
+            const history = JSON.parse(storedData);
+            setPickUpDate(history.startDate || "");
+            setDropOffUpDate(history.endDate || "");
+            setPickUpLocation(history.pickUpLocation || "");
+            setdropOffLocation(history.dropOffLocation || "");
+            setDropOffId(history.dropOffId || "");
+            setPickUpId(history.storeId || "");
+            setLocationOk(!!history.dropOffId);
         }
-      } else {
-        setDropOffId(pickUpId);
-        setLocationOk(true);
-      }
-    } else {
-      setLocationOk(false);
-      setidErrorMessage("Bitte wählen Sie einen Abholort aus");
+    }, []);
+
+    const navigate = useNavigate();
+
+    function isDateInPast(pickUpDate, dropOffDate) {
+        if (!pickUpDate && !dropOffDate) {
+            setWrongDateMessage("Bitte beide Daten angeben");
+            setDateOk(false);
+            return;
+        }
+
+        const pickUp = new Date(pickUpDate);
+        const dropOff = new Date(dropOffDate);
+        const today = new Date();
+
+        today.setHours(0, 0, 0, 0);
+        pickUp.setHours(0, 0, 0, 0);
+        dropOff.setHours(0, 0, 0, 0);
+
+        if (pickUp < today) {
+            setWrongDateMessage("Abholdatum liegt in der Vergangenheit");
+            setDateOk(false);
+        } else if (dropOff < pickUp) {
+            setWrongDateMessage(
+                "Rückgabedatum darf nicht vor Abholdatum liegen"
+            );
+            setDateOk(false);
+        } else {
+            setWrongDateMessage("");
+            setDateOk(true);
+        }
     }
-  }
 
-  const bookingData = {
-    startDate: pickUpDate,
-    storeId: pickUpId,
-    endDate: dropOffDate,
-    carType,
-    fuelType,
-    seats,
-    pricePerDay,
-  };
+    function checkLocationsId() {
+        if (pickUpId) {
+            setidErrorMessage("");
 
-  const handleVisibility = () => {
-    setDropOffInput(true);
-  };
-
-  useEffect(() => {
-    if (isLocationOk && isDateOk) {
-      handleSubmit();
+            if (isDropOffInput) {
+                if (dropOffId) {
+                    setLocationOk(true);
+                } else {
+                    setLocationOk(false);
+                    setidErrorMessage("Bitte wählen einen Rückgabeort aus");
+                }
+            } else {
+                setDropOffId(pickUpId);
+                setLocationOk(true);
+            }
+        } else {
+            setLocationOk(false);
+            setidErrorMessage("Bitte wählen Sie einen Abholort aus");
+        }
     }
-  }, [isLocationOk, isDateOk]);
 
-  const checkSubmit = () => {
-    isDateInPast(pickUpDate, dropOffDate);
-    checkLocationsId();
-
-    if (isLocationOk && isDateOk && pickUpId && dropOffId) {
-      handleSubmit();
-    }
-  };
-
-  const handleSubmit = () => {
-    const locationData = {
-      startDate: pickUpDate,
-      storeId: pickUpId,
-      endDate: dropOffDate,
-      dropOffId: dropOffId,
-      dropOffLocation: dropOffLocation,
-      pickUpLocation: pickUpLocation,
+    const bookingData = {
+        startDate: pickUpDate,
+        storeId: pickUpId,
+        endDate: dropOffDate,
+        carType,
+        fuelType,
+        seats,
+        pricePerDay,
     };
 
-    setLoading(true);
+    const handleVisibility = () => {
+        setDropOffInput(true);
+    };
 
-    fetch("http://localhost:8080/api/v1/vehicles/exemplars", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bookingData),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+    useEffect(() => {
+        if (isLocationOk && isDateOk) {
+            handleSubmit();
         }
         setLoading(false);
         return response.json();
@@ -234,7 +202,5 @@ export default function SearchLandingPage({ setAutos }) {
             {isLoading ? <span className="loading" /> : "Autos anzeigen"}
           </button>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
