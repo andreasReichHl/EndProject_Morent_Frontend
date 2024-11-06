@@ -160,7 +160,7 @@ export default function SearchLandingPage({ setAutos }) {
   };
 
   return (
-    <div className="searchBox bg-white bg-opacity-80 rounded-md p-6 shadow-lg mb-10">
+    <div className="searchBox bg-white bg-opacity-80 rounded-md p-10 shadow-lg mb-10">
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-2">
         <div className="">
           <InputLocation
