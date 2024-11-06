@@ -160,9 +160,9 @@ export default function SearchLandingPage({ setAutos }) {
   };
 
   return (
-    <div className="">
-      <div className="searchBox bg-white rounded-md p-10 grid grid-cols-9 gap-6 shadow-lg">
-        <div className="col-start-1 col-end-3">
+    <div className="searchBox bg-white bg-opacity-80 rounded-md p-6 shadow-lg mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-2">
+        <div className="">
           <InputLocation
             headline={isDropOffInput ? "Abholung" : "Abholung & Rückgabe"}
             setLocation={setPickUpLocation}
@@ -174,7 +174,7 @@ export default function SearchLandingPage({ setAutos }) {
           </p>
         </div>
         {isDropOffInput ? (
-          <div className="col-start-3 col-end-5">
+          <div className="">
             <InputLocation
               headline={"Rückgabe"}
               setLocation={setdropOffLocation}
@@ -184,30 +184,24 @@ export default function SearchLandingPage({ setAutos }) {
               setidErrorMessage={setidErrorMessage}
               locationName={dropOffLocation}
             />
-            {/* <button
-                            className="text-red-500 underline mt-2"
-                            onClick={resetDropOffLocation}
-                        >
-                            Löschen
-                        </button> */}
           </div>
         ) : (
-          <div className="col-start-3 col-end-5 pt-16 pl-5 text-gray-500">
+          <div className="md:pt-14 md:p-5 p-2 text-gray-500">
             <button className="flex items-center" onClick={handleVisibility}>
-              <img src={plussSvg} alt="pluss" className="mr-4 t" />
+              <img src={plussSvg} alt="pluss" className="mr-2" />
               Anderer Rückgabeort
             </button>
           </div>
         )}
-        <div className="col-start-5 col-end-7">
-          <h3 className="text-lg">Abholung</h3>
+        <div className="">
+          <h3 className="lg:text-lg">Abholung</h3>
           <div className="flex flex-col">
-            <div className="flex flex-col sm:pt-4 h-20">
-              <div className="flex items-center border p-3 rounded-lg">
+            <div className="flex flex-col md:h-20 md:pt-4">
+              <div className="flex items-center border md:p-3 p:1 rounded-lg ">
                 <input
                   type="date"
                   placeholder="Bitte eingeben"
-                  className="ml-3 p-1 text-md flex-grow no-b focus:outline-none w-full"
+                  className="ml-3 p-1 text-md flex-grow no-b focus:outline-none w-full bg-white bg-opacity-0"
                   value={pickUpDate}
                   onChange={(e) => setPickUpDate(e.target.value)}
                 />
@@ -216,15 +210,15 @@ export default function SearchLandingPage({ setAutos }) {
             </div>
           </div>
         </div>
-        <div className="col-start-7 col-end-9">
-          <h3 className="text-lg">Rückgabe</h3>
+        <div className="">
+          <h3 className="md:text-lg">Rückgabe</h3>
           <div className="flex flex-col ">
-            <div className="flex flex-col sm:pt-4 h-20">
-              <div className="flex items-center border p-3 rounded-lg">
+            <div className="flex flex-col md:pt-4 h-20">
+              <div className="flex items-center border md:p-3 p:1 rounded-lg">
                 <input
                   type="date"
                   placeholder="Bitte eingeben"
-                  className="ml-3 p-1 text-md flex-grow no-b focus:outline-none w-full"
+                  className="ml-3 p-1 text-md flex-grow no-b focus:outline-none w-full bg-white bg-opacity-0"
                   value={dropOffDate}
                   onChange={(e) => setDropOffUpDate(e.target.value)}
                 />
@@ -232,10 +226,9 @@ export default function SearchLandingPage({ setAutos }) {
             </div>
           </div>
         </div>
-
-        <div className="col-start-9 col-end-10 flex items-center justify-center">
+        <div className="flex items-end justify-center pb-2 col-span-1 md:col-span-2 xl:col-span-1">
           <button
-            className="w-full bg-costumBlue text-white rounded-lg p-4 mt-9 disabled:bg-slate-500 disabled:cursor-not-allowed"
+          className="max-w-96 bg-costumBlue text-white  rounded-lg p-4 px-7 mt-2 disabled:bg-slate-500 disabled:cursor-not-allowed"
             onClick={checkSubmit}
           >
             {isLoading ? <span className="loading" /> : "Autos anzeigen"}
