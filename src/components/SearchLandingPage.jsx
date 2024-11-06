@@ -161,7 +161,7 @@ export default function SearchLandingPage({ setAutos, setSearchBar }) {
   };
 
   return (
-    <div className="searchBox bg-white bg-opacity-80 rounded-md p-10 shadow-lg mb-10">
+    <div className="searchBox bg-white bg-opacity-90 rounded-md p-10 shadow-lg mb-10">
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-2">
         <div className="">
           <InputLocation
@@ -198,7 +198,7 @@ export default function SearchLandingPage({ setAutos, setSearchBar }) {
           <h3 className="lg:text-lg">Abholung</h3>
           <div className="flex flex-col">
             <div className="flex flex-col md:h-20 md:pt-4">
-              <div className="flex items-center border md:p-3 p:1 rounded-lg ">
+              <div className="flex items-center border border-gray-300 md:p-3 p:1 rounded-lg ">
                 <input
                   type="date"
                   placeholder="Bitte eingeben"
@@ -215,7 +215,7 @@ export default function SearchLandingPage({ setAutos, setSearchBar }) {
           <h3 className="md:text-lg">Rückgabe</h3>
           <div className="flex flex-col ">
             <div className="flex flex-col md:pt-4 h-20">
-              <div className="flex items-center border md:p-3 p:1 rounded-lg">
+              <div className="flex items-center border border-gray-300 md:p-3 p:1 rounded-lg">
                 <input
                   type="date"
                   placeholder="Bitte eingeben"

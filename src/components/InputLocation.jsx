@@ -98,7 +98,7 @@ export default function InputLocation({
       <h3 className="md:text-lg pl-2">{headline}</h3>
       <div className="flex flex-col">
         <div className="flex flex-col md:pt-4 md:h-20">
-          <div className="flex items-center border p-1 md:p-3 rounded-lg">
+          <div className="flex items-center border border-gray-300 p-1 md:p-3 rounded-lg">
             <img
               src={inputValue || locationName ? houseSvg : locationIcon}
               alt="icon"
