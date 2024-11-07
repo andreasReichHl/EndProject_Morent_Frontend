@@ -130,7 +130,7 @@ export default function InputLocation({
 
           {isActive && (
             <div
-              className="absolute mt-16 min-w-72 w-1/3 bg-white border border-gray-300 rounded-lg h-96 shadow-lg z-50"
+              className="absolute mt-16 min-w-72 w-1/3 bg-white border border-gray-300 rounded-lg h-96 shadow-lg z-50 overflow-scroll"
               onMouseDown={(e) => e.preventDefault()}
             >
               {!isVisibility && headline === "Rückgabe" && (
@@ -149,6 +149,7 @@ export default function InputLocation({
                   {errorMessage}
                 </div>
               ) : (
+                
                 dataList.map((item) => (
                   <ListStoreElement
                     key={item.storeId}

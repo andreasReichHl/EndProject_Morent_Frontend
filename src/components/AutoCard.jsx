@@ -81,7 +81,7 @@ export default function AutoCard({
                 />
             </div>
             <img
-                src={auto.vehicle.thumbnailUrl || "src/assets/images/Golf.png"}
+                src={auto.vehicle.imageUrl || "src/assets/images/Golf.png"}
                 alt="auto"
                 className="w-full object-cover rounded mb-5"
             />

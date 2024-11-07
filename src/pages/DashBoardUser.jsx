@@ -88,6 +88,7 @@ export default function DashBoardUser() {
                 status={booking.status}
                 totalPrice={booking.totalPrice}
                 filterStatus={filterStatus}
+                imageUrl={booking.vehicleImage}
               />
             ))
           ) : (
