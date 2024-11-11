@@ -1,10 +1,8 @@
+import { jwtDecode } from "jwt-decode";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../hooks/AuthProvider";
-import { useAuth } from "../hooks/AuthProvider";
-import { jwtDecode } from "jwt-decode";
+import { AuthContext, useAuth } from "../hooks/AuthProvider";
 import logo from "/src/assets/images/logo.svg";
-import userAvatar from "/src/assets/images/user.jpeg@3x.svg";
 import AdminPanelLogo from "/src/assets/images/vuesax/bold/setting-2.svg";
 
 export default function Navbar() {
@@ -63,9 +61,9 @@ export default function Navbar() {
     if (token) {
       const decodedToken = jwtDecode(token);
       if (
-        decodedToken.scope == "Admin" ||
-        decodedToken.scope == "Manager" ||
-        decodedToken.scope == "Accountant"
+        decodedToken.scope == "ADMIN" ||
+        decodedToken.scope == "MANAGER" ||
+        decodedToken.scope == "ACCOUNTANT"
       )
         setIsAdmin(true);
       else setIsAdmin(false);

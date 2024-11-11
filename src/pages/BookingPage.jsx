@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import arrowSvg from "../assets/images/arrow.svg";
 import BillingInfo from "../components/Billing/BillingInfo";
 import ConfirmationInfo from "../components/Billing/ConfirmationInfo";
 import PaymentInfo from "../components/Billing/PaymentInfo";
 import PickupReturnCard from "../components/Billing/PickupReturnCard";
 import RentalSummary from "../components/Billing/RentalSummary";
-import { useLocation, useNavigate } from "react-router-dom";
-import backSvg from "../assets/images/vuesax/linear/back.svg";
-import arrowSvg from "../assets/images/arrow.svg";
 
 export default function BookingPage() {
   const [isLoading, setLoading] = useState(false);
@@ -41,6 +40,7 @@ export default function BookingPage() {
     }
   }, [carId]);
 
+
   useEffect(() => {
     if (userData && userData.address) {
       const userProfileRequest = {
@@ -59,6 +59,7 @@ export default function BookingPage() {
   }, [userData]);
 
   useEffect(() => {
+
     const submitBookingRequest = async () => {
       
       if (bookingRequest) {
@@ -69,6 +70,8 @@ export default function BookingPage() {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                Authorization: "Bearer " + sessionStorage.getItem("token"),
+
               },
               body: JSON.stringify(bookingRequest),
             }
