@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import golf from "/src/assets/images/Golf.png";
 
 export default function RentalSummary({
@@ -27,6 +27,10 @@ export default function RentalSummary({
                             carId,
                         {
                             method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                            Authorization: "Bearer " + sessionStorage.getItem("token"),
+                            }
                         }
                     );
 

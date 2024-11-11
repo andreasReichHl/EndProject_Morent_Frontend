@@ -1,9 +1,9 @@
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
 
 import AdminBookingElement from "../../components/AdminBookingElement";
-import AdminVehicleElement from "../../components/AdminVehicleInfoElement";
 import AdminSendHandver from "../../components/AdminSendHandover";
+import AdminVehicleElement from "../../components/AdminVehicleInfoElement";
 
 export default function HandoverPage() {
   const [isLoading, setIsLoading] = useState("");
@@ -25,7 +25,10 @@ export default function HandoverPage() {
         `${import.meta.env.VITE_BACKEND}/api/v1/booking/admin/${bookingId}`,
         {
           method: "GET",
-          Authorization: "Bearer " + sessionStorage.getItem("token"),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
+          },
         }
       );
       if (!response.ok) throw new Error("Error fetching data");

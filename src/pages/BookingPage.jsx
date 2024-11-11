@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import arrowSvg from "../assets/images/arrow.svg";
 import BillingInfo from "../components/Billing/BillingInfo";
 import ConfirmationInfo from "../components/Billing/ConfirmationInfo";
 import PaymentInfo from "../components/Billing/PaymentInfo";
 import PickupReturnCard from "../components/Billing/PickupReturnCard";
 import RentalSummary from "../components/Billing/RentalSummary";
-import { useLocation, useNavigate } from "react-router-dom";
-import backSvg from "../assets/images/vuesax/linear/back.svg";
-import arrowSvg from "../assets/images/arrow.svg";
 
 export default function BookingPage() {
     const [isLoading, setLoading] = useState(false);
@@ -25,6 +24,7 @@ export default function BookingPage() {
 
     // first fetch for bookingdata
 
+<<<<<<< Updated upstream
     useEffect(() => {
         const packedData = sessionStorage.getItem("locationId");
         if (packedData) {
@@ -38,6 +38,65 @@ export default function BookingPage() {
                 planedDropOffDate: data.endDate,
             };
             setBookingRequest(bookingRequest);
+=======
+  useEffect(() => {
+    const packedData = sessionStorage.getItem("locationId");
+    if (packedData) {
+      const data = JSON.parse(packedData);
+      setUnpackedata(data);
+      const bookingRequest = {
+        vehicleExemplarId: carId,
+        pickUpLocationId: data.storeId,
+        pickUpDate: data.startDate,
+        dropOffLocationId: data.dropOffId,
+        planedDropOffDate: data.endDate,
+      };
+      setBookingRequest(bookingRequest);
+    }
+  }, [carId]);
+
+  useEffect(() => {
+    if (userData && userData.address) {
+      const userProfileRequest = {
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        birthDate: userData.birthDate,
+        phoneNumber: userData.phoneNumber,
+        street: userData.address.street,
+        houseNumber: userData.address.houseNumber,
+        zipCode: userData.address.zipCode,
+        city: userData.address.city,
+        country: userData.address.country,
+      };
+      setUserProfileRequest(userProfileRequest);
+    }
+  }, [userData]);
+
+  useEffect(() => {
+    const submitBookingRequest = async () => {
+      
+      if (bookingRequest) {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_BACKEND}/api/v1/booking/info`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + sessionStorage.getItem("token"),
+              },
+              body: JSON.stringify(bookingRequest),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const result = await response.json();
+          setBookingData(result);
+        } catch (error) {
+          console.error("Error during get Bookingdata:", error);
+>>>>>>> Stashed changes
         }
     }, [carId]);
 
