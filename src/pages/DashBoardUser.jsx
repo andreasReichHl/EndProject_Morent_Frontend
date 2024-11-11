@@ -10,7 +10,7 @@ export default function DashBoardUser() {
       const token = sessionStorage.getItem("token");
 
       try {
-        const response = await fetch("http://localhost:8080/api/v1/booking", {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND}/api/v1/booking`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -88,6 +88,7 @@ export default function DashBoardUser() {
                 status={booking.status}
                 totalPrice={booking.totalPrice}
                 filterStatus={filterStatus}
+                imageUrl={booking.vehicleImage}
               />
             ))
           ) : (

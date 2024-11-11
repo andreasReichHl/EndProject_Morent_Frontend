@@ -40,6 +40,7 @@ export default function BookingPage() {
     }
   }, [carId]);
 
+
   useEffect(() => {
     if (userData && userData.address) {
       const userProfileRequest = {
@@ -58,6 +59,7 @@ export default function BookingPage() {
   }, [userData]);
 
   useEffect(() => {
+
     const submitBookingRequest = async () => {
       
       if (bookingRequest) {
@@ -69,6 +71,7 @@ export default function BookingPage() {
               headers: {
                 "Content-Type": "application/json",
                 Authorization: "Bearer " + sessionStorage.getItem("token"),
+
               },
               body: JSON.stringify(bookingRequest),
             }

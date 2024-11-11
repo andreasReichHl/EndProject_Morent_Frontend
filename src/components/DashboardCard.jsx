@@ -25,6 +25,7 @@ export default function DashboardCard({
     status,
     totalPrice,
     filterStatus,
+    imageUrl
 }) {
     const formatDate = (dateString) => {
         return moment(dateString).format("DD.MM.YYYY"); // Gibt das Datum im Format "Tag.Monat.Jahr" zurück
@@ -35,7 +36,7 @@ export default function DashboardCard({
             <h2 className="font-semibold text-lg mt-4 text-center">{`Buchungsnummer: ${bookingNumber}`}</h2>
             <figure className="px-10 pt-10">
                 <img
-                    src={picturePlaceholder} // Hier könnten Sie auch ein Bild aus den Props verwenden
+                    src={imageUrl} // Hier könnten Sie auch ein Bild aus den Props verwenden
                     alt="car"
                     className="rounded-xl"
                 />

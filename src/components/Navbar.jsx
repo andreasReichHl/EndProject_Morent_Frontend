@@ -20,7 +20,7 @@ export default function Navbar() {
       const token = sessionStorage.getItem("token");
       if (token) {
         try {
-          const response = await fetch("http://localhost:8080/api/v1/user", {
+          const response = await fetch(`${import.meta.env.VITE_BACKEND}/api/v1/user`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",

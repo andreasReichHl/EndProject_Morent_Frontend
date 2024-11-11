@@ -33,7 +33,7 @@ function App() {
     const handleSubmit = () => {
         setLoading(true);
 
-        fetch("http://localhost:8080/api/v1/vehicles/count", {
+        fetch(`${import.meta.env.VITE_BACKEND}/api/v1/vehicles/count`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -81,7 +81,7 @@ function App() {
 
         try {
             const response = await fetch(
-                "http://localhost:8080/api/v1/favorite",
+                `${import.meta.env.VITE_BACKEND}/api/v1/favorite`,
                 {
                     method: "GET",
                     headers: {
