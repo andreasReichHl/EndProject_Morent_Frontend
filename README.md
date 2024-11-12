@@ -1,4 +1,4 @@
-# Morent Backend
+# Morent Frontend
 
 Willkommen im Frontend-teil des **Morent-Projekts**! Dieses Projekt ist das Abschluss-Projekt unseres Java-Backend-Entwicklungs-Bootcamps. Es wurde in Teamarbeit innerhalb von 10 Tagen basierend auf einer kurzen Themenvorlage entwickelt.
 Die **Morent-Website** ermöglicht es Benutzern, Autos an verschiedenen Standorten zu mieten, an denen eine Filiale von Morent existiert.
