@@ -190,7 +190,7 @@ export default function SearchLandingPage({ setAutos, setSearchBar }) {
           <div className="md:pt-14 md:p-5 p-2  text-gray-500">
             <button className="flex items-center min-w-44" onClick={handleVisibility}>
               <img src={plussSvg} alt="pluss" className="mr-2" />
-              Anderer Rückgabe
+              Andere Rückgabe
             </button>
           </div>
         )}

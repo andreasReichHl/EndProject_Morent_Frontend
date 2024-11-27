@@ -20,13 +20,16 @@ export default function Navbar() {
       const token = sessionStorage.getItem("token");
       if (token) {
         try {
-          const response = await fetch(`${import.meta.env.VITE_BACKEND}/api/v1/user`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, // Token im Header senden
-            },
-          });
+          const response = await fetch(
+            `${import.meta.env.VITE_BACKEND}/api/v1/user`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Token im Header senden
+              },
+            }
+          );
 
           if (!response.ok) {
             throw new Error("Network response was not ok");
@@ -52,7 +55,7 @@ export default function Navbar() {
   }, [userData]);
 
   const handleLogout = () => {
-    setIsAdmin(false)
+    setIsAdmin(false);
     auth.logout();
     navigate("/");
   };
@@ -73,8 +76,9 @@ export default function Navbar() {
   return (
     <div className="navbar bg-navBG bg-opacity-40 pr-5">
       <div className="flex-1">
-        <Link to={"/"}>
-          <img className="ml-2 w-24" src={logo} alt="logo" />
+        <Link to={"/"} className="text-costumBlue text-2xl ml-2">
+          {/* <img className="ml-2 w-24" src={logo} alt="logo" /> */}
+          MORENT
         </Link>
       </div>
       <div className="flex-none">
@@ -106,12 +110,11 @@ export default function Navbar() {
 
         {isLoggedIn && (
           <div className="dropdown dropdown-end">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar"
-            >
-              <div className="w-12 h-12 rounded-full bg-white p-1">
+            <div tabIndex={0} role="button" className="avatar">
+              <div
+                className="w-12 h-12 rounded-full 
+               p-1"
+              >
                 {isLoggedIn &&
                   (imageProfile ? (
                     <img
@@ -120,7 +123,7 @@ export default function Navbar() {
                       className="w-full h-full rounded-full"
                     />
                   ) : (
-                    <span className="text-2xl bg-slate-400 rounded-full text-white font-light w-10 h-10 flex items-center justify-center">
+                    <span className="text-2xl bg-slate-400 rounded-full text-white font-light w-10 h-10 flex items-center justify-center outline hover:outline-costumBlue">
                       {firstLetter || "Z"}
                     </span>
                   ))}
@@ -129,7 +132,7 @@ export default function Navbar() {
 
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow border-white"
             >
               <li>
                 <Link to="/user/profil">Profil</Link>
